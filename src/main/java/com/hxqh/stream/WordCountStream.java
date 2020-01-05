@@ -1,11 +1,11 @@
-package com.hxqh.batch;
+package com.hxqh.stream;
 
+import com.hxqh.batch.WordCountData;
 import org.apache.flink.api.common.functions.FlatMapFunction;
-import org.apache.flink.api.java.DataSet;
-import org.apache.flink.api.java.ExecutionEnvironment;
-import org.apache.flink.api.java.operators.FlatMapOperator;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.api.java.utils.ParameterTool;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.util.Collector;
 
 /**
@@ -14,20 +14,19 @@ import org.apache.flink.util.Collector;
  * @author Ocean lin
  */
 @SuppressWarnings("Duplicates")
-public class WordCount {
+public class WordCountStream {
 
     public static void main(String[] args) throws Exception {
         ParameterTool parameter = ParameterTool.fromArgs(args);
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
-        final ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
-        DataSet<String> dataSet;
+        DataStream<String> stream;
         if (parameter.has("input")) {
-            dataSet = env.readTextFile(parameter.get("input"));
+            stream = env.readTextFile(parameter.get("input"));
         } else {
-            dataSet = WordCountData.getDefaultTextLineDataSet(env);
+            stream = env.fromElements(WordCountData.WORDS);
         }
-
-        FlatMapOperator<String, Tuple2<String, Integer>> flatMap = dataSet.flatMap(new FlatMapFunction<String, Tuple2<String, Integer>>() {
+        DataStream<Tuple2<String, Integer>> flatMap = stream.flatMap(new FlatMapFunction<String, Tuple2<String, Integer>>() {
             @Override
             public void flatMap(String s, Collector<Tuple2<String, Integer>> collector) throws Exception {
                 String[] s1 = s.toLowerCase().split(" ");
@@ -37,14 +36,14 @@ public class WordCount {
             }
         });
 
-        DataSet<Tuple2<String, Integer>> sum = flatMap.groupBy(0).sum(1);
+        DataStream<Tuple2<String, Integer>> sum = flatMap.keyBy(0).sum(1);
 
         if (parameter.has("output")) {
-            sum.writeAsCsv(parameter.get("output"), "\n", " ");
-            env.execute(" Word Count!");
+            sum.writeAsCsv(parameter.get("output"));
         } else {
             sum.print();
         }
+        env.execute(" Word Count Stream");
 
     }
 }
