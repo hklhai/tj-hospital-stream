@@ -9,6 +9,11 @@ import org.apache.flink.api.java.utils.ParameterTool;
 import org.apache.flink.util.Collector;
 
 /**
+ * 执行
+ * <p>
+ * flink run -c com.hxqh.batch.WordCount tj-hospital.jar
+ * flink run -c com.hxqh.batch.WordCount tj-hospital.jar --input /root/app/execute-jar/in.txt --output /root/app/execute-jar/out.txt
+ * <p>
  * Created by Ocean lin on 2020/1/4.
  *
  * @author Ocean lin

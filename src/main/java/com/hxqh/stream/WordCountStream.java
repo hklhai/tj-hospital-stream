@@ -9,6 +9,10 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.util.Collector;
 
 /**
+ *
+ * flink run -c com.hxqh.stream.WordCountStream tj-hospital.jar
+ * flink run -c com.hxqh.stream.WordCountStream tj-hospital.jar --input /root/app/execute-jar/in.txt --output /root/app/execute-jar/out-java-stream.txt
+ *
  * Created by Ocean lin on 2020/1/4.
  *
  * @author Ocean lin

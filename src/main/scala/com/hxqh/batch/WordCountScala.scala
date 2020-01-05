@@ -4,6 +4,9 @@ import org.apache.flink.api.java.utils.ParameterTool
 import org.apache.flink.api.scala.{ExecutionEnvironment, _}
 
 /**
+  * flink run -c com.hxqh.batch.WordCountScala tj-hospital.jar --input /root/app/execute-jar/in.txt --output /root/app/execute-jar/out-scala.txt
+  *
+  *
   * Created by Ocean lin on 2020/1/4.
   *
   * @author Ocean lin
