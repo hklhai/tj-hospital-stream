@@ -1,5 +1,7 @@
 # TJ Hospital
  
+[![Build Status](https://travis-ci.org/hklhai/tj-hospital-stream.svg?branch=master)](https://travis-ci.org/hklhai/tj-hospital-stream)
+ 
 ---
 > HK  
 > linh@bjhxqh.com
