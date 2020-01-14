@@ -47,6 +47,7 @@ under the License.
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
+            <layout>default</layout>
         </repository>
 
         <repository>
