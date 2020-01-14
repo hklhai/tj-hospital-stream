@@ -3,9 +3,8 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.hxqh</groupId>
   <artifactId>tj-hospital</artifactId>
-  <name>Flink Quickstart Job</name>
+  <name>TJ Hospital</name>
   <version>1.0</version>
-  <url>http://www.myorganization.org</url>
   <build>
     <finalName>tj-hospital</finalName>
     <pluginManagement>
@@ -165,7 +164,7 @@
       <snapshots />
       <id>Nexus</id>
       <name>Nexus Repository</name>
-      <url>http://tj-hospital.com:8081/nexus/content/groups/public/</url>
+      <url>http://116.63.137.109:8081/nexus/content/groups/public/</url>
     </repository>
     <repository>
       <releases>
