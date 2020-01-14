@@ -25,8 +25,7 @@ under the License.
     <version>1.0</version>
     <packaging>jar</packaging>
 
-    <name>Flink Quickstart Job</name>
-    <url>http://www.myorganization.org</url>
+    <name>TJ Hospital</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -41,7 +40,7 @@ under the License.
         <repository>
             <id>Nexus</id>
             <name>Nexus Repository</name>
-            <url>http://tj-hospital.com:8081/nexus/content/groups/public/</url>
+            <url>http://116.63.137.109:8081/nexus/content/groups/public/</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
