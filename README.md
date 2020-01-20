@@ -51,11 +51,8 @@ kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic mediumvoltag
 
 ## kafka
 ### 查看消费进度
-kafka-run-class.sh kafka.tools.ConsumerOffsetChecker --topic hk2  --zookeeper 127.0.0.1:2181 --group hk2
+kafka-run-class.sh kafka.tools.ConsumerOffsetChecker --topic mediumvoltage  --zookeeper 127.0.0.1:2181 --group mediumvoltage
 
 ### 计算消息的消息堆积情况
-kafka-consumer-groups.sh --bootstrap-server localhost:9092 --describe --group hk2
-
-kafka-consumer-groups.sh --bootstrap-server localhost:9092 --describe --group connection-topic
-
-kafka-consumer-groups.sh --bootstrap-server localhost:9092 --describe --group attr-topic
+kafka-consumer-groups.sh --bootstrap-server localhost:9092 --describe --group mediumvoltage
+ 
