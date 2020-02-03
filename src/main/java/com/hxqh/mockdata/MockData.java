@@ -18,4 +18,6 @@ public class MockData {
             Tuple3.of("class2", "liu", 97),
     };
 
+
+    public static  final Long[] longData = new Long[]{1L,2L,3L,4L,5L,1L,3L,4L,5L,6L,7L,1L,4L,5L,3L,9L,9L,2L,1L};
 }

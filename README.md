@@ -36,7 +36,7 @@ nohup ./flume-ng agent --conf-file ../conf/http-kafka-conf.properties --name a1 
 kafka-topics.sh --zookeeper 127.0.0.1:2181 --topic mediumvoltage --replication-factor 1 --partitions 1 --create
     
 ### 删除topic
-kafka-topics.sh --zookeeper localhost:2181 --delete --topic medium_voltage
+kafka-topics.sh --zookeeper localhost:2181 --delete --topic mediumvoltage
     
 ###  产生
 kafka-console-producer.sh --broker-list localhost:9092 --topic mediumvoltage
