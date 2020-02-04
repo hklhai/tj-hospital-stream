@@ -122,7 +122,7 @@ public class OperateState {
          */
         @Override
         public void initializeState(FunctionInitializationContext context) throws Exception {
-            ListStateDescriptor<Long> listStateDescriptor = new ListStateDescriptor<Long>("checkPointedCountList", TypeInformation.of(new TypeHint<Long>() {
+            ListStateDescriptor<Long> listStateDescriptor = new ListStateDescriptor<>("checkPointedCountList", TypeInformation.of(new TypeHint<Long>() {
             }));
             checkPointedCountList = context.getOperatorStateStore().getListState(listStateDescriptor);
 
