@@ -1,7 +1,7 @@
 package com.hxqh.transfer;
 
 import com.alibaba.fastjson.JSON;
-import com.hxqh.domain.IEDEntity;
+import com.hxqh.domain.base.IEDEntity;
 import com.hxqh.utils.DateUtils;
 import com.hxqh.utils.JsonUtils;
 import org.apache.flink.streaming.api.functions.AssignerWithPunctuatedWatermarks;

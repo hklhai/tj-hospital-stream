@@ -164,7 +164,7 @@
       <snapshots />
       <id>Nexus</id>
       <name>Nexus Repository</name>
-      <url>http://116.63.137.109:8081/nexus/content/groups/public/</url>
+      <url>http://116.63.137.109:8081/repository/maven-public/</url>
     </repository>
     <repository>
       <releases>
@@ -184,32 +184,8 @@
       <scope>provided</scope>
       <exclusions>
         <exclusion>
-          <artifactId>flink-core</artifactId>
-          <groupId>org.apache.flink</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>flink-shaded-asm</artifactId>
-          <groupId>org.apache.flink</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>flink-shaded-asm-6</artifactId>
-          <groupId>org.apache.flink</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>commons-lang3</artifactId>
-          <groupId>org.apache.commons</groupId>
-        </exclusion>
-        <exclusion>
           <artifactId>commons-math3</artifactId>
           <groupId>org.apache.commons</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>jsr305</artifactId>
-          <groupId>com.google.code.findbugs</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>force-shading</artifactId>
-          <groupId>org.apache.flink</groupId>
         </exclusion>
       </exclusions>
     </dependency>
@@ -228,20 +204,8 @@
           <groupId>org.apache.flink</groupId>
         </exclusion>
         <exclusion>
-          <artifactId>flink-shaded-guava</artifactId>
-          <groupId>org.apache.flink</groupId>
-        </exclusion>
-        <exclusion>
           <artifactId>commons-math3</artifactId>
           <groupId>org.apache.commons</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>jsr305</artifactId>
-          <groupId>com.google.code.findbugs</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>force-shading</artifactId>
-          <groupId>org.apache.flink</groupId>
         </exclusion>
       </exclusions>
     </dependency>
@@ -256,78 +220,6 @@
       <artifactId>log4j</artifactId>
       <version>1.2.17</version>
       <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.flink</groupId>
-      <artifactId>flink-scala_2.11</artifactId>
-      <version>1.8.0</version>
-      <scope>provided</scope>
-      <exclusions>
-        <exclusion>
-          <artifactId>scala-reflect</artifactId>
-          <groupId>org.scala-lang</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>scala-library</artifactId>
-          <groupId>org.scala-lang</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>scala-compiler</artifactId>
-          <groupId>org.scala-lang</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>flink-core</artifactId>
-          <groupId>org.apache.flink</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>flink-shaded-asm</artifactId>
-          <groupId>org.apache.flink</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>flink-shaded-asm-6</artifactId>
-          <groupId>org.apache.flink</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>flink-shaded-guava</artifactId>
-          <groupId>org.apache.flink</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>jsr305</artifactId>
-          <groupId>com.google.code.findbugs</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>force-shading</artifactId>
-          <groupId>org.apache.flink</groupId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.flink</groupId>
-      <artifactId>flink-streaming-scala_2.11</artifactId>
-      <version>1.8.0</version>
-      <scope>provided</scope>
-      <exclusions>
-        <exclusion>
-          <artifactId>scala-reflect</artifactId>
-          <groupId>org.scala-lang</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>scala-library</artifactId>
-          <groupId>org.scala-lang</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>scala-compiler</artifactId>
-          <groupId>org.scala-lang</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>jsr305</artifactId>
-          <groupId>com.google.code.findbugs</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>force-shading</artifactId>
-          <groupId>org.apache.flink</groupId>
-        </exclusion>
-      </exclusions>
     </dependency>
   </dependencies>
   <properties>
