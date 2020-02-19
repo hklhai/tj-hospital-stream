@@ -1,6 +1,6 @@
 package com.hxqh.task;
 
-import com.hxqh.sink.DB2YcSink;
+import com.hxqh.sink.Db2YcAtsSink;
 import com.hxqh.transfer.ProcessWaterEmitter;
 import org.apache.flink.api.common.restartstrategy.RestartStrategies;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
@@ -53,7 +53,7 @@ public class ProcessYcTask {
 
         FlinkKafkaConsumerBase kafkaConsumerBase = flinkKafkaConsumer.assignTimestampsAndWatermarks(new ProcessWaterEmitter());
         DataStream<String> input = env.addSource(kafkaConsumerBase);
-        input.addSink(new DB2YcSink()).name("YC-DB2-Sink");
+        input.addSink(new Db2YcAtsSink()).name("YC-DB2-Sink");
 
         // todo ES Sink
         //input.addSink(new ElasticSearchYcSink()).name("ElasticSearchYcSink");

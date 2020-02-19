@@ -1,0 +1,31 @@
+PUT yc_ats
+PUT /yc_ats/_mapping/ats
+{
+    "properties": {
+        "IEDName": {
+            "type": "text"
+        },
+        "UA": {
+            "type": "double"
+        },
+        "UB": {
+            "type": "double"
+        },
+        "UC": {
+            "type": "double"
+        },
+        "IA": {
+            "type": "double"
+        },
+        "IB": {
+            "type": "double"
+        },
+        "IC": {
+            "type": "double"
+        },
+        "ColTime": {
+            "type": "date",
+            "format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis"
+        }
+    }
+}

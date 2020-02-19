@@ -46,7 +46,12 @@ kafka-console-consumer.sh --zookeeper localhost:2181 --topic mediumvoltage --fro
   
 ### 消费
 kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic mediumvoltage --from-beginning
- 
+
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic yxtest --from-beginning
+
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic yctest --from-beginning
+
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic mediumvoltage --partition 0 --offset 250
 
 
 ## kafka
@@ -56,3 +61,39 @@ kafka-run-class.sh kafka.tools.ConsumerOffsetChecker --topic mediumvoltage  --zo
 ### 计算消息的消息堆积情况
 kafka-consumer-groups.sh --bootstrap-server localhost:9092 --describe --group mediumvoltage
  
+### 查询
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic mediumvoltage --partition 0 --offset 60
+ 
+
+## 启动Flink作业
+cd /root/app/flink-1.8.0/bin
+
+nohup ./flink run -c com.hxqh.task.ProcessTask /root/TJJar/tj-hospital.jar > alldata.log 2>&1 &
+
+### 消费
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic mediumvoltage --from-beginning
+
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic yxtest --from-beginning
+
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic yctest --from-beginning
+
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic mediumvoltage --partition 0 --offset 250
+
+
+## kafka
+### 查看消费进度
+kafka-run-class.sh kafka.tools.ConsumerOffsetChecker --topic mediumvoltage  --zookeeper 127.0.0.1:2181 --group mediumvoltage
+
+### 计算消息的消息堆积情况
+kafka-consumer-groups.sh --bootstrap-server localhost:9092 --describe --group mediumvoltage
+ 
+### 查询
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic mediumvoltage --partition 0 --offset 60
+ 
+
+## 启动Flink作业
+cd /root/app/flink-1.8.0/bin
+
+nohup ./flink run -c com.hxqh.task.ProcessTask /root/TJJar/tj-hospital.jar > alldata.log 2>&1 &
+
+nohup ./flink run -c com.hxqh.task.ProcessYcAtsTask /root/TJJar/tj-hospital.jar > yc_ast.log 2>&1 &

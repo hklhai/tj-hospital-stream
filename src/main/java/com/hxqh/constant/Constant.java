@@ -8,7 +8,7 @@ package com.hxqh.constant;
 public interface Constant {
     Integer NUM = 6;
 
-
+    Integer NUM_4 = 4;
     /**
      * 遥测
      */
@@ -38,6 +38,21 @@ public interface Constant {
     String Ia = "Ia";
     String Ib = "Ib";
     String Ic = "Ic";
+
+
+    /**
+     * ElasticSearch
+     */
+
+    String ES_HOST = "tj-hospital.com";
+    Integer ES_PORT = 9200;
+
+
+    /**
+     * 遥测-AST
+     */
+    String INDEX_YC_ATS = "yc_ats";
+    String TYPE_YC_ATS = "ats";
 
 
 }

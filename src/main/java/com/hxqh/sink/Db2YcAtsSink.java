@@ -16,7 +16,7 @@ import static com.hxqh.constant.Constant.*;
  * @author Ocean lin
  */
 @SuppressWarnings("Duplicates")
-public class DB2YcSink extends RichSinkFunction<String> {
+public class Db2YcAtsSink extends RichSinkFunction<String> {
 
 
     private Connection connection;
@@ -35,7 +35,7 @@ public class DB2YcSink extends RichSinkFunction<String> {
         IEDEntity entity = JSON.parseObject(value, IEDEntity.class);
         YcAts ycAts = ConvertUtils.convert2YcAts(entity);
 
-        String countSql = "select count(*) from YCAST_CURRENT  where IEDNAME=?";
+        String countSql = "select count(*) from YCATS_CURRENT  where IEDNAME=?";
         preparedStatement = connection.prepareStatement(countSql);
         preparedStatement.setString(1, ycAts.getIEDName());
         ResultSet resultSet = preparedStatement.executeQuery();
@@ -46,7 +46,7 @@ public class DB2YcSink extends RichSinkFunction<String> {
 
         if (1 == count) {
             // 获取主键
-            String iedNameSQL = "select YCASTID from YCAST_CURRENT where IEDNAME=? ";
+            String iedNameSQL = "select YCASTID from YCATS_CURRENT where IEDNAME=? ";
             preparedStatement = connection.prepareStatement(iedNameSQL);
             preparedStatement.setString(1, ycAts.getIEDName());
             ResultSet edNameResult = preparedStatement.executeQuery();
@@ -55,7 +55,7 @@ public class DB2YcSink extends RichSinkFunction<String> {
             }
 
             // 更新设备
-            String updateSql = "update YCAST_CURRENT set COLTIME=?,UA=?,UB=?,UC=?,IA=?,IB=?,IC=?  where YCASTID=? ";
+            String updateSql = "update YCATS_CURRENT set COLTIME=?,UA=?,UB=?,UC=?,IA=?,IB=?,IC=?  where YCASTID=? ";
             preparedStatement = connection.prepareStatement(updateSql);
             preparedStatement.setTimestamp(1, new Timestamp(ycAts.getColTime().getTime()));
             preparedStatement.setDouble(2, ycAts.getUA());
@@ -69,7 +69,7 @@ public class DB2YcSink extends RichSinkFunction<String> {
 
         } else {
             // 新增设备
-            String insertSql = "INSERT INTO YCAST_CURRENT  (YCASTID,IEDNAME,COLTIME,UA,UB,UC,IA,IB,IC) VALUES(NEXTVAL FOR  YCAST_CURRENT_SEQ,?,?,?,?,?,?,?,?)";
+            String insertSql = "INSERT INTO YCATS_CURRENT  (YCASTID,IEDNAME,COLTIME,UA,UB,UC,IA,IB,IC) VALUES(NEXTVAL FOR  YCAST_CURRENT_SEQ,?,?,?,?,?,?,?,?)";
             preparedStatement = connection.prepareStatement(insertSql);
             preparedStatement.setString(1, ycAts.getIEDName());
             preparedStatement.setTimestamp(2, new Timestamp(ycAts.getColTime().getTime()));
@@ -83,7 +83,7 @@ public class DB2YcSink extends RichSinkFunction<String> {
         }
 
         // log 表新增
-        String insertLogSql = "INSERT INTO YCAST_LOG  (YCASTID,IEDNAME,COLTIME,UA,UB,UC,IA,IB,IC) VALUES(NEXTVAL FOR  YCAST_LOG_SEQ,?,?,?,?,?,?,?,?)";
+        String insertLogSql = "INSERT INTO YCATS_LOG  (YCASTID,IEDNAME,COLTIME,UA,UB,UC,IA,IB,IC) VALUES(NEXTVAL FOR  YCAST_LOG_SEQ,?,?,?,?,?,?,?,?)";
         preparedStatement = connection.prepareStatement(insertLogSql);
         preparedStatement.setString(1, ycAts.getIEDName());
         preparedStatement.setTimestamp(2, new Timestamp(ycAts.getColTime().getTime()));
