@@ -1,17 +1,34 @@
 package com.hxqh.task;
 
+import com.alibaba.fastjson.JSON;
+import com.hxqh.domain.YcAts;
+import com.hxqh.domain.base.IEDEntity;
 import com.hxqh.sink.Db2YcAtsSink;
 import com.hxqh.transfer.ProcessWaterEmitter;
+import com.hxqh.utils.ConvertUtils;
+import com.hxqh.utils.DateUtils;
+import org.apache.flink.api.common.functions.RuntimeContext;
 import org.apache.flink.api.common.restartstrategy.RestartStrategies;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.api.java.utils.ParameterTool;
 import org.apache.flink.streaming.api.TimeCharacteristic;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.connectors.elasticsearch.ElasticsearchSinkFunction;
+import org.apache.flink.streaming.connectors.elasticsearch.RequestIndexer;
+import org.apache.flink.streaming.connectors.elasticsearch6.ElasticsearchSink;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer010;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumerBase;
+import org.apache.http.HttpHost;
+import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.client.Requests;
 
-import static com.hxqh.constant.Constant.NUM;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static com.hxqh.constant.Constant.*;
 
 /**
  * Created by Ocean lin on 2020/2/18.
@@ -29,7 +46,7 @@ public class ProcessYcTask {
 
         final ParameterTool parameterTool = ParameterTool.fromArgs(args);
 
-        if (parameterTool.getNumberOfParameters() < NUM) {
+        if (parameterTool.getNumberOfParameters() < NUM_4) {
             System.out.println("Missing parameters!\n" +
                     "Usage: Kafka --input-topic <topic>" +
                     "--bootstrap.servers <kafka brokers> " +
@@ -53,16 +70,55 @@ public class ProcessYcTask {
 
         FlinkKafkaConsumerBase kafkaConsumerBase = flinkKafkaConsumer.assignTimestampsAndWatermarks(new ProcessWaterEmitter());
         DataStream<String> input = env.addSource(kafkaConsumerBase);
-        input.addSink(new Db2YcAtsSink()).name("YC-DB2-Sink");
+        input.addSink(new Db2YcAtsSink()).name("YC-ATS-DB2-Sink");
 
-        // todo ES Sink
-        //input.addSink(new ElasticSearchYcSink()).name("ElasticSearchYcSink");
+        persistEs(input);
 
         try {
-            env.execute("ProcessYcTask");
+            env.execute("ProcessYcAtsTask");
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+    }
+
+
+    private static void persistEs(DataStream<String> input) {
+        List<HttpHost> httpHosts = new ArrayList<>();
+        httpHosts.add(new HttpHost(ES_HOST, ES_PORT, "http"));
+
+        ElasticsearchSink.Builder<String> esSinkBuilder = new ElasticsearchSink.Builder<>(
+                httpHosts,
+                new ElasticsearchSinkFunction<String>() {
+                    public IndexRequest createIndexRequest(String element) {
+                        IEDEntity entity = JSON.parseObject(element, IEDEntity.class);
+                        YcAts ycAts = ConvertUtils.convert2YcAts(entity);
+
+                        Map<String, Object> map = new HashMap<>(24);
+                        map.put("IEDName", ycAts.getIEDName());
+                        map.put("ColTime", DateUtils.formatDate(ycAts.getColTime()));
+                        map.put("UA", ycAts.getUA());
+                        map.put("UB", ycAts.getUB());
+                        map.put("UC", ycAts.getUC());
+                        map.put("IA", ycAts.getIA());
+                        map.put("IB", ycAts.getIB());
+                        map.put("IC", ycAts.getIC());
+
+                        return Requests.indexRequest().index(INDEX_YC_ATS).type(TYPE_YC_ATS).source(map);
+                    }
+
+                    @Override
+                    public void process(String element, RuntimeContext ctx, RequestIndexer indexer) {
+                        indexer.add(createIndexRequest(element));
+                    }
+                }
+        );
+        esSinkBuilder.setBulkFlushMaxActions(1);
+
+        // provide a RestClientFactory for custom configuration on the internally created REST client
+        esSinkBuilder.setRestClientFactory(
+                restClientBuilder -> restClientBuilder.setMaxRetryTimeoutMillis(300)
+        );
+        input.addSink(esSinkBuilder.build()).name("YC-ATS-ElasticSearch-Sink");
     }
 }
