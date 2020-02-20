@@ -6,6 +6,8 @@
 > HK  
 > hkhai@outlook.com
 
+
+
  
 组件 | 机器 | 位置
 ---|---|---
@@ -33,7 +35,28 @@ nohup ./flume-ng agent --conf-file ../conf/http-kafka-conf.properties --name a1 
 
 
 ###  新建topic
+
+dev
+``` 
 kafka-topics.sh --zookeeper 127.0.0.1:2181 --topic mediumvoltage --replication-factor 1 --partitions 1 --create
+    
+kafka-topics.sh --zookeeper 127.0.0.1:2181 --topic yxtest --replication-factor 1 --partitions 1 --create
+
+kafka-topics.sh --zookeeper 127.0.0.1:2181 --topic yctest --replication-factor 1 --partitions 1 --create
+```
+
+    
+producrtion
+``` 
+kafka-topics.sh --zookeeper 127.0.0.1:2181 --topic all --replication-factor 1 --partitions 1 --create
+
+kafka-topics.sh --zookeeper 127.0.0.1:2181 --topic yx --replication-factor 1 --partitions 1 --create
+
+kafka-topics.sh --zookeeper 127.0.0.1:2181 --topic yc --replication-factor 1 --partitions 1 --create
+```
+
+
+
     
 ### 删除topic
 kafka-topics.sh --zookeeper localhost:2181 --delete --topic mediumvoltage
@@ -51,33 +74,7 @@ kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic yxtest --fro
 
 kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic yctest --from-beginning
 
-kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic mediumvoltage --partition 0 --offset 250
-
-
-## kafka
-### 查看消费进度
-kafka-run-class.sh kafka.tools.ConsumerOffsetChecker --topic mediumvoltage  --zookeeper 127.0.0.1:2181 --group mediumvoltage
-
-### 计算消息的消息堆积情况
-kafka-consumer-groups.sh --bootstrap-server localhost:9092 --describe --group mediumvoltage
- 
-### 查询
-kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic mediumvoltage --partition 0 --offset 60
- 
-
-## 启动Flink作业
-cd /root/app/flink-1.8.0/bin
-
-nohup ./flink run -c com.hxqh.task.ProcessTask /root/TJJar/tj-hospital.jar > alldata.log 2>&1 &
-
-### 消费
-kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic mediumvoltage --from-beginning
-
-kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic yxtest --from-beginning
-
-kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic yctest --from-beginning
-
-kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic mediumvoltage --partition 0 --offset 250
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic mediumvoltage --partition 0 --offset 400
 
 
 ## kafka

@@ -1,0 +1,8 @@
+cluster.name: tj-application
+
+node.name: tj-1
+
+
+http.port: 9200
+
+network.host: 0.0.0.0
