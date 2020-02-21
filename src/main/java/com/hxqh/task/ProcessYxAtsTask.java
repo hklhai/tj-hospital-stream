@@ -1,9 +1,9 @@
 package com.hxqh.task;
 
 import com.alibaba.fastjson.JSON;
-import com.hxqh.domain.YcAts;
+import com.hxqh.domain.YxAts;
 import com.hxqh.domain.base.IEDEntity;
-import com.hxqh.sink.Db2YcAtsSink;
+import com.hxqh.sink.Db2YxAtsSink;
 import com.hxqh.transfer.ProcessWaterEmitter;
 import com.hxqh.utils.ConvertUtils;
 import com.hxqh.utils.DateUtils;
@@ -23,26 +23,29 @@ import org.apache.http.HttpHost;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.client.Requests;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.hxqh.constant.Constant.*;
 
 /**
- * Created by Ocean lin on 2020/2/18.
+ * Created by Ocean lin on 2020/2/21.
+ * <p>
+ * 告警    0-无告警  1-是告警
+ * 分合闸  0-分闸    1-是合闸
+ * <p>
+ * <p>
+ * 告警    速断和过流
+ * 分合闸  开关位置
  *
  * @author Ocean lin
  */
 @SuppressWarnings("Duplicates")
-public class ProcessYcTask {
+public class ProcessYxAtsTask {
 
     public static void main(String[] args) {
 
-
-        args = new String[]{"--input-topic", "yctest", "--bootstrap.servers", "tj-hospital.com:9092",
-                "--zookeeper.connect", "tj-hospital.com:2181", "--group.id", "yctest"};
+        args = new String[]{"--input-topic", "yxtest", "--bootstrap.servers", "tj-hospital.com:9092",
+                "--zookeeper.connect", "tj-hospital.com:2181", "--group.id", "yxtest"};
 
         final ParameterTool parameterTool = ParameterTool.fromArgs(args);
 
@@ -64,47 +67,48 @@ public class ProcessYcTask {
         // make parameters available in the web interface
         env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
 
-
         FlinkKafkaConsumer010 flinkKafkaConsumer = new FlinkKafkaConsumer010<>(
                 parameterTool.getRequired("input-topic"), new SimpleStringSchema(), parameterTool.getProperties());
 
         FlinkKafkaConsumerBase kafkaConsumerBase = flinkKafkaConsumer.assignTimestampsAndWatermarks(new ProcessWaterEmitter());
         DataStream<String> input = env.addSource(kafkaConsumerBase);
-        input.addSink(new Db2YcAtsSink()).name("YC-ATS-DB2-Sink");
+        DataStream<String> filter = input.filter(s -> {
+            IEDEntity entity = JSON.parseObject(s, IEDEntity.class);
+            return entity.getIEDType().equals(ATS) ? true : false;
+        }).name("YX-ATS-Filter");
 
-        persistEs(input);
+        filter.addSink(new Db2YxAtsSink()).name("YX-ATS-DB2-Sink");
+
+        persistEs(filter);
 
         try {
-            env.execute("ProcessYcAtsTask");
+            env.execute("ProcessYxAtsTask");
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
 
     private static void persistEs(DataStream<String> input) {
         List<HttpHost> httpHosts = new ArrayList<>();
         httpHosts.add(new HttpHost(ES_HOST, ES_PORT, "http"));
+        Date now = new Date();
 
         ElasticsearchSink.Builder<String> esSinkBuilder = new ElasticsearchSink.Builder<>(
                 httpHosts,
                 new ElasticsearchSinkFunction<String>() {
                     public IndexRequest createIndexRequest(String element) {
                         IEDEntity entity = JSON.parseObject(element, IEDEntity.class);
-                        YcAts ycAts = ConvertUtils.convert2YcAts(entity);
+                        YxAts yxAts = ConvertUtils.convert2YxAts(entity);
 
                         Map<String, Object> map = new HashMap<>(24);
-                        map.put("IEDName", ycAts.getIEDName());
-                        map.put("ColTime", DateUtils.formatDate(ycAts.getColTime()));
-                        map.put("UA", ycAts.getUA());
-                        map.put("UB", ycAts.getUB());
-                        map.put("UC", ycAts.getUC());
-                        map.put("IA", ycAts.getIA());
-                        map.put("IB", ycAts.getIB());
-                        map.put("IC", ycAts.getIC());
+                        map.put("IEDName", yxAts.getIEDName());
+                        map.put("ColTime", DateUtils.formatDate(yxAts.getColTime()));
+                        map.put("VariableName", yxAts.getVariableName());
+                        map.put("Value", yxAts.getValue());
+                        map.put("CreateTime", DateUtils.formatDate(now));
 
-                        return Requests.indexRequest().index(INDEX_YC_ATS).type(TYPE_YC_ATS).source(map);
+                        return Requests.indexRequest().index(INDEX_YX_ATS).type(TYPE_YX_ATS).source(map);
                     }
 
                     @Override

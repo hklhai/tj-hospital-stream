@@ -21,6 +21,11 @@ public interface Constant {
 
 
     /**
+     * 设备类别
+     */
+    String ATS = "ATS";
+
+    /**
      * DB2 连接信息
      */
     String DRIVER_NAME = "com.ibm.db2.jcc.DB2Driver";
@@ -54,5 +59,11 @@ public interface Constant {
     String INDEX_YC_ATS = "yc_ats";
     String TYPE_YC_ATS = "ats";
 
+
+    /**
+     * 遥信-AST
+     */
+    String INDEX_YX_ATS = "yx_ats";
+    String TYPE_YX_ATS = "ats";
 
 }

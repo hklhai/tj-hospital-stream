@@ -23,10 +23,7 @@ import org.apache.http.HttpHost;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.client.Requests;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.hxqh.constant.Constant.*;
 
@@ -39,7 +36,6 @@ import static com.hxqh.constant.Constant.*;
 public class ProcessYcAtsTask {
 
     public static void main(String[] args) {
-
 
         args = new String[]{"--input-topic", "yctest", "--bootstrap.servers", "tj-hospital.com:9092",
                 "--zookeeper.connect", "tj-hospital.com:2181", "--group.id", "yctest"};
@@ -70,9 +66,14 @@ public class ProcessYcAtsTask {
 
         FlinkKafkaConsumerBase kafkaConsumerBase = flinkKafkaConsumer.assignTimestampsAndWatermarks(new ProcessWaterEmitter());
         DataStream<String> input = env.addSource(kafkaConsumerBase);
-        input.addSink(new Db2YcAtsSink()).name("YC-ATS-DB2-Sink");
+        DataStream<String> filter = input.filter(s -> {
+            IEDEntity entity = JSON.parseObject(s, IEDEntity.class);
+            return entity.getIEDType().equals(ATS) ? true : false;
+        }).name("YC-ATS-Filter");
 
-        persistEs(input);
+        filter.addSink(new Db2YcAtsSink()).name("YC-ATS-DB2-Sink");
+
+        persistEs(filter);
 
         try {
             env.execute("ProcessYcAtsTask");
@@ -86,6 +87,7 @@ public class ProcessYcAtsTask {
     private static void persistEs(DataStream<String> input) {
         List<HttpHost> httpHosts = new ArrayList<>();
         httpHosts.add(new HttpHost(ES_HOST, ES_PORT, "http"));
+        Date now = new Date();
 
         ElasticsearchSink.Builder<String> esSinkBuilder = new ElasticsearchSink.Builder<>(
                 httpHosts,
@@ -103,6 +105,7 @@ public class ProcessYcAtsTask {
                         map.put("IA", ycAts.getIA());
                         map.put("IB", ycAts.getIB());
                         map.put("IC", ycAts.getIC());
+                        map.put("CreateTime", DateUtils.formatDate(now));
 
                         return Requests.indexRequest().index(INDEX_YC_ATS).type(TYPE_YC_ATS).source(map);
                     }

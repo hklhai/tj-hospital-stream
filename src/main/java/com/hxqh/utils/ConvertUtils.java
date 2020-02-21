@@ -1,6 +1,7 @@
 package com.hxqh.utils;
 
 import com.hxqh.domain.YcAts;
+import com.hxqh.domain.YxAts;
 import com.hxqh.domain.base.IEDEntity;
 import com.hxqh.domain.base.IEDParam;
 
@@ -38,5 +39,15 @@ public class ConvertUtils {
         ycAts.setIB(null == parameterMap.get(Ib) ? 0.0f : parameterMap.get(Ib).get(0).getValue());
         ycAts.setIC(null == parameterMap.get(Ic) ? 0.0f : parameterMap.get(Ic).get(0).getValue());
         return ycAts;
+    }
+
+
+    public static YxAts convert2YxAts(IEDEntity entity) {
+        YxAts yxAts = new YxAts();
+        yxAts.setIEDName(entity.getIEDName());
+        yxAts.setColTime(entity.getColTime());
+        yxAts.setVariableName(entity.getIEDParam().get(0).getVariableName());
+        yxAts.setValue(entity.getIEDParam().get(0).getValue().intValue());
+        return yxAts;
     }
 }
