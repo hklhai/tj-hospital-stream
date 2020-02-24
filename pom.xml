@@ -38,24 +38,24 @@ under the License.
 
     <repositories>
         <repository>
-            <id>Nexus</id>
-            <name>Nexus Repository</name>
-            <url>http://116.63.137.109:8081/repository/maven-public/</url>
+            <id>aliyun-maven</id>
+            <name>aliyun Repository</name>
+            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
             <snapshots>
-                <enabled>true</enabled>
+                <enabled>false</enabled>
             </snapshots>
             <layout>default</layout>
         </repository>
 
         <repository>
-            <id>apache.snapshots</id>
-            <name>Apache Development Snapshot Repository</name>
-            <url>https://repository.apache.org/content/repositories/snapshots/</url>
+            <id>nexus</id>
+            <name>Nexus Repository</name>
+            <url>http://116.63.137.109:8081/repository/maven-public/</url>
             <releases>
-                <enabled>false</enabled>
+                <enabled>true</enabled>
             </releases>
             <snapshots>
                 <enabled>true</enabled>
@@ -95,7 +95,7 @@ under the License.
             <artifactId>flink-streaming-scala_${scala.binary.version}</artifactId>
             <version>${flink.version}</version>
         </dependency>
-         <dependency>
+        <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-connector-kafka-0.10_${scala.binary.version}</artifactId>
             <version>${flink.version}</version>
@@ -162,6 +162,12 @@ under the License.
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-connector-elasticsearch6_2.11</artifactId>
             <version>${flink.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.cloudwise.toushibao</groupId>
+            <artifactId>simulatedata-generator</artifactId>
+            <version>1.0</version>
         </dependency>
     </dependencies>
 
