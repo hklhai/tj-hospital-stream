@@ -55,6 +55,9 @@ kafka-topics.sh --zookeeper 127.0.0.1:2181 --topic yx --replication-factor 1 --p
 kafka-topics.sh --zookeeper 127.0.0.1:2181 --topic yc --replication-factor 1 --partitions 1 --create
 ```
 
+kafka-topics.sh --zookeeper 127.0.0.1:2181 --topic purchasePathAnalysisInPut --replication-factor 1 --partitions 1 --create
+
+kafka-topics.sh --zookeeper 127.0.0.1:2181 --topic purchasePathAnalysisConf --replication-factor 1 --partitions 1 --create
 
 
     
@@ -75,6 +78,11 @@ kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic yxtest --fro
 kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic yctest --from-beginning
 
 kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic mediumvoltage --partition 0 --offset 400
+
+
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic purchasePathAnalysisInPut --from-beginning
+
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic purchasePathAnalysisConf --from-beginning
 
 
 ## kafka

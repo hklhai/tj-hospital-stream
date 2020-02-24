@@ -26,6 +26,36 @@ PUT /yc_ats/_mapping/ats
         "ColTime": {
             "type": "date",
             "format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis"
+        },
+        "CreateTime": {
+            "type": "date",
+            "format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis"
+        }
+    }
+}
+
+
+
+PUT yx_ats
+PUT /yx_ats/_mapping/ats
+{
+    "properties": {
+        "IEDName": {
+            "type": "text"
+        },
+        "VariableName": {
+            "type": "text"
+        },
+        "Value": {
+            "type": "integer"
+        },
+        "ColTime": {
+            "type": "date",
+            "format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis"
+        },
+        "CreateTime": {
+            "type": "date",
+            "format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis"
         }
     }
 }
