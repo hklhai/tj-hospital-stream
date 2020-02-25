@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -16,8 +17,9 @@ import java.util.Date;
 @Getter
 @Setter
 @NoArgsConstructor
-public class IEDParam {
+public class IEDParam implements Serializable {
 
+    private static final long serialVersionUID = 2293274595061130532L;
     private String VariableName;
 
     private String Unit;

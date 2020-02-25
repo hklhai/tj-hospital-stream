@@ -10,6 +10,7 @@ import com.hxqh.utils.DateUtils;
 import org.apache.flink.api.common.functions.RuntimeContext;
 import org.apache.flink.api.common.restartstrategy.RestartStrategies;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
+import org.apache.flink.api.common.time.Time;
 import org.apache.flink.api.java.utils.ParameterTool;
 import org.apache.flink.streaming.api.TimeCharacteristic;
 import org.apache.flink.streaming.api.datastream.DataStream;
@@ -24,6 +25,7 @@ import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.client.Requests;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 import static com.hxqh.constant.Constant.*;
 
@@ -60,6 +62,7 @@ public class ProcessYcAtsTask {
         // make parameters available in the web interface
         env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
 
+        env.setRestartStrategy(RestartStrategies.fixedDelayRestart(10, Time.of(30, TimeUnit.SECONDS)));
 
         FlinkKafkaConsumer010 flinkKafkaConsumer = new FlinkKafkaConsumer010<>(
                 parameterTool.getRequired("input-topic"), new SimpleStringSchema(), parameterTool.getProperties());

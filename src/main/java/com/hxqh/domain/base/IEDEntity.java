@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -17,8 +18,9 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class IEDEntity {
+public class IEDEntity implements Serializable {
 
+    private static final long serialVersionUID = 6067414668077127586L;
     private String IEDName;
 
     private String IEDType;

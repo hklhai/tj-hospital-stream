@@ -161,19 +161,19 @@
   <repositories>
     <repository>
       <releases />
-      <snapshots />
-      <id>Nexus</id>
-      <name>Nexus Repository</name>
-      <url>http://116.63.137.109:8081/repository/maven-public/</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>aliyun-maven</id>
+      <name>aliyun Repository</name>
+      <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
     </repository>
     <repository>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
+      <releases />
       <snapshots />
-      <id>apache.snapshots</id>
-      <name>Apache Development Snapshot Repository</name>
-      <url>https://repository.apache.org/content/repositories/snapshots/</url>
+      <id>nexus</id>
+      <name>Nexus Repository</name>
+      <url>http://116.63.137.109:8081/repository/maven-public/</url>
     </repository>
   </repositories>
   <dependencies>

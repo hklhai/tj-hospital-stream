@@ -6,6 +6,18 @@ package com.hxqh.constant;
  * @author Ocean lin
  */
 public interface Constant {
+
+
+    /**
+     * Parameters
+     */
+    String BOOTSTRAP_SERVERS = "bootstrap.servers";
+    String GROUP_ID = "group.id";
+    String INPUT_EVENT_TOPIC = "input-event-topic";
+    String INPUT_CONFIG_TOPIC = "input-config-topic";
+    String OUTPUT_TOPIC = "output-topic";
+    String RETRIES = "retries";
+
     Integer NUM = 6;
 
     Integer NUM_4 = 4;

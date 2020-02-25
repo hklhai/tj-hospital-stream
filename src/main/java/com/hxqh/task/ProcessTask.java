@@ -7,6 +7,7 @@ import com.hxqh.transfer.ProcessWaterEmitter;
 import com.hxqh.utils.JsonUtils;
 import org.apache.flink.api.common.restartstrategy.RestartStrategies;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
+import org.apache.flink.api.common.time.Time;
 import org.apache.flink.api.java.utils.ParameterTool;
 import org.apache.flink.streaming.api.TimeCharacteristic;
 import org.apache.flink.streaming.api.datastream.DataStream;
@@ -14,6 +15,8 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer010;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumerBase;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaProducer010;
+
+import java.util.concurrent.TimeUnit;
 
 import static com.hxqh.constant.Constant.*;
 
@@ -50,6 +53,8 @@ public class ProcessTask {
         env.getConfig().setGlobalJobParameters(parameterTool);
         // make parameters available in the web interface
         env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
+
+        env.setRestartStrategy(RestartStrategies.fixedDelayRestart(10, Time.of(30, TimeUnit.SECONDS)));
 
         FlinkKafkaConsumer010 flinkKafkaConsumer = new FlinkKafkaConsumer010<>(
                 parameterTool.getRequired("input-topic"), new SimpleStringSchema(), parameterTool.getProperties());

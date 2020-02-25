@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -15,8 +16,9 @@ import java.util.Date;
 @Getter
 @Setter
 @NoArgsConstructor
-public class YcAts {
+public class YcAts implements Serializable {
 
+    private static final long serialVersionUID = -1353078868954635748L;
     private String IEDName;
 
     private Date ColTime;
