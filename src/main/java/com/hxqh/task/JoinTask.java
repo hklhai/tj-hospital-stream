@@ -1,18 +1,30 @@
 package com.hxqh.task;
 
 
+import com.hxqh.domain.Config;
+import com.hxqh.domain.EvaluatedResult;
 import com.hxqh.domain.UserEvent;
+import com.hxqh.function.ConnectedBroadcastProcessFunction;
+import com.hxqh.schema.ConfigDeserializationSchema;
+import com.hxqh.schema.EvaluatedResultSerializationSchema;
 import com.hxqh.schema.UserEventDeserializationSchema;
 import org.apache.flink.api.common.restartstrategy.RestartStrategies;
+import org.apache.flink.api.common.state.MapStateDescriptor;
+import org.apache.flink.api.common.typeinfo.BasicTypeInfo;
+import org.apache.flink.api.common.typeinfo.TypeHint;
+import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.java.utils.ParameterTool;
 import org.apache.flink.streaming.api.CheckpointingMode;
 import org.apache.flink.streaming.api.TimeCharacteristic;
+import org.apache.flink.streaming.api.datastream.BroadcastStream;
+import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.KeyedStream;
 import org.apache.flink.streaming.api.environment.CheckpointConfig;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.functions.timestamps.BoundedOutOfOrdernessTimestampExtractor;
 import org.apache.flink.streaming.api.windowing.time.Time;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer010;
+import org.apache.flink.streaming.connectors.kafka.FlinkKafkaProducer010;
 
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
@@ -20,12 +32,25 @@ import java.util.concurrent.TimeUnit;
 import static com.hxqh.constant.Constant.*;
 
 /**
+ *
+ *
+ * --bootstrap.servers  tj-hospital.com:9092 --group.id test --input-event-topic purchasePathAnalysisInPut --input-config-topic purchasePathAnalysisConf --output-topic purchasePathAnalysisOutPut
+ *
  * Created by Ocean lin on 2020/2/24.
  *
  * @author Ocean lin
  */
 public class JoinTask {
-    public static void main(String[] args) throws Exception {
+
+    public static final MapStateDescriptor<String, Config> configStateDescriptor = new MapStateDescriptor<String, Config>(
+            "configBroadcastState",
+            BasicTypeInfo.STRING_TYPE_INFO,
+            TypeInformation.of(new TypeHint<Config>() {
+            }));
+
+    public static void main(String[] args) {
+
+
         // 获取执行环境
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
@@ -65,7 +90,10 @@ public class JoinTask {
         /**
          * 读取kafka事件流
          */
-        final FlinkKafkaConsumer010<UserEvent> kafkaUserEventSource = new FlinkKafkaConsumer010<UserEvent>(params.get(INPUT_EVENT_TOPIC), new UserEventDeserializationSchema(), consumerProps);
+        final FlinkKafkaConsumer010<UserEvent> kafkaUserEventSource = new FlinkKafkaConsumer010<UserEvent>(
+                params.get(INPUT_EVENT_TOPIC),
+                new UserEventDeserializationSchema(),
+                consumerProps);
 
         KeyedStream<UserEvent, String> customerUserEventStream = env.addSource(kafkaUserEventSource)
                 .assignTimestampsAndWatermarks(new CustomWatermarkExtractor(Time.hours(24)))
@@ -76,6 +104,46 @@ public class JoinTask {
         customerUserEventStream.print();
 
 
+        /**
+         * 读取Kafka 配置流信息
+         */
+        final FlinkKafkaConsumer010<Config> kafkaConfigEventSource = new FlinkKafkaConsumer010<Config>(
+                params.get(INPUT_CONFIG_TOPIC),
+                new ConfigDeserializationSchema(),
+                consumerProps);
+
+        final BroadcastStream<Config> configBroadcastStream = env.addSource(kafkaConfigEventSource)
+                .broadcast(configStateDescriptor);
+
+
+        /**
+         * 连接事件流和配置流
+         */
+        DataStream<EvaluatedResult> connectedStream = customerUserEventStream
+                .connect(configBroadcastStream)
+                .process(new ConnectedBroadcastProcessFunction());
+
+        Properties producerProps = new Properties();
+        producerProps.setProperty(BOOTSTRAP_SERVERS, params.get(BOOTSTRAP_SERVERS));
+        producerProps.setProperty(RETRIES, "3");
+
+        final FlinkKafkaProducer010<EvaluatedResult> kafkaResultProducer = new FlinkKafkaProducer010<EvaluatedResult>(
+                params.get(OUTPUT_TOPIC), new EvaluatedResultSerializationSchema(), producerProps);
+
+        /**
+         * at_least_once 配置
+         */
+        kafkaResultProducer.setLogFailuresOnly(false);
+        kafkaResultProducer.setFlushOnCheckpoint(true);
+
+
+        connectedStream.addSink(kafkaResultProducer);
+
+        try {
+            env.execute("JoinTask-UserPurchse");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -123,8 +191,8 @@ public class JoinTask {
         }
 
         @Override
-        public long extractTimestamp(UserEvent element) {
-            return element.getEventTime();
+        public long extractTimestamp(UserEvent userEvent) {
+            return userEvent.getEventTime();
         }
     }
 

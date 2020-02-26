@@ -59,6 +59,7 @@ kafka-topics.sh --zookeeper 127.0.0.1:2181 --topic purchasePathAnalysisInPut --r
 
 kafka-topics.sh --zookeeper 127.0.0.1:2181 --topic purchasePathAnalysisConf --replication-factor 1 --partitions 1 --create
 
+kafka-topics.sh --zookeeper 127.0.0.1:2181 --topic purchasePathAnalysisOutPut --replication-factor 1 --partitions 1 --create
 
     
 ### 删除topic
@@ -84,6 +85,7 @@ kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic purchasePath
 
 kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic purchasePathAnalysisConf --from-beginning
 
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic purchasePathAnalysisOutPut --from-beginning
 
 ## kafka
 ### 查看消费进度
@@ -102,3 +104,5 @@ cd /root/app/flink-1.8.0/bin
 nohup ./flink run -c com.hxqh.task.ProcessTask /root/TJJar/tj-hospital.jar > alldata.log 2>&1 &
 
 nohup ./flink run -c com.hxqh.task.ProcessYcAtsTask /root/TJJar/tj-hospital.jar > yc_ast.log 2>&1 &
+
+nohup ./flink run -c com.hxqh.task.ProcessYxAtsTask /root/TJJar/tj-hospital.jar > yx_ast.log 2>&1 &
