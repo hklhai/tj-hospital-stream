@@ -20,7 +20,7 @@ public class ConfigDeserializationSchema implements KeyedDeserializationSchema<C
 
     @Override
     public Config deserialize(byte[] bytes, byte[] bytes1, String s, int i, long l) throws IOException {
-        return JSON.parseObject(new String(s), new TypeReference<Config>() {
+        return JSON.parseObject(new String(bytes1), new TypeReference<Config>() {
         });
     }
 
