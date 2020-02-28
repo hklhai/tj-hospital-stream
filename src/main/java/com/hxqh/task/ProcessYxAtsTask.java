@@ -78,7 +78,7 @@ public class ProcessYxAtsTask {
         DataStream<String> input = env.addSource(kafkaConsumerBase);
         DataStream<String> filter = input.filter(s -> {
             IEDEntity entity = JSON.parseObject(s, IEDEntity.class);
-            return entity.getIEDType().equals(ATS) ? true : false;
+            return entity.getCKType().equals(ATS) ? true : false;
         }).name("YX-ATS-Filter");
 
         filter.addSink(new Db2YxAtsSink()).name("YX-ATS-DB2-Sink");
@@ -104,6 +104,7 @@ public class ProcessYxAtsTask {
                     public IndexRequest createIndexRequest(String element) {
                         IEDEntity entity = JSON.parseObject(element, IEDEntity.class);
                         YxAts yxAts = ConvertUtils.convert2YxAts(entity);
+                        String[] split = yxAts.getAssetYpe().split("-");
 
                         Map<String, Object> map = new HashMap<>(24);
                         map.put("IEDName", yxAts.getIEDName());
@@ -111,6 +112,10 @@ public class ProcessYxAtsTask {
                         map.put("VariableName", yxAts.getVariableName());
                         map.put("Value", yxAts.getValue());
                         map.put("CreateTime", DateUtils.formatDate(now));
+                        map.put("assetYpe", yxAts.getAssetYpe());
+                        map.put("productModel", yxAts.getProductModel());
+                        map.put("assetYpe1", split[0]);
+                        map.put("assetYpe2", split[1]);
 
                         return Requests.indexRequest().index(INDEX_YX_ATS).type(TYPE_YX_ATS).source(map);
                     }

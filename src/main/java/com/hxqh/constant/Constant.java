@@ -18,6 +18,7 @@ public interface Constant {
     String OUTPUT_TOPIC = "output-topic";
     String RETRIES = "retries";
 
+
     Integer NUM = 6;
 
     Integer NUM_4 = 4;
@@ -35,7 +36,15 @@ public interface Constant {
     /**
      * 设备类别
      */
-    String ATS = "ATS";
+    String MEDIUM_VOLTAG_ESWITCH = "中压开关设备";
+    String TRANSFORMER = "变压器";
+
+    String LOW_VOLTAGE_SWITCHGEAR = "低压开关设备";
+
+    String ATS = "低压开关设备-ATS";
+    String CAPACITOR = "低压开关设备-电容器";
+    String DRAWER_CABINET = "低压开关设备-抽屉柜";
+    String ACB = "低压开关设备-ACB";
 
     /**
      * DB2 连接信息
@@ -45,16 +54,6 @@ public interface Constant {
     String USERNAME = "maximo";
     String PASSWORD = "maximo123";
 
-
-    /**
-     * ATS-遥测
-     */
-    String Ua = "Ua";
-    String Ub = "Ub";
-    String Uc = "Uc";
-    String Ia = "Ia";
-    String Ib = "Ib";
-    String Ic = "Ic";
 
 
     /**
@@ -77,5 +76,10 @@ public interface Constant {
      */
     String INDEX_YX_ATS = "yx_ats";
     String TYPE_YX_ATS = "ats";
+
+    String YX_ATS_QUICK_BREAK = "速断";
+    String YX_ATS_OVER_CURRENT = "过流";
+    String YX_ATS_SWITCH_POSITION = "开关位置";
+
 
 }

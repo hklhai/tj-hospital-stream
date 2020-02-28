@@ -21,15 +21,23 @@ import java.util.List;
 public class IEDEntity implements Serializable {
 
     private static final long serialVersionUID = 6067414668077127586L;
+
+    @JSONField(name = "IEDName")
     private String IEDName;
 
-    private String IEDType;
+//    private String IEDType;
 
+    @JSONField(name = "CKType")
     private String CKType;
 
-    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
+    @JSONField(name = "ColTime", format = "yyyy-MM-dd HH:mm:ss")
     private Date ColTime;
 
+    @JSONField(name = "IEDParam")
     private List<com.hxqh.domain.base.IEDParam> IEDParam;
+
+    private String assetYpe;
+
+    private String productModel;
 
 }

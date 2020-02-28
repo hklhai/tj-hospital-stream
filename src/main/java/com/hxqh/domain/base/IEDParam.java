@@ -30,4 +30,9 @@ public class IEDParam implements Serializable {
 
     @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     private Date ColTime;
+
+    public IEDParam(String variableName, Double value) {
+        VariableName = variableName;
+        Value = value;
+    }
 }

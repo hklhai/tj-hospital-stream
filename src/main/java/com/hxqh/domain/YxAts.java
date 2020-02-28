@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * Created by Ocean lin on 2020/2/21.
+ * Created by Ocean lin on 2020/2/20.
  *
  * @author Ocean lin
  */
@@ -27,5 +27,7 @@ public class YxAts implements Serializable {
 
     private Integer Value;
 
+    private String assetYpe;
+    private String productModel;
 
 }

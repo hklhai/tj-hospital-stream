@@ -32,4 +32,7 @@ public class YcAts implements Serializable {
     private Double IB;
     private Double IC;
 
+    private String assetYpe;
+    private String productModel;
+
 }

@@ -1,3 +1,5 @@
+## 遥测 ATS
+``` 
 PUT yc_ats
 PUT /yc_ats/_mapping/ats
 {
@@ -30,12 +32,26 @@ PUT /yc_ats/_mapping/ats
         "CreateTime": {
             "type": "date",
             "format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis"
+        },
+        "assetYpe": {
+            "type": "text"
+        },
+        "productModel": {
+            "type": "text"
+        },
+        "assetYpe1": {
+            "type": "text"
+        },
+        "assetYpe2": {
+            "type": "text"
         }
     }
 }
+```
 
 
-
+## 遥信ATS
+```
 PUT yx_ats
 PUT /yx_ats/_mapping/ats
 {
@@ -56,6 +72,19 @@ PUT /yx_ats/_mapping/ats
         "CreateTime": {
             "type": "date",
             "format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis"
+        },
+        "assetYpe": {
+            "type": "text"
+        },
+        "productModel": {
+            "type": "text"
+        },
+        "assetYpe1": {
+            "type": "text"
+        },
+        "assetYpe2": {
+            "type": "text"
         }
     }
 }
+```

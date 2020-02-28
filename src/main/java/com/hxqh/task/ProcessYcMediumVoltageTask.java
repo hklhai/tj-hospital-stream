@@ -3,7 +3,7 @@ package com.hxqh.task;
 import com.alibaba.fastjson.JSON;
 import com.hxqh.domain.YcAts;
 import com.hxqh.domain.base.IEDEntity;
-import com.hxqh.sink.Db2YcAtsSink;
+import com.hxqh.sink.Db2YcMediumVoltageSink;
 import com.hxqh.transfer.ProcessWaterEmitter;
 import com.hxqh.utils.ConvertUtils;
 import com.hxqh.utils.DateUtils;
@@ -30,15 +30,14 @@ import java.util.concurrent.TimeUnit;
 import static com.hxqh.constant.Constant.*;
 
 /**
- * Created by Ocean lin on 2020/2/18.
+ * Created by Ocean lin on 2020/2/28
  *
  * @author Ocean lin
  */
 @SuppressWarnings("Duplicates")
-public class ProcessYcAtsTask {
+public class ProcessYcMediumVoltageTask {
 
     public static void main(String[] args) {
-
         args = new String[]{"--input-topic", "yctest", "--bootstrap.servers", "tj-hospital.com:9092",
                 "--zookeeper.connect", "tj-hospital.com:2181", "--group.id", "yctest"};
 
@@ -56,7 +55,6 @@ public class ProcessYcAtsTask {
 
         env.getConfig().disableSysoutLogging();
         env.getConfig().setRestartStrategy(RestartStrategies.fixedDelayRestart(4, 10000));
-        // create a checkpoint every 5 seconds 非常关键，一定要设置启动检查点！！
         env.enableCheckpointing(5000);
         env.getConfig().setGlobalJobParameters(parameterTool);
         // make parameters available in the web interface
@@ -72,15 +70,15 @@ public class ProcessYcAtsTask {
         DataStream<String> input = env.addSource(kafkaConsumerBase);
         DataStream<String> filter = input.filter(s -> {
             IEDEntity entity = JSON.parseObject(s, IEDEntity.class);
-            return entity.getAssetYpe().equals(ATS) ? true : false;
-        }).name("YC-ATS-Filter");
+            return entity.getAssetYpe().equals(MEDIUM_VOLTAG_ESWITCH) ? true : false;
+        }).name("YC-MediumVoltage-Filter");
 
-        filter.addSink(new Db2YcAtsSink()).name("YC-ATS-DB2-Sink");
+        filter.addSink(new Db2YcMediumVoltageSink()).name("YC-MediumVoltage-DB2-Sink");
 
         persistEs(filter);
 
         try {
-            env.execute("ProcessYcAtsTask");
+            env.execute("ProcessYcMediumVoltageTask");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -131,6 +129,6 @@ public class ProcessYcAtsTask {
         esSinkBuilder.setRestClientFactory(
                 restClientBuilder -> restClientBuilder.setMaxRetryTimeoutMillis(300)
         );
-        input.addSink(esSinkBuilder.build()).name("YC-ATS-ElasticSearch-Sink");
+        input.addSink(esSinkBuilder.build()).name("YC-MediumVoltage-ElasticSearch-Sink");
     }
 }
