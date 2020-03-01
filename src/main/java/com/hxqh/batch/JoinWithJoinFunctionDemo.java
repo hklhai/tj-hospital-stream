@@ -1,20 +1,21 @@
 package com.hxqh.batch;
 
-
+import com.hxqh.domain.UserInfo;
+import org.apache.flink.api.common.functions.JoinFunction;
 import org.apache.flink.api.java.DataSet;
 import org.apache.flink.api.java.ExecutionEnvironment;
 import org.apache.flink.api.java.tuple.Tuple2;
 
 import java.util.ArrayList;
 
-
 /**
- * Created by Ocean lin on 2020/2/29.
+ * Created by Ocean lin on 2020/3/1.
  *
  * @author Ocean lin
  */
 @SuppressWarnings("Duplicates")
-public class DefaultJoinDemo {
+public class JoinWithJoinFunctionDemo {
+
 
     public static void main(String[] args) throws Exception {
         //获取执行环境
@@ -33,9 +34,15 @@ public class DefaultJoinDemo {
 
         DataSet<Tuple2<Integer, String>> ds1 = env.fromCollection(list1);
         DataSet<Tuple2<Integer, String>> ds2 = env.fromCollection(list2);
-
-        DataSet<Tuple2<Tuple2<Integer, String>, Tuple2<Integer, String>>> joinedData = ds1.join(ds2).where(0).equalTo(0);
-        joinedData.print();
+        DataSet<UserInfo> res = ds1.join(ds2).where(0).equalTo(0).with(new UserFunction());
+        res.print();
     }
 
+
+    private static class UserFunction implements JoinFunction<Tuple2<Integer, String>, Tuple2<Integer, String>, UserInfo> {
+        @Override
+        public UserInfo join(Tuple2<Integer, String> first, Tuple2<Integer, String> second) throws Exception {
+            return UserInfo.of(first.f0, first.f1, second.f1);
+        }
+    }
 }
