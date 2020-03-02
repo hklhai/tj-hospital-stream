@@ -1,7 +1,7 @@
 package com.hxqh.task;
 
 import com.alibaba.fastjson.JSON;
-import com.hxqh.domain.YcAts;
+import com.hxqh.domain.YcMediumVoltage;
 import com.hxqh.domain.base.IEDEntity;
 import com.hxqh.sink.Db2YcMediumVoltageSink;
 import com.hxqh.transfer.ProcessWaterEmitter;
@@ -24,13 +24,16 @@ import org.apache.http.HttpHost;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.client.Requests;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
 
 import static com.hxqh.constant.Constant.*;
 
 /**
- * Created by Ocean lin on 2020/2/28
+ * Created by Ocean lin on 2020/2/27.
  *
  * @author Ocean lin
  */
@@ -96,25 +99,19 @@ public class ProcessYcMediumVoltageTask {
                 new ElasticsearchSinkFunction<String>() {
                     public IndexRequest createIndexRequest(String element) {
                         IEDEntity entity = JSON.parseObject(element, IEDEntity.class);
-                        YcAts ycAts = ConvertUtils.convert2YcAts(entity);
-                        String[] split = ycAts.getAssetYpe().split("-");
+                        YcMediumVoltage ycMediumVoltage = ConvertUtils.convert2YcMediumVoltage(entity);
 
-                        Map<String, Object> map = new HashMap<>(24);
-                        map.put("IEDName", ycAts.getIEDName());
-                        map.put("ColTime", DateUtils.formatDate(ycAts.getColTime()));
-                        map.put("UA", ycAts.getUA());
-                        map.put("UB", ycAts.getUB());
-                        map.put("UC", ycAts.getUC());
-                        map.put("IA", ycAts.getIA());
-                        map.put("IB", ycAts.getIB());
-                        map.put("IC", ycAts.getIC());
+                        TreeMap<String, Object> map = new TreeMap<>();
+
+                        try {
+                            map = ConvertUtils.objToMap(ycMediumVoltage);
+                        } catch (IllegalAccessException e) {
+                            e.printStackTrace();
+                        }
+
+                        map.put("ColTime", DateUtils.formatDate(ycMediumVoltage.getColTime()));
                         map.put("CreateTime", DateUtils.formatDate(now));
-                        map.put("assetYpe", ycAts.getAssetYpe());
-                        map.put("productModel", ycAts.getProductModel());
-                        map.put("assetYpe1", split[0]);
-                        map.put("assetYpe2", split[1]);
-
-                        return Requests.indexRequest().index(INDEX_YC_ATS).type(TYPE_YC_ATS).source(map);
+                        return Requests.indexRequest().index(INDEX_YC_MEDIUMVOLTAGE_).type(TYPE_YC_MEDIUMVOLTAGE).source(map);
                     }
 
                     @Override

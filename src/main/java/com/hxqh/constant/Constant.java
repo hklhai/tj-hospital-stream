@@ -82,4 +82,19 @@ public interface Constant {
     String YX_ATS_SWITCH_POSITION = "开关位置";
 
 
+
+    /**
+     * 遥测-中压
+     */
+    String INDEX_YC_MEDIUMVOLTAGE_ = "yc_mediumvoltage";
+    String TYPE_YC_MEDIUMVOLTAGE= "mediumvoltage";
+
+
+    /**
+     * 遥信-中压
+     */
+    String INDEX_YX_MEDIUMVOLTAGE_ = "yx_mediumvoltage";
+    String TYPE_YX_MEDIUMVOLTAGE = "mediumvoltage";
+
+
 }

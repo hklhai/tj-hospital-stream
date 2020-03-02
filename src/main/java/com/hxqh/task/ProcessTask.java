@@ -4,6 +4,7 @@ package com.hxqh.task;
 import com.alibaba.fastjson.JSON;
 import com.hxqh.domain.AssetType;
 import com.hxqh.domain.base.IEDEntity;
+import com.hxqh.function.ConnectedBroadcastProcessFunction;
 import com.hxqh.function.TjBroadcastProcessFunction;
 import com.hxqh.schema.AssetTypeDeserializationSchema;
 import com.hxqh.transfer.ProcessWaterEmitter;

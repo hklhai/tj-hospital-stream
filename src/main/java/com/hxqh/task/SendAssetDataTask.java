@@ -41,8 +41,12 @@ public class SendAssetDataTask {
                 .setDBUrl(DB_URL)
                 .setUsername(USERNAME)
                 .setPassword(PASSWORD)
-                .setQuery("select  ASSETNUM, ASSETYPE, PRODUCTMODEL from ASSET ")
-                .setRowTypeInfo(new RowTypeInfo(TypeInformation.of(String.class), TypeInformation.of(String.class), TypeInformation.of(String.class)))
+                .setQuery("select  ASSETNUM, ASSETYPE, PRODUCTMODEL,PARENT,LOCATION from ASSET ")
+                .setRowTypeInfo(new RowTypeInfo(TypeInformation.of(String.class),
+                        TypeInformation.of(String.class),
+                        TypeInformation.of(String.class),
+                        TypeInformation.of(String.class),
+                        TypeInformation.of(String.class)))
                 .finish();
         DataStreamSource<Row> input = env.createInput(inputFormat);
 

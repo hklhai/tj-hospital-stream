@@ -29,5 +29,7 @@ public class YxAts implements Serializable {
 
     private String assetYpe;
     private String productModel;
+    private String parent;
+    private String location;
 
 }

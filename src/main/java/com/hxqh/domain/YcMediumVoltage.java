@@ -19,42 +19,61 @@ import java.util.Date;
 @NoArgsConstructor
 public class YcMediumVoltage implements Serializable {
 
+    private static final long serialVersionUID = 8490661548003948059L;
     private String IEDName;
 
     private Date ColTime;
     private String assetYpe;
     private String productModel;
+    private String parent;
+    private String location;
 
-    private Integer CIRCUITBREAKER;
-    private Integer POSITIVEREACTIVE;
-    private Integer POSITIVEACTIVE;
-    private Integer EARTHKNIFE;
-    private Integer REVERSEREACTIVE;
-    private Integer REVERSEACTIVE;
-    private Integer HANDCARTPOSITION;
-    private Integer AMBIENTTEMPERATURE;
-    private Integer CCABLETEMPERATURE;
-    private Integer BCABLETEMPERATURE;
-    private Integer ACABLETEMPERATURE;
-    private Integer CLOWERARMTEMPERATURE;
-    private Integer BLOWERARMTEMPERATURE;
-    private Integer ALOWERARMTEMPERATURE;
-    private Integer CUPPERARMTEMPERATURE;
-    private Integer BUPPERARMTEMPERATURE;
-    private Integer AUPPERARMTEMPERATURE;
-    private Integer APHASECURRENT;
-    private Integer BPHASECURRENT;
-    private Integer CPHASECURRENT;
-    private Integer ABLINEVOLTAGE;
-    private Integer BCLINEVOLTAGE;
-    private Integer CALINEVOLTAGE;
-    private Integer ZEROSEQUENCECURRENT;
-    private Integer FREQUENCY;
-    private Integer ACTIVEPOWER;
-    private Integer REACTIVEPOWER;
-    private Integer APPARENTPOWER;
-    private Integer ACTIVEELECTRICDEGREE;
-    private Integer REACTIVEELECTRICDEGREE;
+    private Double CIRCUITBREAKER;
+    private Double POSITIVEREACTIVE;
+    private Double POSITIVEACTIVE;
+    private Double EARTHKNIFE;
+    private Double REVERSEREACTIVE;
+    private Double REVERSEACTIVE;
+    private Double HANDCARTPOSITION;
+    private Double AMBIENTTEMPERATURE;
+    private Double CCABLETEMPERATURE;
+    private Double BCABLETEMPERATURE;
+    private Double ACABLETEMPERATURE;
+    private Double CLOWERARMTEMPERATURE;
+    private Double BLOWERARMTEMPERATURE;
+    private Double ALOWERARMTEMPERATURE;
+    private Double CUPPERARMTEMPERATURE;
+    private Double BUPPERARMTEMPERATURE;
+    private Double AUPPERARMTEMPERATURE;
+    private Double APHASECURRENT;
+    private Double BPHASECURRENT;
+    private Double CPHASECURRENT;
+    private Double ABLINEVOLTAGE;
+    private Double BCLINEVOLTAGE;
+    private Double CALINEVOLTAGE;
+    private Double ZEROSEQUENCECURRENT;
+    private Double FREQUENCY;
+    private Double ACTIVEPOWER;
+    private Double REACTIVEPOWER;
+    private Double APPARENTPOWER;
+    private Double ACTIVEELECTRICDEGREE;
+    private Double REACTIVEELECTRICDEGREE;
+
+
+    private Double LINEVOLTAGE;
+    private Double LINECURRENT;
+    private Double CAPACITANCEREACTIVEPOWER;
+    private Double REACTIVEPOWERSYMBOL;
+    private Double CAPACITANCEACTIVEPOWER;
+    private Double NO1OPENINGVOLTAGE;
+    private Double NO1BCAPACITANCECURRENT;
+    private Double NO1CCAPACITANCECURRENT;
+    private Double NO2OPENINGVOLTAGE;
+    private Double NO2BCAPACITANCECURRENT;
+    private Double NO2CCAPACITANCECURRENT;
+    private Double NO3OPENINGVOLTAGE;
+    private Double NO3BCAPACITANCECURRENT;
+    private Double NO3CCAPACITANCECURR;
 
 
 }

@@ -10,8 +10,7 @@ import java.sql.*;
 import java.util.Date;
 
 import static com.hxqh.constant.Constant.*;
-import static com.hxqh.constant.StringConstant.YCMEDIUMVOLTAGE;
-import static com.hxqh.constant.StringConstant.YCMEDIUMVOLTAGECOMMA;
+import static com.hxqh.constant.StringConstant.*;
 
 /**
  * Created by Ocean lin on 2020/2/29.
@@ -55,69 +54,85 @@ public class Db2YcMediumVoltageSink extends RichSinkFunction<String> {
             }
 
             // 更新设备
-            String updateSql = "update YC_MEDIUM_VOLTAGE_CURRENT set  COLTIME=?," + YCMEDIUMVOLTAGE + "CREATETIME=? where YCMEDIUMVOLTAGEID=? ";
+            String updateSql = "update YC_MEDIUM_VOLTAGE_CURRENT set  COLTIME=?," + YCMEDIUMVOLTAGE_UPDATE + "CREATETIME=? where YCMEDIUMVOLTAGEID=? ";
 
             preparedStatement = connection.prepareStatement(updateSql);
             setValue(ycMediumVoltage);
 
-            preparedStatement.setTimestamp(31, new Timestamp(now.getTime()));
-            preparedStatement.setInt(32, pkId);
+            preparedStatement.setTimestamp(46, new Timestamp(now.getTime()));
+            preparedStatement.setInt(47, pkId);
             preparedStatement.executeUpdate();
 
         } else {
             // 新增设备
-            String insertSql = "INSERT INTO  YC_MEDIUM_VOLTAGE_CURRENT  (COLTIME," + YCMEDIUMVOLTAGE + "CREATETIME,IEDNAME,YCMEDIUMVOLTAGEID) VALUES(?,"
+            String insertSql = "INSERT INTO  YC_MEDIUM_VOLTAGE_CURRENT  (COLTIME," + YCMEDIUMVOLTAGE_INSERT + "CREATETIME,IEDNAME,YCMEDIUMVOLTAGEID) VALUES(?,"
                     + YCMEDIUMVOLTAGECOMMA + "?,?,NEXTVAL FOR  YC_MEDIUM_VOLTAGE_CURRENT_SEQ)";
             preparedStatement = connection.prepareStatement(insertSql);
             setValue(ycMediumVoltage);
 
-            preparedStatement.setTimestamp(31, new Timestamp(now.getTime()));
-            preparedStatement.setString(32, ycMediumVoltage.getIEDName());
+            preparedStatement.setTimestamp(46, new Timestamp(now.getTime()));
+            preparedStatement.setString(47, ycMediumVoltage.getIEDName());
             preparedStatement.executeUpdate();
         }
 
         // log 表新增
-        String insertLogSql = "INSERT INTO YC_MEDIUM_VOLTAGE_LOG  (COLTIME," + YCMEDIUMVOLTAGE + "CREATETIME,IEDNAME,YCMEDIUMVOLTAGELOGID) VALUES(?,"
+        String insertLogSql = "INSERT INTO YC_MEDIUM_VOLTAGE_LOG  (COLTIME," + YCMEDIUMVOLTAGE_INSERT + "CREATETIME,IEDNAME,YCMEDIUMVOLTAGELOGID) VALUES(?,"
                 + YCMEDIUMVOLTAGECOMMA + "?,?,NEXTVAL FOR  YCATS_CURRENT_SEQ)";
         preparedStatement = connection.prepareStatement(insertLogSql);
         setValue(ycMediumVoltage);
 
-        preparedStatement.setTimestamp(31, new Timestamp(now.getTime()));
-        preparedStatement.setString(32, ycMediumVoltage.getIEDName());
+        preparedStatement.setTimestamp(46, new Timestamp(now.getTime()));
+        preparedStatement.setString(47, ycMediumVoltage.getIEDName());
         preparedStatement.executeUpdate();
 
     }
 
     private void setValue(YcMediumVoltage ycMediumVoltage) throws SQLException {
         preparedStatement.setTimestamp(1, new Timestamp(ycMediumVoltage.getColTime().getTime()));
-        preparedStatement.setInt(2, ycMediumVoltage.getCIRCUITBREAKER());
-        preparedStatement.setInt(3, ycMediumVoltage.getPOSITIVEREACTIVE());
-        preparedStatement.setInt(4, ycMediumVoltage.getPOSITIVEACTIVE());
-        preparedStatement.setInt(5, ycMediumVoltage.getEARTHKNIFE());
-        preparedStatement.setInt(6, ycMediumVoltage.getREVERSEREACTIVE());
-        preparedStatement.setInt(7, ycMediumVoltage.getREVERSEACTIVE());
-        preparedStatement.setInt(8, ycMediumVoltage.getHANDCARTPOSITION());
-        preparedStatement.setInt(9, ycMediumVoltage.getAMBIENTTEMPERATURE());
-        preparedStatement.setInt(10, ycMediumVoltage.getCCABLETEMPERATURE());
-        preparedStatement.setInt(11, ycMediumVoltage.getBCABLETEMPERATURE());
-        preparedStatement.setInt(12, ycMediumVoltage.getACABLETEMPERATURE());
-        preparedStatement.setInt(13, ycMediumVoltage.getCLOWERARMTEMPERATURE());
-        preparedStatement.setInt(14, ycMediumVoltage.getBLOWERARMTEMPERATURE());
-        preparedStatement.setInt(15, ycMediumVoltage.getALOWERARMTEMPERATURE());
-        preparedStatement.setInt(16, ycMediumVoltage.getCUPPERARMTEMPERATURE());
-        preparedStatement.setInt(17, ycMediumVoltage.getBUPPERARMTEMPERATURE());
-        preparedStatement.setInt(18, ycMediumVoltage.getAUPPERARMTEMPERATURE());
-        preparedStatement.setInt(19, ycMediumVoltage.getAPHASECURRENT());
-        preparedStatement.setInt(20, ycMediumVoltage.getBPHASECURRENT());
-        preparedStatement.setInt(21, ycMediumVoltage.getCPHASECURRENT());
-        preparedStatement.setInt(22, ycMediumVoltage.getABLINEVOLTAGE());
-        preparedStatement.setInt(23, ycMediumVoltage.getBCLINEVOLTAGE());
-        preparedStatement.setInt(24, ycMediumVoltage.getCALINEVOLTAGE());
-        preparedStatement.setInt(25, ycMediumVoltage.getZEROSEQUENCECURRENT());
-        preparedStatement.setInt(26, ycMediumVoltage.getFREQUENCY());
-        preparedStatement.setInt(27, ycMediumVoltage.getACTIVEPOWER());
-        preparedStatement.setInt(28, ycMediumVoltage.getREACTIVEPOWER());
-        preparedStatement.setInt(29, ycMediumVoltage.getACTIVEELECTRICDEGREE());
-        preparedStatement.setInt(30, ycMediumVoltage.getREACTIVEELECTRICDEGREE());
+        preparedStatement.setDouble(2, ycMediumVoltage.getCIRCUITBREAKER());
+        preparedStatement.setDouble(3, ycMediumVoltage.getPOSITIVEREACTIVE());
+        preparedStatement.setDouble(4, ycMediumVoltage.getPOSITIVEACTIVE());
+        preparedStatement.setDouble(5, ycMediumVoltage.getEARTHKNIFE());
+        preparedStatement.setDouble(6, ycMediumVoltage.getREVERSEREACTIVE());
+        preparedStatement.setDouble(7, ycMediumVoltage.getREVERSEACTIVE());
+        preparedStatement.setDouble(8, ycMediumVoltage.getHANDCARTPOSITION());
+        preparedStatement.setDouble(9, ycMediumVoltage.getAMBIENTTEMPERATURE());
+        preparedStatement.setDouble(10, ycMediumVoltage.getCCABLETEMPERATURE());
+        preparedStatement.setDouble(11, ycMediumVoltage.getBCABLETEMPERATURE());
+        preparedStatement.setDouble(12, ycMediumVoltage.getACABLETEMPERATURE());
+        preparedStatement.setDouble(13, ycMediumVoltage.getCLOWERARMTEMPERATURE());
+        preparedStatement.setDouble(14, ycMediumVoltage.getBLOWERARMTEMPERATURE());
+        preparedStatement.setDouble(15, ycMediumVoltage.getALOWERARMTEMPERATURE());
+        preparedStatement.setDouble(16, ycMediumVoltage.getCUPPERARMTEMPERATURE());
+        preparedStatement.setDouble(17, ycMediumVoltage.getBUPPERARMTEMPERATURE());
+        preparedStatement.setDouble(18, ycMediumVoltage.getAUPPERARMTEMPERATURE());
+        preparedStatement.setDouble(19, ycMediumVoltage.getAPHASECURRENT());
+        preparedStatement.setDouble(20, ycMediumVoltage.getBPHASECURRENT());
+        preparedStatement.setDouble(21, ycMediumVoltage.getCPHASECURRENT());
+        preparedStatement.setDouble(22, ycMediumVoltage.getABLINEVOLTAGE());
+        preparedStatement.setDouble(23, ycMediumVoltage.getBCLINEVOLTAGE());
+        preparedStatement.setDouble(24, ycMediumVoltage.getCALINEVOLTAGE());
+        preparedStatement.setDouble(25, ycMediumVoltage.getZEROSEQUENCECURRENT());
+        preparedStatement.setDouble(26, ycMediumVoltage.getFREQUENCY());
+        preparedStatement.setDouble(27, ycMediumVoltage.getACTIVEPOWER());
+        preparedStatement.setDouble(28, ycMediumVoltage.getREACTIVEPOWER());
+        preparedStatement.setDouble(29, ycMediumVoltage.getAPPARENTPOWER());
+        preparedStatement.setDouble(30, ycMediumVoltage.getACTIVEELECTRICDEGREE());
+        preparedStatement.setDouble(31, ycMediumVoltage.getREACTIVEELECTRICDEGREE());
+
+        preparedStatement.setDouble(32, ycMediumVoltage.getLINEVOLTAGE());
+        preparedStatement.setDouble(33, ycMediumVoltage.getLINECURRENT());
+        preparedStatement.setDouble(34, ycMediumVoltage.getCAPACITANCEREACTIVEPOWER());
+        preparedStatement.setDouble(35, ycMediumVoltage.getREACTIVEPOWERSYMBOL());
+        preparedStatement.setDouble(36, ycMediumVoltage.getCAPACITANCEREACTIVEPOWER());
+        preparedStatement.setDouble(37, ycMediumVoltage.getNO1OPENINGVOLTAGE());
+        preparedStatement.setDouble(38, ycMediumVoltage.getNO1BCAPACITANCECURRENT());
+        preparedStatement.setDouble(39, ycMediumVoltage.getNO1CCAPACITANCECURRENT());
+        preparedStatement.setDouble(40, ycMediumVoltage.getNO2OPENINGVOLTAGE());
+        preparedStatement.setDouble(41, ycMediumVoltage.getNO2BCAPACITANCECURRENT());
+        preparedStatement.setDouble(42, ycMediumVoltage.getNO2CCAPACITANCECURRENT());
+        preparedStatement.setDouble(43, ycMediumVoltage.getNO3OPENINGVOLTAGE());
+        preparedStatement.setDouble(44, ycMediumVoltage.getNO3BCAPACITANCECURRENT());
+        preparedStatement.setDouble(45, ycMediumVoltage.getNO3CCAPACITANCECURR());
     }
 }

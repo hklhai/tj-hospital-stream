@@ -116,6 +116,8 @@ public class ProcessYxAtsTask {
                         map.put("productModel", yxAts.getProductModel());
                         map.put("assetYpe1", split[0]);
                         map.put("assetYpe2", split[1]);
+                        // todo
+
 
                         return Requests.indexRequest().index(INDEX_YX_ATS).type(TYPE_YX_ATS).source(map);
                     }

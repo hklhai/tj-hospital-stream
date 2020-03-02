@@ -116,6 +116,8 @@ public class ProcessYcAtsTask {
                         map.put("assetYpe1", split[0]);
                         map.put("assetYpe2", split[1]);
 
+                        // todo
+
                         return Requests.indexRequest().index(INDEX_YC_ATS).type(TYPE_YC_ATS).source(map);
                     }
 
