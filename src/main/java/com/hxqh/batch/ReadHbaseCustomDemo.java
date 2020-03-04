@@ -1,6 +1,6 @@
 package com.hxqh.batch;
 
-import org.apache.flink.addons.hbase.TableInputFormat;
+import com.hxqh.custom.CustomTableInputFormat;
 import org.apache.flink.api.java.ExecutionEnvironment;
 import org.apache.flink.api.java.operators.DataSource;
 import org.apache.flink.api.java.tuple.Tuple4;
@@ -21,19 +21,20 @@ import static com.hxqh.constant.Constant.ES_HOST;
  *
  * @author Ocean lin
  */
-public class ReadHbaseDemo {
+@SuppressWarnings("Duplicates")
+public class ReadHbaseCustomDemo {
 
 
     public static void main(String[] args) throws Exception {
         final ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
 
 
-        DataSource<Tuple4<String, String, Integer, String>> input = env.createInput(new TableInputFormat<Tuple4<String, String, Integer, String>>() {
+        DataSource<Tuple4<String, String, Integer, String>> input = env.createInput(new CustomTableInputFormat<Tuple4<String, String, Integer, String>>() {
             private byte[] columnFamily = "F".getBytes(ConfigConstants.DEFAULT_CHARSET);
 
             @Override
             public void configure(Configuration parameters) {
-                HTable table = createtable();
+                table = createtable();
                 if (null != table) {
                     scan = getScanner();
                 }
@@ -44,7 +45,7 @@ public class ReadHbaseDemo {
                 configuration.set("hbase.zookeeper.property.clientPort", "2181");
                 configuration.set("hbase.zookeeper.quorum", ES_HOST);
                 try {
-                    return new HTable(configuration, "hk_flink:users");
+                    return new HTable(configuration, getTableName());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
