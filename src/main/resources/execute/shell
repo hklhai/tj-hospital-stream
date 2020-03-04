@@ -1,3 +1,4 @@
-
-
 nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.batch.WriteHbaseDemo /root/src/tj-hospital-stream/target/tj-hospital.jar > WriteHbaseDemo.log 2>&1 &
+
+
+nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.batch.ReadHbaseDemo /root/src/tj-hospital-stream/target/tj-hospital.jar > ReadHbaseDemo.log 2>&1 &

@@ -3,7 +3,7 @@ package com.hxqh.batch;
 import org.apache.flink.addons.hbase.TableInputFormat;
 import org.apache.flink.api.java.ExecutionEnvironment;
 import org.apache.flink.api.java.operators.DataSource;
-import org.apache.flink.api.java.tuple.Tuple2;
+import org.apache.flink.api.java.tuple.Tuple4;
 import org.apache.flink.configuration.ConfigConstants;
 import org.apache.flink.configuration.Configuration;
 import org.apache.hadoop.hbase.HBaseConfiguration;
@@ -28,7 +28,7 @@ public class ReadHbaseDemo {
         final ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
 
 
-        DataSource<Tuple2<String, String>> input = env.createInput(new TableInputFormat<Tuple2<String, String>>() {
+        DataSource<Tuple4<String, String, Integer, String>> input = env.createInput(new TableInputFormat<Tuple4<String, String, Integer, String>>() {
             private byte[] columnFamily = "F".getBytes(ConfigConstants.DEFAULT_CHARSET);
 
             @Override
@@ -65,10 +65,12 @@ public class ReadHbaseDemo {
             }
 
             @Override
-            protected Tuple2<String, String> mapResultToTuple(Result result) {
-                return Tuple2.of(Bytes.toString(result.getRow()),
-                        Bytes.toString(result.getValue(columnFamily, "value".getBytes(ConfigConstants.DEFAULT_CHARSET)))
-                );
+            protected Tuple4<String, String, Integer, String> mapResultToTuple(Result result) {
+                String t1 = Bytes.toString(result.getRow());
+                String t2 = Bytes.toString(result.getValue(columnFamily, "name".getBytes(ConfigConstants.DEFAULT_CHARSET)));
+                Integer t3 = Integer.parseInt(Bytes.toString(result.getValue(columnFamily, "age".getBytes(ConfigConstants.DEFAULT_CHARSET))));
+                String t4 = Bytes.toString(result.getValue(columnFamily, "address".getBytes(ConfigConstants.DEFAULT_CHARSET)));
+                return Tuple4.of(t1, t2, t3, t4);
             }
         });
 
