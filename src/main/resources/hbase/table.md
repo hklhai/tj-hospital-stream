@@ -11,7 +11,7 @@ count 'hk_flink:users'
 
 
 ## 商品表
-create 'hk_flink:goods',{NAME=>'F',BLOCKCACHE=>true,BLOOMFILTER=>'ROW',DATA_BLOCK_ENCODING => 'PREFIX_TREE', BLOCKSIZE => '65536'}
+create 'hk_flink:goods',{NAME=>'F',BLOCKCACHE=>true,BLOOMFILTER=>'ROW',DATA_BLOCK_ENCODING=>'PREFIX_TREE',BLOCKSIZE => '65536'}
 create 'hk_flink:goods',{NAME=>'F',BLOCKCACHE=>true,BLOOMFILTER=>'ROW', BLOCKSIZE => '65536'}
 
 
