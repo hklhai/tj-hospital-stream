@@ -10,6 +10,13 @@ kafka-topics.sh --zookeeper 127.0.0.1:2181 --topic yxtest --replication-factor 1
 kafka-topics.sh --zookeeper 127.0.0.1:2181 --topic yctest --replication-factor 1 --partitions 1 --create
 
 kafka-topics.sh --zookeeper 127.0.0.1:2181 --topic hk3 --replication-factor 1 --partitions 1 --create
+
+// canal
+kafka-topics.sh --zookeeper 127.0.0.1:2181 --topic hk5 --replication-factor 1 --partitions 1 --create
+kafka-topics.sh --zookeeper 127.0.0.1:2181 --topic hk6 --replication-factor 1 --partitions 1 --create
+kafka-topics.sh --zookeeper 127.0.0.1:2181 --topic hk7 --replication-factor 1 --partitions 1 --create
+
+
 ```
 
     
@@ -59,6 +66,14 @@ kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic purchasePath
 kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic purchasePathAnalysisOutPut --from-beginning
 
 
+
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic hk5 --from-beginning
+
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic hk6 --from-beginning
+
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic hk7 --from-beginning
+
+
 ## kafka
 ### 查看消费进度
 kafka-run-class.sh kafka.tools.ConsumerOffsetChecker --topic mediumvoltage  --zookeeper 127.0.0.1:2181 --group mediumvoltage
@@ -69,4 +84,8 @@ kafka-consumer-groups.sh --bootstrap-server localhost:9092 --describe --group me
 ### 查询
 kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic mediumvoltage --partition 0 --offset 60
  
+
+### 查看topic列表
+kafka-topics.sh --zookeeper 127.0.0.1:2181 --list
+
 
