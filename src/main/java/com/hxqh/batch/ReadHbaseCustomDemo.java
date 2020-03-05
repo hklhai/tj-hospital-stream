@@ -70,7 +70,7 @@ public class ReadHbaseCustomDemo {
                 String t1 = Bytes.toString(result.getRow());
                 String t2 = Bytes.toString(result.getValue(columnFamily, "name".getBytes(ConfigConstants.DEFAULT_CHARSET)));
                 Integer t3 = Integer.parseInt(Bytes.toString(result.getValue(columnFamily, "age".getBytes(ConfigConstants.DEFAULT_CHARSET))));
-                String t4 = Bytes.toString(result.getValue(columnFamily, "address".getBytes(ConfigConstants.DEFAULT_CHARSET)));
+                String t4 = Bytes.toString(result.getValue(columnFamily, "city".getBytes(ConfigConstants.DEFAULT_CHARSET)));
                 return Tuple4.of(t1, t2, t3, t4);
             }
         });

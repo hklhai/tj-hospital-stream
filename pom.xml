@@ -131,12 +131,6 @@ under the License.
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-hbase_${scala.binary.version}</artifactId>
             <version>${flink.version}</version>
-<!--            <exclusions>-->
-<!--                <exclusion>-->
-<!--                    <artifactId>protobuf-java</artifactId>-->
-<!--                    <groupId>com.google.protobuf</groupId>-->
-<!--                </exclusion>-->
-<!--            </exclusions>-->
         </dependency>
         <dependency>
             <groupId>org.apache.flink</groupId>
@@ -149,7 +143,35 @@ under the License.
                 </exclusion>
             </exclusions>
         </dependency>
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-table</artifactId>
+            <version>${flink.version}</version>
+            <type>pom</type>
+            <scope>provided</scope>
+        </dependency>
 
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-streaming-java_${scala.binary.version}</artifactId>
+            <version>${flink.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-table-planner_${scala.binary.version}</artifactId>
+            <version>${flink.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-table-api-java-bridge_${scala.binary.version}</artifactId>
+            <version>${flink.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-table-api-java</artifactId>
+            <version>${flink.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.apache.zookeeper</groupId>
