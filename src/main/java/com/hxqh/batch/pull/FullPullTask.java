@@ -62,19 +62,19 @@ public class FullPullTask {
 
         //生成HBase输出数据
         DataSet<Tuple2<Text, Mutation>> hbaseResult = convertMysqlToHBase(source);
+        hbaseResult.print();
 
         //数据输出到HBase
         org.apache.hadoop.conf.Configuration conf = HBaseConfiguration.create();
         conf.set("hbase.zookeeper.quorum", ES_HOST);
         conf.set("hbase.zookeeper.property.clientPort", "2181");
-        conf.set("zookeeper.znode.parent", "/hbase");
         conf.set(TableOutputFormat.OUTPUT_TABLE, "hk_flink:goods");
         conf.set("mapreduce.output.fileoutputformat.outputdir", "/tmp");
 
 
         // new 一个job实例
         Job job = Job.getInstance(conf);
-        hbaseResult.output(new HadoopOutputFormat<>(new TableOutputFormat<>(), job));
+        hbaseResult.output(new HadoopOutputFormat<Text, Mutation>(new TableOutputFormat<Text>(), job));
 
         env.execute("FullPullTask");
     }
@@ -117,18 +117,5 @@ public class FullPullTask {
     }
 
 
-    public static class Boundary {
-        private int min;
-        private int max;
-
-        public Boundary(int min, int max) {
-            this.min = min;
-            this.max = max;
-        }
-
-        public static Boundary of(int min, int max) {
-            return new Boundary(min, max);
-        }
-    }
 
 }
