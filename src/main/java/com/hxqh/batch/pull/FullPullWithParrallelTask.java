@@ -1,12 +1,15 @@
 package com.hxqh.batch.pull;
 
 import com.hxqh.constant.GlobalConfig;
+import com.hxqh.domain.Boundary;
+import com.hxqh.utils.JdbcUtil;
 import org.apache.flink.api.common.functions.RichMapFunction;
 import org.apache.flink.api.common.typeinfo.BasicTypeInfo;
 import org.apache.flink.api.java.DataSet;
 import org.apache.flink.api.java.ExecutionEnvironment;
 import org.apache.flink.api.java.hadoop.mapreduce.HadoopOutputFormat;
 import org.apache.flink.api.java.io.jdbc.JDBCInputFormat;
+import org.apache.flink.api.java.io.jdbc.split.NumericBetweenParametersProvider;
 import org.apache.flink.api.java.operators.DataSource;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.api.java.typeutils.RowTypeInfo;
@@ -21,15 +24,24 @@ import org.apache.hadoop.hbase.util.Bytes;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
 import static com.hxqh.constant.Constant.ES_HOST;
 
 /**
- * Created by Ocean lin on 2020/3/5.
+ * Created by Ocean lin on 2020/3/6.
  *
  * @author Ocean lin
  */
 @SuppressWarnings("Duplicates")
-public class FullPullTask {
+public class FullPullWithParrallelTask {
+
+    public static final boolean isparallelism = true;
+
+
+    public static final String SPLIT_FIELD = "goodsId";
 
     public static final RowTypeInfo ROW_TYPE_INFO = new RowTypeInfo(
             BasicTypeInfo.INT_TYPE_INFO,
@@ -51,6 +63,16 @@ public class FullPullTask {
                 .setPassword(GlobalConfig.PASSWORD)
                 .setQuery("select * from goods")
                 .setRowTypeInfo(ROW_TYPE_INFO);
+
+
+        if (isparallelism) {
+            int fetchSize = 2;
+
+            Boundary boundary = boundaryQuery(SPLIT_FIELD);
+
+            jdbcInputFormatBuilder.setQuery("select * from dajiangtai_goods where " + SPLIT_FIELD + " between ? and ?")
+                    .setParametersProvider(new NumericBetweenParametersProvider(fetchSize, boundary.getMin(), boundary.getMax()));
+        }
 
 
         //读取MySQL数据
@@ -110,6 +132,36 @@ public class FullPullTask {
             }
         });
 
+    }
+
+
+    public static Boundary boundaryQuery(String splitField) throws Exception {
+        String sql = "select min(" + splitField + ") , max(" + splitField + ") from dajiangtai_goods";
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet resultSet = null;
+        int min = 0;
+        int max = 0;
+        try {
+
+            connection = JdbcUtil.getConnection();
+
+            statement = connection.createStatement();
+
+            resultSet = statement.executeQuery(sql);
+
+            while (resultSet.next()) {
+                min = resultSet.getInt(1);
+                max = resultSet.getInt(2);
+
+                System.out.println(min + "------------------" + max);
+            }
+
+        } finally {
+            JdbcUtil.close(resultSet, statement, connection);
+        }
+
+        return Boundary.of(min, max);
     }
 
 

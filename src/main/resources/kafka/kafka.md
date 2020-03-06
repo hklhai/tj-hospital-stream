@@ -44,6 +44,8 @@ kafka-console-producer.sh --broker-list localhost:9092 --topic mediumvoltage
 
 kafka-console-producer.sh --broker-list localhost:9092 --topic hk3
 
+kafka-console-producer.sh --broker-list localhost:9092 --topic yxtest
+
 
 
 ### 消费 deprecated
