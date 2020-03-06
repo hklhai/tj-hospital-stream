@@ -136,7 +136,7 @@ public class FullPullWithParrallelTask {
 
 
     public static Boundary boundaryQuery(String splitField) throws Exception {
-        String sql = "select min(" + splitField + ") , max(" + splitField + ") from dajiangtai_goods";
+        String sql = "select min(" + splitField + ") , max(" + splitField + ") from goods";
         Connection connection = null;
         Statement statement = null;
         ResultSet resultSet = null;
