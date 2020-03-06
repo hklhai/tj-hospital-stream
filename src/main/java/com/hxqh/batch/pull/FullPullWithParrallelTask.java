@@ -70,7 +70,7 @@ public class FullPullWithParrallelTask {
 
             Boundary boundary = boundaryQuery(SPLIT_FIELD);
 
-            jdbcInputFormatBuilder.setQuery("select * from dajiangtai_goods where " + SPLIT_FIELD + " between ? and ?")
+            jdbcInputFormatBuilder.setQuery("select * from goods where " + SPLIT_FIELD + " between ? and ?")
                     .setParametersProvider(new NumericBetweenParametersProvider(fetchSize, boundary.getMin(), boundary.getMax()));
         }
 

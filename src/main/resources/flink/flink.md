@@ -23,3 +23,9 @@ nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.batch.ReadHbaseCustomDemo 
 ## PullTask
 
 nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.batch.pull.FullPullTask /root/src/tj-hospital-stream/target/tj-hospital.jar > FullPullTask.log 2>&1 &
+
+
+
+nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.batch.pull.FullPullWithParrallelTask /root/src/tj-hospital-stream/target/tj-hospital.jar > FullPullTask.log 2>&1 &
+
+
