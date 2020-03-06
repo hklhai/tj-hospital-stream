@@ -225,8 +225,6 @@ under the License.
             <artifactId>lombok</artifactId>
             <version>1.18.12</version>
         </dependency>
-
-
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
@@ -238,20 +236,14 @@ under the License.
             <version>1.0</version>
         </dependency>
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.19</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>protobuf-java</artifactId>
-                    <groupId>com.google.protobuf</groupId>
-                </exclusion>
-            </exclusions>
+            <artifactId>protobuf-java</artifactId>
+            <groupId>com.google.protobuf</groupId>
+            <version>2.5.0</version>
         </dependency>
         <dependency>
-            <groupId>com.google.protobuf</groupId>
-            <artifactId>protobuf-java</artifactId>
-            <version>3.4.0</version>
+            <groupId>my.mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0</version>
         </dependency>
 
     </dependencies>
@@ -333,6 +325,7 @@ under the License.
                         <configuration>
                             <artifactSet>
                                 <excludes>
+                                    <exclude>org.apache.flink:flink-shaded-hadoop2</exclude>
                                     <exclude>org.apache.flink:force-shading</exclude>
                                     <exclude>com.google.code.findbugs:jsr305</exclude>
                                     <exclude>org.slf4j:*</exclude>
@@ -354,7 +347,6 @@ under the License.
                             <transformers>
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>com.hxqh.StreamingJob</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>

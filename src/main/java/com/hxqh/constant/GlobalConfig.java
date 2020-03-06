@@ -11,7 +11,7 @@ public class GlobalConfig implements Serializable {
     /**
      * 数据库driver class
      */
-    public static final String DRIVER_CLASS = "com.mysql.cj.jdbc.Driver";
+    public static final String DRIVER_CLASS = "my.com.mysql.cj.jdbc.Driver";
     /**
      * 数据库jdbc url
      */
