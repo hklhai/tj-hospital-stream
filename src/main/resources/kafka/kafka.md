@@ -69,11 +69,11 @@ kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic purchasePath
 
 
 
-kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic hk5 --from-beginning
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic hk5 
 
-kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic hk6 --from-beginning
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic hk6 
 
-kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic hk7 --from-beginning
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic hk7 
 
 
 ## kafka
