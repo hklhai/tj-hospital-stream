@@ -131,6 +131,7 @@
               </filters>
               <transformers>
                 <transformer />
+                <transformer />
               </transformers>
             </configuration>
           </execution>

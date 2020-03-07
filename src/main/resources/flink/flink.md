@@ -20,12 +20,16 @@ nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.batch.ReadHbaseRawDemo /ro
 nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.batch.ReadHbaseCustomDemo /root/src/tj-hospital-stream/target/tj-hospital.jar > ReadHbaseCustomDemo.log 2>&1 &
 
 
+/root/app/flink-1.8.0/bin/flink run -c com.hxqh.batch.ReadHbaseRawDemo /root/src/tj-hospital-stream/target/tj-hospital.jar 
 ## PullTask
 
 nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.batch.pull.FullPullTask /root/src/tj-hospital-stream/target/tj-hospital.jar > FullPullTask.log 2>&1 &
 
 
-
 nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.batch.pull.FullPullWithParrallelTask /root/src/tj-hospital-stream/target/tj-hospital.jar > FullPullTask.log 2>&1 &
 
 
+## Sync-Increment
+nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.batch.incrementsync.IncrementSyncTask /root/src/tj-hospital-stream/target/tj-hospital.jar > IncrementSyncTask.log 2>&1 &
+
+/root/app/flink-1.8.0/bin/flink run -c com.hxqh.batch.incrementsync.IncrementSyncTask /root/src/tj-hospital-stream/target/tj-hospital.jar

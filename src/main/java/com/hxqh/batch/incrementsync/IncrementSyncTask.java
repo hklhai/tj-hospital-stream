@@ -37,7 +37,7 @@ public class IncrementSyncTask {
 
 
     public static void main(String[] args) throws Exception {
-        args = new String[]{"--input-topic", "hk5", "--bootstrap.servers", "tj-hospital.com:9092",
+        args = new String[]{"--input-topic", "hk7", "--bootstrap.servers", "tj-hospital.com:9092",
                 "--zookeeper.connect", "tj-hospital.com:2181", "--group.id", "asset2",
                 "--key.serializer", "org.apache.kafka.common.serialization.StringSerializer",
                 "--value.serializer", "org.apache.kafka.common.serialization.StringSerializer",
@@ -61,7 +61,7 @@ public class IncrementSyncTask {
         KeyedStream<FlatMessage, String> keyedMessage = message.keyBy(new KeySelector<FlatMessage, String>() {
             @Override
             public String getKey(FlatMessage value) throws Exception {
-                return value.getDatabase() + "|" + value.getTable();
+                return value.getDatabase() + value.getTable();
             }
         });
 

@@ -2,7 +2,9 @@ package com.hxqh.domain;
 
 import com.hxqh.enums.FlowStatusEnum;
 import com.hxqh.enums.HBaseStorageModeEnum;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.io.Serializable;
@@ -37,6 +39,8 @@ import java.io.Serializable;
  */
 @Data
 @ToString
+@AllArgsConstructor
+@NoArgsConstructor
 public class Flow implements Serializable {
     private Integer flowId;
     /**
