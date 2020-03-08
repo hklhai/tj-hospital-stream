@@ -46,14 +46,15 @@ public interface Constant {
     String DRAWER_CABINET = "低压开关设备-抽屉柜";
     String ACB = "低压开关设备-ACB";
 
+
+
     /**
      * DB2 连接信息
      */
-    String DRIVER_NAME = "com.ibm.db2.jcc.DB2Driver";
-    String DB_URL = "jdbc:db2://tj-maximo.com:50005/maxdb";
-    String USERNAME = "maximo";
-    String PASSWORD = "maximo123";
-
+    String DB2_DRIVER_NAME = "com.ibm.db2.jcc.DB2Driver";
+    String DB2_DB_URL = "jdbc:db2://tj-maximo.com:50005/maxdb";
+    String DB2_USERNAME = "maximo";
+    String DB2_PASSWORD = "maximo123";
 
 
     /**
@@ -82,19 +83,31 @@ public interface Constant {
     String YX_ATS_SWITCH_POSITION = "开关位置";
 
 
-
     /**
      * 遥测-中压
      */
     String INDEX_YC_MEDIUMVOLTAGE_ = "yc_mediumvoltage";
-    String TYPE_YC_MEDIUMVOLTAGE= "mediumvoltage";
+    String TYPE_YC_MEDIUMVOLTAGE = "mediumvoltage";
 
 
     /**
-     * 遥信-中压
+     * 遥测-变压器
      */
-    String INDEX_YX_MEDIUMVOLTAGE_ = "yx_mediumvoltage";
-    String TYPE_YX_MEDIUMVOLTAGE = "mediumvoltage";
+    String INDEX_YC_TRANSFORMER = "yc_transformer";
+    String TYPE_YC_TRANSFORMER = "transformer";
 
+    /**
+     * 遥信
+     */
+    String INDEX_YX = "yx";
+    String TYPE_YX = "yx";
+
+    /**
+     * MySQL 连接信息
+     */
+    String MYSQL_DRIVER_NAME = "com.mysql.cj.jdbc.Driver";
+    String MYSQL_DB_URL = "jdbc:mysql://tj-hospital.com:3306/tj?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false&serverTimezone=Asia/Shanghai&autoReconnect=true";
+    String MYSQL_USERNAME = "tj";
+    String MYSQL_PASSWORD = "mko09ijn*";
 
 }

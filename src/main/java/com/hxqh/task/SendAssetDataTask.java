@@ -37,10 +37,10 @@ public class SendAssetDataTask {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
         JDBCInputFormat inputFormat = JDBCInputFormat.buildJDBCInputFormat()
-                .setDrivername(DRIVER_NAME)
-                .setDBUrl(DB_URL)
-                .setUsername(USERNAME)
-                .setPassword(PASSWORD)
+                .setDrivername(DB2_DRIVER_NAME)
+                .setDBUrl(DB2_DB_URL)
+                .setUsername(DB2_USERNAME)
+                .setPassword(DB2_PASSWORD)
                 .setQuery("select  ASSETNUM, ASSETYPE, PRODUCTMODEL,PARENT,LOCATION from ASSET ")
                 .setRowTypeInfo(new RowTypeInfo(TypeInformation.of(String.class),
                         TypeInformation.of(String.class),

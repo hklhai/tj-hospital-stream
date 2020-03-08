@@ -28,8 +28,8 @@ public class Db2YcMediumVoltageSink extends RichSinkFunction<String> {
     @Override
     public void invoke(String value, Context context) throws Exception {
         Date now = new Date();
-        Class.forName(DRIVER_NAME);
-        connection = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
+        Class.forName(MYSQL_DRIVER_NAME);
+        connection = DriverManager.getConnection(MYSQL_DB_URL, MYSQL_USERNAME, MYSQL_PASSWORD);
 
         IEDEntity entity = JSON.parseObject(value, IEDEntity.class);
         YcMediumVoltage ycMediumVoltage = ConvertUtils.convert2YcMediumVoltage(entity);

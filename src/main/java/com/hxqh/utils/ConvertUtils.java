@@ -3,14 +3,17 @@ package com.hxqh.utils;
 import com.alibaba.fastjson.JSON;
 import com.hxqh.domain.YcAts;
 import com.hxqh.domain.YcMediumVoltage;
+import com.hxqh.domain.YcTransformer;
 import com.hxqh.domain.YxAts;
 import com.hxqh.domain.base.IEDEntity;
 import com.hxqh.domain.base.IEDParam;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.flink.types.Row;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -129,5 +132,45 @@ public class ConvertUtils {
             clazz = clazz.getSuperclass();
         }
         return treeMap;
+    }
+
+
+    public static YcTransformer convert2YcTransformer(Row row) {
+        YcTransformer ycTransformer = new YcTransformer();
+        ycTransformer.setIEDName(row.getField(0).toString());
+        ycTransformer.setColTime(DateUtils.formatDate(row.getField(2).toString()));
+        ycTransformer.setAssetYpe(row.getField(3).toString());
+        ycTransformer.setProductModel(row.getField(4).toString());
+        ycTransformer.setLocation(row.getField(5).toString());
+        ycTransformer.setParent(row.getField(6).toString());
+        Row[] rows = (Row[]) row.getField(7);
+        List<IEDParam> iedParams = new ArrayList<>();
+        if (rows.length > 0) {
+            for (Row r : rows) {
+                IEDParam param = new IEDParam(r.getField(0).toString(), Double.parseDouble(r.getField(1).toString()));
+                iedParams.add(param);
+            }
+        }
+        Map<String, List<IEDParam>> parameterMap = iedParams.stream().collect(Collectors.groupingBy(IEDParam::getVariableName));
+
+        Field[] declaredFields = ycTransformer.getClass().getDeclaredFields();
+
+        for (Field field : declaredFields) {
+            String attr = StringUtils.capitalize(field.getName());
+            if (!"SerialVersionUID".equals(attr)) {
+                try {
+                    Method getMethod = ycTransformer.getClass().getDeclaredMethod("get" + attr);
+                    Type genericReturnType = getMethod.getGenericReturnType();
+                    if (genericReturnType.getTypeName().equals(Double.class.getName())) {
+                        Method setMethod = ycTransformer.getClass().getDeclaredMethod("set" + attr, Double.class);
+                        setMethod.invoke(ycTransformer, null == parameterMap.get(attr) ? 0 : parameterMap.get(attr).get(0).getValue());
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return ycTransformer;
     }
 }

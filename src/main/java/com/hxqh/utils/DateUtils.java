@@ -12,6 +12,18 @@ import java.util.Date;
  */
 public class DateUtils {
 
+    public static Date getFormatDate() {
+        Date now = new Date();
+        String s = formatDate(now);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            return sdf.parse(s);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 
     /**
      * 日期转换为时间戳

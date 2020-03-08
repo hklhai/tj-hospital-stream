@@ -41,6 +41,7 @@ import static com.hxqh.constant.Constant.*;
  *
  * @author Ocean lin
  */
+@Deprecated
 @SuppressWarnings("Duplicates")
 public class ProcessYxAtsTask {
 

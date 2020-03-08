@@ -17,6 +17,7 @@ import static com.hxqh.constant.Constant.*;
  * @author Ocean lin
  */
 @SuppressWarnings("Duplicates")
+@Deprecated
 public class Db2YcAtsSink extends RichSinkFunction<String> {
 
 
@@ -30,8 +31,8 @@ public class Db2YcAtsSink extends RichSinkFunction<String> {
     @Override
     public void invoke(String value, Context context) throws Exception {
         Date now = new Date();
-        Class.forName(DRIVER_NAME);
-        connection = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
+        Class.forName(MYSQL_DRIVER_NAME);
+        connection = DriverManager.getConnection(MYSQL_DB_URL, MYSQL_USERNAME, MYSQL_PASSWORD);
 
         IEDEntity entity = JSON.parseObject(value, IEDEntity.class);
         YcAts ycAts = ConvertUtils.convert2YcAts(entity);
@@ -96,7 +97,7 @@ public class Db2YcAtsSink extends RichSinkFunction<String> {
         preparedStatement.setDouble(6, ycAts.getIA());
         preparedStatement.setDouble(7, ycAts.getIB());
         preparedStatement.setDouble(8, ycAts.getIC());
-        preparedStatement.setTimestamp(9,  new Timestamp(now.getTime()));
+        preparedStatement.setTimestamp(9, new Timestamp(now.getTime()));
         preparedStatement.executeUpdate();
     }
 }
