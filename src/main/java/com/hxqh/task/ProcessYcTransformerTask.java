@@ -93,6 +93,10 @@ public class ProcessYcTransformerTask {
                         .field("location", Types.STRING())
                         .field("parent", Types.STRING())
                         .field("productModel", Types.STRING())
+                        .field("productModelB", Types.STRING())
+                        .field("productModelC", Types.STRING())
+                        .field("fractionRatio", Types.STRING())
+                        .field("loadRate", Types.STRING())
                         .field("IEDParam", ObjectArrayTypeInfo.getInfoFor(
                                 Row[].class,
                                 Types.ROW(new String[]{"variableName", "value"},
@@ -148,7 +152,7 @@ public class ProcessYcTransformerTask {
                     }
                 }
         );
-        esSinkBuilder.setBulkFlushMaxActions(1);
+        esSinkBuilder.setBulkFlushMaxActions(50);
 
         // provide a RestClientFactory for custom configuration on the internally created REST client
         esSinkBuilder.setRestClientFactory(

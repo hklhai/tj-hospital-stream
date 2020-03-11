@@ -3,7 +3,7 @@ package com.hxqh.task;
 import com.alibaba.fastjson.JSON;
 import com.hxqh.domain.YcMediumVoltage;
 import com.hxqh.domain.base.IEDEntity;
-import com.hxqh.sink.Db2YcMediumVoltageSink;
+import com.hxqh.sink.MySQLYcMediumVoltageSink;
 import com.hxqh.transfer.ProcessWaterEmitter;
 import com.hxqh.utils.ConvertUtils;
 import com.hxqh.utils.DateUtils;
@@ -76,7 +76,7 @@ public class ProcessYcMediumVoltageTask {
             return entity.getAssetYpe().equals(MEDIUM_VOLTAG_ESWITCH) ? true : false;
         }).name("YC-MediumVoltage-Filter");
 
-        filter.addSink(new Db2YcMediumVoltageSink()).name("YC-MediumVoltage-DB2-Sink");
+        filter.addSink(new MySQLYcMediumVoltageSink()).name("YC-MediumVoltage-DB2-Sink");
 
         persistEs(filter);
 
@@ -100,7 +100,6 @@ public class ProcessYcMediumVoltageTask {
                     public IndexRequest createIndexRequest(String element) {
                         IEDEntity entity = JSON.parseObject(element, IEDEntity.class);
                         YcMediumVoltage ycMediumVoltage = ConvertUtils.convert2YcMediumVoltage(entity);
-
                         TreeMap<String, Object> map = new TreeMap<>();
 
                         try {
@@ -111,7 +110,8 @@ public class ProcessYcMediumVoltageTask {
 
                         map.put("ColTime", DateUtils.formatDate(ycMediumVoltage.getColTime()));
                         map.put("CreateTime", DateUtils.formatDate(now));
-                        return Requests.indexRequest().index(INDEX_YC_MEDIUMVOLTAGE_).type(TYPE_YC_MEDIUMVOLTAGE).source(map);
+                        map.remove("serialVersionUID");
+                        return Requests.indexRequest().index(INDEX_YC_MEDIUMVOLTAGE).type(TYPE_YC_MEDIUMVOLTAGE).source(map);
                     }
 
                     @Override
@@ -120,7 +120,7 @@ public class ProcessYcMediumVoltageTask {
                     }
                 }
         );
-        esSinkBuilder.setBulkFlushMaxActions(1);
+        esSinkBuilder.setBulkFlushMaxActions(50);
 
         // provide a RestClientFactory for custom configuration on the internally created REST client
         esSinkBuilder.setRestClientFactory(

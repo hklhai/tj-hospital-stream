@@ -1,5 +1,12 @@
 package com.hxqh.constant;
 
+import com.hxqh.enums.FirstAlarmLevel;
+import com.hxqh.enums.SecondAlarmLevel;
+import com.hxqh.enums.ThirdAlarmLevel;
+
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by Ocean lin on 2019/7/9.
  *
@@ -66,27 +73,9 @@ public interface Constant {
 
 
     /**
-     * 遥测-AST
-     */
-    String INDEX_YC_ATS = "yc_ats";
-    String TYPE_YC_ATS = "ats";
-
-
-    /**
-     * 遥信-AST
-     */
-    String INDEX_YX_ATS = "yx_ats";
-    String TYPE_YX_ATS = "ats";
-
-    String YX_ATS_QUICK_BREAK = "速断";
-    String YX_ATS_OVER_CURRENT = "过流";
-    String YX_ATS_SWITCH_POSITION = "开关位置";
-
-
-    /**
      * 遥测-中压
      */
-    String INDEX_YC_MEDIUMVOLTAGE_ = "yc_mediumvoltage";
+    String INDEX_YC_MEDIUMVOLTAGE = "yc_mediumvoltage";
     String TYPE_YC_MEDIUMVOLTAGE = "mediumvoltage";
 
 
@@ -95,6 +84,18 @@ public interface Constant {
      */
     String INDEX_YC_TRANSFORMER = "yc_transformer";
     String TYPE_YC_TRANSFORMER = "transformer";
+
+    String YX_ATS_QUICK_BREAK = "速断";
+    String YX_ATS_OVER_CURRENT = "过流";
+    String YX_ATS_SWITCH_POSITION = "开关位置";
+
+    /**
+     * 遥测-AST
+     */
+    String INDEX_YC_ATS = "yc_ats";
+    String TYPE_YC_ATS = "ats";
+
+
 
     /**
      * 遥信
@@ -109,5 +110,28 @@ public interface Constant {
     String MYSQL_DB_URL = "jdbc:mysql://tj-hospital.com:3306/tj?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false&serverTimezone=Asia/Shanghai&autoReconnect=true";
     String MYSQL_USERNAME = "tj";
     String MYSQL_PASSWORD = "mko09ijn*";
+
+
+    Map<String, Integer> ALARM_MAP = new HashMap(12) {
+        {
+            put(FirstAlarmLevel.QuickBreak.getCode(), 1);
+            put(FirstAlarmLevel.OverCurrent.getCode(), 1);
+            put(FirstAlarmLevel.OverCurrentDelay.getCode(), 1);
+
+            put(SecondAlarmLevel.NoEnergyDtorage.getCode(), 2);
+            put(SecondAlarmLevel.CircuitDisconnection.getCode(), 2);
+            put(SecondAlarmLevel.CCableOvertemperature.getCode(), 2);
+            put(SecondAlarmLevel.BCableOvertemperature.getCode(), 2);
+            put(SecondAlarmLevel.ACableOvertemperature.getCode(), 2);
+            put(SecondAlarmLevel.CLowerArmOvertemperature.getCode(), 2);
+            put(SecondAlarmLevel.BLowerArmOvertemperature.getCode(), 2);
+            put(SecondAlarmLevel.ALowerArmOvertemperature.getCode(), 2);
+            put(SecondAlarmLevel.CUpperArmOvertemperature.getCode(), 2);
+            put(SecondAlarmLevel.BUpperArmOvertemperature.getCode(), 2);
+            put(SecondAlarmLevel.AUpperArmOvertemperature.getCode(), 2);
+
+            put(ThirdAlarmLevel.NO_INFO, 3);
+        }
+    };
 
 }

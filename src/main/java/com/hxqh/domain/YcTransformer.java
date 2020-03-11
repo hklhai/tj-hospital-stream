@@ -30,6 +30,11 @@ public class YcTransformer implements Serializable {
     private String parent;
     private String location;
 
+    private String productModelB;
+    private String productModelC;
+    private Double fractionRatio;
+    private Double loadRate;
+
     private Double APhaseTemperature;
     private Double BPhaseTemperature;
     private Double CPhaseTemperature;

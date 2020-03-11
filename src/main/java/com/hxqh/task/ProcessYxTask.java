@@ -98,6 +98,10 @@ public class ProcessYxTask {
                         .field("location", Types.STRING())
                         .field("parent", Types.STRING())
                         .field("productModel", Types.STRING())
+                        .field("productModelB", Types.STRING())
+                        .field("productModelC", Types.STRING())
+                        .field("fractionRatio", Types.DOUBLE())
+                        .field("loadRate", Types.DOUBLE())
                         .field("IEDParam", ObjectArrayTypeInfo.getInfoFor(
                                 Row[].class,
                                 Types.ROW(new String[]{"variableName", "value"},
@@ -151,8 +155,13 @@ public class ProcessYxTask {
                         String parent = row.getField(5).toString();
                         String productModel = row.getField(6).toString();
 
-                        String variableName = ((Row[]) row.getField(7))[0].getField(0).toString();
-                        Integer val = Integer.parseInt(((Row[]) row.getField(7))[0].getField(1).toString());
+                        String productModelB = row.getField(7).toString();
+                        String productModelC = row.getField(8).toString();
+                        Double fractionRatio = Double.parseDouble(row.getField(9).toString());
+                        Double loadRate = Double.parseDouble(row.getField(10).toString());
+
+                        String variableName = ((Row[]) row.getField(11))[0].getField(0).toString();
+                        Integer val = Integer.parseInt(((Row[]) row.getField(11))[0].getField(1).toString());
 
                         Map<String, Object> map = new HashMap<>(24);
                         map.put("IEDName", iedName);
@@ -164,6 +173,11 @@ public class ProcessYxTask {
                         map.put("location", location);
                         map.put("parent", parent);
                         map.put("productModel", productModel);
+                        map.put("productModelB", productModelB);
+                        map.put("productModelC", productModelC);
+                        map.put("fractionRatio", fractionRatio);
+                        map.put("loadRate", loadRate);
+                        map.put("alarmLevel", ALARM_MAP.get(variableName));
 
                         map.put("CreateTime", DateUtils.formatDate(now));
 
@@ -176,7 +190,7 @@ public class ProcessYxTask {
                     }
                 }
         );
-        esSinkBuilder.setBulkFlushMaxActions(1);
+        esSinkBuilder.setBulkFlushMaxActions(50);
 
         // provide a RestClientFactory for custom configuration on the internally created REST client
         esSinkBuilder.setRestClientFactory(

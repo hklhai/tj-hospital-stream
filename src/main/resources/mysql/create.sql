@@ -1,19 +1,17 @@
 -- scement
-create user canal@'%' identified by 'canal';
-grant select on canal.* to 'canal'@'%' identified by 'canal';
+create user tj@'%' identified by 'mko09ijn*';
+grant select on tj.* to 'tj'@'%' identified by 'mko09ijn*';
 
 
-grant all privileges on `canal`.* to 'canal'@'%';
-grant all privileges on *.* to 'canal'@'%';
-
+grant all privileges on `tj`.* to 'tj'@'%';
 
 flush privileges;
 
-create database canal default character set utf8;
+create database tj default character set utf8;
 
 use mysql;
-UPDATE user SET Super_Priv='Y' WHERE user='canal';
+UPDATE user SET Super_Priv='Y' WHERE user='tj';
 flush privileges;
 
 
-ALTER USER 'canal'@'%'   IDENTIFIED WITH mysql_native_password  BY 'canal';
+ALTER USER 'tj'@'%'   IDENTIFIED WITH mysql_native_password  BY 'mko09ijn*';

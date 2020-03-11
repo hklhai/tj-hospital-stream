@@ -44,4 +44,10 @@ public class IEDEntity implements Serializable {
 
     private String location;
 
+    private String productModelB;
+    private String productModelC;
+    private Double fractionRatio;
+    private Double loadRate;
+
+
 }
