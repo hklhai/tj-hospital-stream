@@ -1,0 +1,11 @@
+CREATE TABLE YX_CURRENT
+(
+    YXID         int NOT NULL AUTO_INCREMENT,
+    IEDNAME      varchar(100) DEFAULT NULL,
+    COLTIME      datetime     DEFAULT NULL,
+    VARIABLENAME varchar(100) DEFAULT NULL,
+    VAL          int,
+    CREATETIME   datetime     DEFAULT NULL,
+    PRIMARY KEY (`YXID`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;

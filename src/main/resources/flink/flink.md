@@ -11,7 +11,10 @@ nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.task.ProcessYxTask /root/T
 nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.task.ProcessYcTransformerTask /root/TJJar/tj-hospital.jar > /root/TJJar/ProcessYcTransformerTask.log 2>&1 &
 
 
+### Report
+nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.batch.mediumvoltage.MediumVoltageScore /root/TJJar/batch/tj-hospital.jar > /root/TJJar/MediumVoltageScore.log 2>&1 &
 
+nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.batch.mediumvoltage.MediumVoltageScoreQuarter /root/TJJar/batch/tj-hospital.jar > /root/TJJar/MediumVoltageScoreQuarter.log 2>&1 &
 
 
 ## 批量停止Flink作业

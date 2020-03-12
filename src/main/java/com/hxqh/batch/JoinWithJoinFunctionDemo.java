@@ -1,7 +1,7 @@
 package com.hxqh.batch;
+import org.apache.flink.api.common.functions.JoinFunction;
 
 import com.hxqh.domain.UserInfo;
-import org.apache.flink.api.common.functions.JoinFunction;
 import org.apache.flink.api.java.DataSet;
 import org.apache.flink.api.java.ExecutionEnvironment;
 import org.apache.flink.api.java.tuple.Tuple2;

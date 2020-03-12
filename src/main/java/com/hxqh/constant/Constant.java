@@ -54,7 +54,6 @@ public interface Constant {
     String ACB = "低压开关设备-ACB";
 
 
-
     /**
      * DB2 连接信息
      */
@@ -96,7 +95,6 @@ public interface Constant {
     String TYPE_YC_ATS = "ats";
 
 
-
     /**
      * 遥信
      */
@@ -131,6 +129,24 @@ public interface Constant {
             put(SecondAlarmLevel.AUpperArmOvertemperature.getCode(), 2);
 
             put(ThirdAlarmLevel.NO_INFO, 3);
+        }
+    };
+
+
+    Map<Integer, Integer> ALARM_SCORE_MAP = new HashMap(12) {
+        {
+            put(1, 40);
+            put(2, 10);
+            put(3, 5);
+        }
+    };
+
+
+    Map<Integer, Integer> ALARM_SCORE_LOW_MAP = new HashMap(12) {
+        {
+            put(1, 0);
+            put(2, 70);
+            put(3, 80);
         }
     };
 
