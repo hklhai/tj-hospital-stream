@@ -17,6 +17,7 @@ public class RemindDateUtils {
 
     private final static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
     private final static SimpleDateFormat formatMonth = new SimpleDateFormat("yyyy-MM");
+    private final static SimpleDateFormat formatYear = new SimpleDateFormat("yyyy");
 
 
     public static DataStartEnd getCurrentMonthStartTime() {
@@ -37,12 +38,81 @@ public class RemindDateUtils {
     }
 
 
+    /**
+     * 获取上一月 年月信息
+     *
+     * @return
+     */
     public static String getLastMonth() {
         Calendar c = Calendar.getInstance();
         c.add(Calendar.MONTH, -1);
         return formatMonth.format(c.getTime());
     }
 
+
+    /**
+     * 获取前季度 年月信息
+     *
+     * @return
+     */
+    public static String getLastTwoQuarterString() {
+        // ('2020-1','2019-4')
+        StringBuilder stringBuilder = new StringBuilder(64);
+        stringBuilder.append("(");
+        int season = getSeason(new Date()) - 1;
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        if (season == 0) {
+            year -= 1;
+            season = 4;
+        }
+        stringBuilder.append("'").append(year).append("-").append(season).append("'").append(",");
+        season--;
+        if (season == 0) {
+            year -= 1;
+            season = 4;
+        }
+        stringBuilder.append("'").append(year).append("-").append(season).append("'");
+        return stringBuilder.toString() + ")";
+    }
+
+
+    /**
+     * 获取前两年份信息
+     *
+     * @return
+     */
+    public static String getLastTwoYearString() {
+        // ('2020','2019')
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.YEAR, -1);
+        String y1 = formatYear.format(c.getTime());
+        Calendar c1 = Calendar.getInstance();
+        c1.add(Calendar.YEAR, -2);
+        String y2 = formatYear.format(c1.getTime());
+        StringBuilder stringBuilder = new StringBuilder(64);
+        stringBuilder.append("(").append("'").append(y1).append("'").append(",");
+        stringBuilder.append("'").append(y2).append("'").append(")");
+        return stringBuilder.toString();
+    }
+
+    /**
+     * 获取上一年份
+     *
+     * @return
+     */
+    public static String getLastYear() {
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.YEAR, -1);
+        return formatYear.format(c.getTime());
+    }
+
+
+    /**
+     * 获取上一季度的所有月份字符串
+     *
+     * @return
+     */
     public static String getLastQuarterString() {
         // ('2020-02','2020-01','2020-03')
         StringBuilder stringBuilder = new StringBuilder(64);
@@ -66,6 +136,11 @@ public class RemindDateUtils {
     }
 
 
+    /**
+     * 获取上一季度
+     *
+     * @return
+     */
     public static String getLastQuarter() {
         StringBuilder stringBuilder = new StringBuilder(64);
         int season = getSeason(new Date()) - 1;

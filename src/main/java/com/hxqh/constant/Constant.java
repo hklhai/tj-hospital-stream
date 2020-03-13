@@ -150,4 +150,7 @@ public interface Constant {
         }
     };
 
+    Float Proportion = 0.05f;
+
+
 }
