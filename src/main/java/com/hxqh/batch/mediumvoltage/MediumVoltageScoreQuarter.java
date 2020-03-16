@@ -35,7 +35,7 @@ public class MediumVoltageScoreQuarter {
         ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
 
         // Quarter score
-        String quarterQuery = "select IEDNAME,AVG(SCORE) from RE_MEDIUM_VOLTAGE_SCORE_MONTH " +
+        String quarterQuery = "select IEDNAME,AVG(SCORE) from RE_SCORE_MONTH " +
                 "where ASSETYPE='中压开关设备' and CREATETIME in "+ RemindDateUtils.getLastQuarterString()+" group by IEDNAME";
         JDBCInputFormat.JDBCInputFormatBuilder quarterBuilder =
                 JDBCInputFormat.buildJDBCInputFormat().setDrivername(DB2_DRIVER_NAME).setDBUrl(DB2_DB_URL)
@@ -89,7 +89,7 @@ public class MediumVoltageScoreQuarter {
             }
         });
 
-        String insertQuery = "INSERT INTO RE_MEDIUM_VOLTAGE_SCORE_QUARTER (IEDNAME,ASSETYPE,PRODUCTMODEL,LOCATION,FRACTIONRATIO,SCORE,CREATETIME) VALUES(?,?,?,?,?,?,?)";
+        String insertQuery = "INSERT INTO RE_SCORE_QUARTER (IEDNAME,ASSETYPE,PRODUCTMODEL,LOCATION,FRACTIONRATIO,SCORE,CREATETIME) VALUES(?,?,?,?,?,?,?)";
         JDBCOutputFormat.JDBCOutputFormatBuilder outputBuilder =
                 JDBCOutputFormat.buildJDBCOutputFormat().setDrivername(DB2_DRIVER_NAME).setDBUrl(DB2_DB_URL)
                         .setQuery(insertQuery).setSqlTypes(type).setUsername(DB2_USERNAME).setPassword(DB2_PASSWORD);

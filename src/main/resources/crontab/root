@@ -8,25 +8,56 @@
 */1 * * * * root /root/shell/syncYx.sh
 
 
-
+# 重启
 50 23 * * * root /root/shell/restart.sh
-
-
-
-
+30 12 * * * root /root/shell/restart.sh
 
 
 ## 报告
 # 每月1号1点执行
 0 1 1 * * root /root/shell/report/MediumVoltageScoreMonth.sh
+30 1 1 * * root /root/shell/report/TotalMediumVoltageScoreMonth.sh
 
 
-# 每季度初执行上季度报告
-0 4 1 1 * /root/shell/report/MediumVoltageScoreQuarter.sh
-0 4 1 4 * /root/shell/report/MediumVoltageScoreQuarter.sh
-0 4 1 7 * /root/shell/report/MediumVoltageScoreQuarter.sh
-0 4 1 10 * /root/shell/report/MediumVoltageScoreQuarter.sh
+# 单台每季度初执行上季度报告
+0 4 1 1 * root /root/shell/report/MediumVoltageScoreQuarter.sh
+0 4 1 4 * root /root/shell/report/MediumVoltageScoreQuarter.sh
+0 4 1 7 * root /root/shell/report/MediumVoltageScoreQuarter.sh
+0 4 1 10 * root /root/shell/report/MediumVoltageScoreQuarter.sh
+
+# 单台每季度初执行上环比季度报告
+0 5 1 1 * root /root/shell/report/MediumVoltageCompareQuarter.sh
+0 5 1 4 * root /root/shell/report/MediumVoltageCompareQuarter.sh
+0 5 1 7 * root /root/shell/report/MediumVoltageCompareQuarter.sh
+0 5 1 10 * root /root/shell/report/MediumVoltageCompareQuarter.sh
 
 
 
-/etc/init.d/cron restart
+# 整体每季度初执行上季度报告
+30 4 1 1 * root /root/shell/report/TotalMediumVoltageScoreQuarter.sh
+30 4 1 4 * root /root/shell/report/TotalMediumVoltageScoreQuarter.sh
+30 4 1 7 * root /root/shell/report/TotalMediumVoltageScoreQuarter.sh
+30 4 1 10 * root /root/shell/report/TotalMediumVoltageScoreQuarter.sh
+
+# 整体每季度初执行上环比季度报告
+30 5 1 1 * root /root/shell/report/TotalMediumVoltageCompareQuarter.sh
+30 5 1 4 * root /root/shell/report/TotalMediumVoltageCompareQuarter.sh
+30 5 1 7 * root /root/shell/report/TotalMediumVoltageCompareQuarter.sh
+30 5 1 10 * root /root/shell/report/TotalMediumVoltageCompareQuarter.sh
+
+
+# 每年执行年度报告
+0 6 1 1 * root /root/shell/report/MediumVoltageScoreYear.sh
+30 6 1 1 * root /root/shell/report/TotalMediumVoltageScoreYear.sh
+
+
+# 每年执行年度同比报告
+0 7 1 1 * root /root/shell/report/MediumVoltageCompareYear.sh
+30 7 1 1 * root /root/shell/report/TotalMediumVoltageScoreYear.sh
+
+
+
+
+
+
+

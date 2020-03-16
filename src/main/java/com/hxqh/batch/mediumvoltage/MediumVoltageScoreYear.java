@@ -36,7 +36,7 @@ public class MediumVoltageScoreYear {
 
         // Quarter score
         String quarterQuery = "select IEDNAME,avg(score) as score from RE_SCORE_QUARTER " +
-                "where createtime like '" + RemindDateUtils.getLastYear() + "%' group by  IEDNAME";
+                "where ASSETYPE='中压开关设备' and CREATETIME like '" + RemindDateUtils.getLastYear() + "%' group by  IEDNAME";
         JDBCInputFormat.JDBCInputFormatBuilder quarterBuilder =
                 JDBCInputFormat.buildJDBCInputFormat().setDrivername(DB2_DRIVER_NAME).setDBUrl(DB2_DB_URL)
                         .setQuery(quarterQuery).setRowTypeInfo(new RowTypeInfo(new TypeInformation<?>[]{BasicTypeInfo.STRING_TYPE_INFO, BasicTypeInfo.INT_TYPE_INFO

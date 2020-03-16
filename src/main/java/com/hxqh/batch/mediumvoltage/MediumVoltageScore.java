@@ -145,7 +145,7 @@ public class MediumVoltageScore {
         });
 
 
-        String insertQuery = "INSERT INTO RE_MEDIUM_VOLTAGE_SCORE_MONTH (IEDNAME,assetYpe,productModel,location,fractionRatio,score,CREATETIME) VALUES(?,?,?,?,?,?,?)";
+        String insertQuery = "INSERT INTO RE_SCORE_MONTH (IEDNAME,assetYpe,productModel,location,fractionRatio,score,CREATETIME) VALUES(?,?,?,?,?,?,?)";
         JDBCOutputFormat.JDBCOutputFormatBuilder outputBuilder =
                 JDBCOutputFormat.buildJDBCOutputFormat().setDrivername(DB2_DRIVER_NAME).setDBUrl(DB2_DB_URL)
                         .setQuery(insertQuery).setSqlTypes(type).setUsername(DB2_USERNAME).setPassword(DB2_PASSWORD);

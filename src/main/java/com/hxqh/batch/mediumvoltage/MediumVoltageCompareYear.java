@@ -33,7 +33,7 @@ public class MediumVoltageCompareYear {
 
         ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
 
-        String quarterQuery = "select IEDNAME,ASSETYPE,SCORE,CREATETIME from RE_SCORE_YEAR where CREATETIME in " + RemindDateUtils.getLastTwoYearString();
+        String quarterQuery = "select IEDNAME,ASSETYPE,SCORE,CREATETIME from RE_SCORE_YEAR where ASSETYPE='中压开关设备' and CREATETIME in " + RemindDateUtils.getLastTwoYearString();
         JDBCInputFormat.JDBCInputFormatBuilder quarterBuilder =
                 JDBCInputFormat.buildJDBCInputFormat().setDrivername(DB2_DRIVER_NAME).setDBUrl(DB2_DB_URL)
                         .setQuery(quarterQuery).setRowTypeInfo(new RowTypeInfo(

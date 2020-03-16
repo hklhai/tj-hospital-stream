@@ -33,7 +33,7 @@ public class MediumVoltageCompareQuarter {
 
         ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
 
-        String quarterQuery = "select IEDNAME,ASSETYPE,SCORE,CREATETIME from RE_SCORE_QUARTER where  CREATETIME in " + RemindDateUtils.getLastTwoQuarterString();
+        String quarterQuery = "select IEDNAME,ASSETYPE,SCORE,CREATETIME from RE_SCORE_QUARTER where ASSETYPE='中压开关设备' and CREATETIME in " + RemindDateUtils.getLastTwoQuarterString();
         JDBCInputFormat.JDBCInputFormatBuilder quarterBuilder =
                 JDBCInputFormat.buildJDBCInputFormat().setDrivername(DB2_DRIVER_NAME).setDBUrl(DB2_DB_URL)
                         .setQuery(quarterQuery).setRowTypeInfo(new RowTypeInfo(
