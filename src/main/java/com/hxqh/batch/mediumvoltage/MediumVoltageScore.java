@@ -29,6 +29,8 @@ import static com.hxqh.constant.RowTypeConstants.MEDIUM_VOLTAGE_YX_COLUMN;
 import static com.hxqh.constant.RowTypeConstants.MEDIUM_VOLTAGE_YX_TYPE;
 
 /**
+ * 中压开关柜单台运行状况及评分-月度
+ *
  * Created by Ocean lin on 2020/3/11.
  *
  * @author Ocean lin

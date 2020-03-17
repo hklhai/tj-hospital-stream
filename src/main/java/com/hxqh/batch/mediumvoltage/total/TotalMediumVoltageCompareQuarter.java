@@ -20,6 +20,9 @@ import java.sql.Types;
 import static com.hxqh.constant.Constant.*;
 
 /**
+ *
+ * 整体中压开关柜环比-季度
+ *
  * Created by Ocean lin on 2020/3/16.
  *
  * @author Ocean lin

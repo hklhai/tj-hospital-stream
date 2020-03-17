@@ -19,6 +19,8 @@ import java.sql.Types;
 import static com.hxqh.constant.Constant.*;
 
 /**
+ * 中压开关柜单台运行状况及评分-年度
+ * <p>
  * Created by Ocean lin on 2020/3/13.
  *
  * @author Ocean lin
@@ -76,16 +78,19 @@ public class MediumVoltageScoreYear {
         DataSet<Row> result = quarter.join(asset).where(0).equalTo(0).with(new JoinFunction<Tuple2<String, Double>, Tuple5<String, String, String, String, Double>, Row>() {
             @Override
             public Row join(Tuple2<String, Double> first, Tuple5<String, String, String, String, Double> second) throws Exception {
-                Row row = new Row(4);
+                Row row = new Row(6);
                 row.setField(0, second.f0);
                 row.setField(1, second.f1);
-                row.setField(2, first.f1);
-                row.setField(3, RemindDateUtils.getLastYear());
+                row.setField(2, second.f2);
+                row.setField(3, second.f3);
+                row.setField(4, first.f1);
+                row.setField(5, RemindDateUtils.getLastYear());
                 return row;
             }
         });
+//        result.print();
 
-        String insertQuery = "INSERT INTO RE_SCORE_YEAR (IEDNAME,ASSETYPE,SCORE,CREATETIME) VALUES(?,?,?,?)";
+        String insertQuery = "INSERT INTO RE_SCORE_YEAR (IEDNAME,ASSETYPE,PRODUCTMODEL,LOCATION,SCORE,CREATETIME) VALUES(?,?,?,?,?,?)";
         JDBCOutputFormat.JDBCOutputFormatBuilder outputBuilder =
                 JDBCOutputFormat.buildJDBCOutputFormat().setDrivername(DB2_DRIVER_NAME).setDBUrl(DB2_DB_URL)
                         .setQuery(insertQuery).setSqlTypes(type).setUsername(DB2_USERNAME).setPassword(DB2_PASSWORD);
@@ -103,7 +108,7 @@ public class MediumVoltageScoreYear {
 
 
     private static int[] getType() {
-        return new int[]{Types.VARCHAR, Types.VARCHAR, Types.DOUBLE, Types.VARCHAR
+        return new int[]{Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.DOUBLE, Types.VARCHAR
         };
     }
 

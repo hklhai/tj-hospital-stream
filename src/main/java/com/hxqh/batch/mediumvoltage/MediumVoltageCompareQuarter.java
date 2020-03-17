@@ -19,6 +19,8 @@ import java.sql.Types;
 import static com.hxqh.constant.Constant.*;
 
 /**
+ * 中压开关柜单台健康度统计比对-季度
+ * <p>
  * Created by Ocean lin on 2020/3/13.
  *
  * @author Ocean lin

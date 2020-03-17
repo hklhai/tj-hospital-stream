@@ -17,5 +17,5 @@ export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
 
 
 
-nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.batch.mediumvoltage.total.TotalMediumVoltageCompareYear /root/TJJar/batch/tj-hospital.jar > /root/TJJar/TotalMediumVoltageCompareYear.log 2>&1 &
+nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.batch.mediumvoltage.total.TotalMediumVoltageHealthLevelYear /root/TJJar/batch/tj-hospital.jar > /root/TJJar/TotalMediumVoltageHealthLevelYear.log 2>&1 &
 

@@ -17,6 +17,9 @@ import java.sql.Types;
 import static com.hxqh.constant.Constant.*;
 
 /**
+ *
+ * 整体中压开关柜运行状况及评分-月度
+ *
  * Created by Ocean lin on 2020/3/16.
  *
  * @author Ocean lin

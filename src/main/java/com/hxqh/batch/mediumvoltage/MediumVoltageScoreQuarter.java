@@ -19,6 +19,8 @@ import java.sql.Types;
 import static com.hxqh.constant.Constant.*;
 
 /**
+ * 中压开关柜单台运行状况及评分-季度
+ * <p>
  * Created by Ocean lin on 2020/3/12.
  *
  * @author Ocean lin
@@ -36,7 +38,7 @@ public class MediumVoltageScoreQuarter {
 
         // Quarter score
         String quarterQuery = "select IEDNAME,AVG(SCORE) from RE_SCORE_MONTH " +
-                "where ASSETYPE='中压开关设备' and CREATETIME in "+ RemindDateUtils.getLastQuarterString()+" group by IEDNAME";
+                "where ASSETYPE='中压开关设备' and CREATETIME in " + RemindDateUtils.getLastQuarterString() + " group by IEDNAME";
         JDBCInputFormat.JDBCInputFormatBuilder quarterBuilder =
                 JDBCInputFormat.buildJDBCInputFormat().setDrivername(DB2_DRIVER_NAME).setDBUrl(DB2_DB_URL)
                         .setQuery(quarterQuery).setRowTypeInfo(new RowTypeInfo(new TypeInformation<?>[]{BasicTypeInfo.STRING_TYPE_INFO, BasicTypeInfo.INT_TYPE_INFO

@@ -45,6 +45,13 @@
 30 5 1 7 * root /root/shell/report/TotalMediumVoltageCompareQuarter.sh
 30 5 1 10 * root /root/shell/report/TotalMediumVoltageCompareQuarter.sh
 
+# 整体每季度初执行健康度统计
+45 5 1 1 * root /root/shell/report/TotalMediumVoltageHealthLevelQuarter.sh
+45 5 1 4 * root /root/shell/report/TotalMediumVoltageHealthLevelQuarter.sh
+45 5 1 7 * root /root/shell/report/TotalMediumVoltageHealthLevelQuarter.sh
+45 5 1 10 * root /root/shell/report/TotalMediumVoltageHealthLevelQuarter.sh
+
+
 
 # 每年执行年度报告
 0 6 1 1 * root /root/shell/report/MediumVoltageScoreYear.sh
@@ -55,6 +62,8 @@
 0 7 1 1 * root /root/shell/report/MediumVoltageCompareYear.sh
 30 7 1 1 * root /root/shell/report/TotalMediumVoltageScoreYear.sh
 
+# 每年执行年度健康度统计
+45 7 1 1 * root /root/shell/report/TotalMediumVoltageHealthLevelYear.sh
 
 
 
