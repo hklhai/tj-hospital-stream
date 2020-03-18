@@ -20,8 +20,13 @@ public class RemindDateUtils {
     private final static SimpleDateFormat formatYear = new SimpleDateFormat("yyyy");
 
 
-    public static DataStartEnd getCurrentMonthStartTime() {
 
+    /**
+     * 获取上月的第一天和最后一天
+     *
+     * @return
+     */
+    public static DataStartEnd getLastMonthStartEndTime() {
         //获取当前月第一天：
         Calendar c = Calendar.getInstance();
         c.add(Calendar.MONTH, -1);
@@ -37,6 +42,49 @@ public class RemindDateUtils {
         return new DataStartEnd(first + " 00:00:00", last + " 23:59:59");
     }
 
+
+    /**
+     * 获取上季度的第一天和最后一天
+     *
+     * @return
+     */
+    public static DataStartEnd getLastQuarterStartEndTime() {
+        //获取当前月第一天：
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.MONTH, -3);
+        c.set(Calendar.DAY_OF_MONTH, 1);
+        String first = format.format(c.getTime());
+
+        //获取当前月最后一天
+        Calendar ca = Calendar.getInstance();
+        ca.add(Calendar.MONTH, -1);
+        ca.set(Calendar.DAY_OF_MONTH, ca.getActualMaximum(Calendar.DAY_OF_MONTH));
+        String last = format.format(ca.getTime());
+
+        return new DataStartEnd(first + " 00:00:00", last + " 23:59:59");
+    }
+
+
+    /**
+     * 获取上年度的第一天和最后一天
+     *
+     * @return
+     */
+    public static DataStartEnd getLastYearStartEndTime() {
+        //获取当前月第一天：
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.MONTH, -12);
+        c.set(Calendar.DAY_OF_MONTH, 1);
+        String first = format.format(c.getTime());
+
+        //获取当前月最后一天
+        Calendar ca = Calendar.getInstance();
+        ca.add(Calendar.MONTH, -1);
+        ca.set(Calendar.DAY_OF_MONTH, ca.getActualMaximum(Calendar.DAY_OF_MONTH));
+        String last = format.format(ca.getTime());
+
+        return new DataStartEnd(first + " 00:00:00", last + " 23:59:59");
+    }
 
     /**
      * 获取上一月 年月信息

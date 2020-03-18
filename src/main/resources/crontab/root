@@ -11,6 +11,7 @@
 # 重启
 50 23 * * * root /root/shell/restart.sh
 30 12 * * * root /root/shell/restart.sh
+0 8 * * * root /root/shell/restart.sh
 
 
 ## 报告
@@ -31,6 +32,11 @@
 0 5 1 7 * root /root/shell/report/MediumVoltageCompareQuarter.sh
 0 5 1 10 * root /root/shell/report/MediumVoltageCompareQuarter.sh
 
+# 单台每季度初执行负荷率统计
+55 5 1 1 * root /root/shell/report/MediumVoltageLoadFactorQuarter.sh
+55 5 1 4 * root /root/shell/report/MediumVoltageLoadFactorQuarter.sh
+55 5 1 7 * root /root/shell/report/MediumVoltageLoadFactorQuarter.sh
+55 5 1 10 * root /root/shell/report/MediumVoltageLoadFactorQuarter.sh
 
 
 # 整体每季度初执行上季度报告
@@ -57,13 +63,15 @@
 0 6 1 1 * root /root/shell/report/MediumVoltageScoreYear.sh
 30 6 1 1 * root /root/shell/report/TotalMediumVoltageScoreYear.sh
 
-
 # 每年执行年度同比报告
 0 7 1 1 * root /root/shell/report/MediumVoltageCompareYear.sh
 30 7 1 1 * root /root/shell/report/TotalMediumVoltageScoreYear.sh
 
 # 每年执行年度健康度统计
 45 7 1 1 * root /root/shell/report/TotalMediumVoltageHealthLevelYear.sh
+
+# 每年执行负荷率统计
+45 6 1 1 * root /root/shell/report/MediumVoltageLoadFactorYear.sh
 
 
 

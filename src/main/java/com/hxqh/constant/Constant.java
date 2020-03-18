@@ -70,6 +70,7 @@ public interface Constant {
     String ES_HOST = "tj-hospital.com";
     Integer ES_PORT = 9200;
 
+    String JDBC_ES_URL= "jdbc:elasticsearch://tj-hospital.com:9300/";
 
     /**
      * 遥测-中压

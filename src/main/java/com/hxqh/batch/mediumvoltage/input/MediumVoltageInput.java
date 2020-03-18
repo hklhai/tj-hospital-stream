@@ -136,7 +136,7 @@ public class MediumVoltageInput extends RichInputFormat<Row, InputSplit> impleme
             position.put(name, i++);
         }
 
-        DataStartEnd startEnd = RemindDateUtils.getCurrentMonthStartTime();
+        DataStartEnd startEnd = RemindDateUtils.getLastMonthStartEndTime();
         String start = startEnd.getStart();
         String end = startEnd.getEnd();
         // 时间范围的设定
