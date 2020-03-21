@@ -38,6 +38,13 @@
 55 5 1 7 * root /root/shell/report/MediumVoltageLoadFactorQuarter.sh
 55 5 1 10 * root /root/shell/report/MediumVoltageLoadFactorQuarter.sh
 
+# 单台每季度初执行负荷率对比统计
+58 5 1 1 * root /root/shell/report/MediumVoltageLoadFactorCompareQuarter.sh
+58 5 1 4 * root /root/shell/report/MediumVoltageLoadFactorCompareQuarter.sh
+58 5 1 7 * root /root/shell/report/MediumVoltageLoadFactorCompareQuarter.sh
+58 5 1 10 * root /root/shell/report/MediumVoltageLoadFactorCompareQuarter.sh
+
+
 
 # 整体每季度初执行上季度报告
 30 4 1 1 * root /root/shell/report/TotalMediumVoltageScoreQuarter.sh
@@ -57,6 +64,26 @@
 45 5 1 7 * root /root/shell/report/TotalMediumVoltageHealthLevelQuarter.sh
 45 5 1 10 * root /root/shell/report/TotalMediumVoltageHealthLevelQuarter.sh
 
+# 整体每季度初执行负荷率统计
+48 5 1 1 * root /root/shell/report/TotalMediumVoltageLoadFactorQuarter.sh
+48 5 1 4 * root /root/shell/report/TotalMediumVoltageLoadFactorQuarter.sh
+48 5 1 7 * root /root/shell/report/TotalMediumVoltageLoadFactorQuarter.sh
+48 5 1 10 * root /root/shell/report/TotalMediumVoltageLoadFactorQuarter.sh
+
+# 整体每季度初执行负荷率比对
+5 6 1 1 * root /root/shell/report/TotalMediumVoltageLoadFactorCompareQuarter.sh
+5 6 1 4 * root /root/shell/report/TotalMediumVoltageLoadFactorCompareQuarter.sh
+5 6 1 7 * root /root/shell/report/TotalMediumVoltageLoadFactorCompareQuarter.sh
+5 6 1 10 * root /root/shell/report/TotalMediumVoltageLoadFactorCompareQuarter.sh
+
+
+# 整体每季度初执行健康度评分比对
+10 6 1 1 * root /root/shell/report/TotalMediumVoltageLoadFactorLevelQuarter.sh
+10 6 1 4 * root /root/shell/report/TotalMediumVoltageLoadFactorLevelQuarter.sh
+10 6 1 7 * root /root/shell/report/TotalMediumVoltageLoadFactorLevelQuarter.sh
+10 6 1 10 * root /root/shell/report/TotalMediumVoltageLoadFactorLevelQuarter.sh
+
+
 
 
 # 每年执行年度报告
@@ -72,6 +99,13 @@
 
 # 每年执行负荷率统计
 45 6 1 1 * root /root/shell/report/MediumVoltageLoadFactorYear.sh
+50 6 1 1 * root /root/shell/report/MediumVoltageLoadFactorCompareYear.sh
+0 7 1 1 * root /root/shell/report/TotalMediumVoltageLoadFactorYear.sh
+10 7 1 1 * root /root/shell/report/TotalMediumVoltageLoadFactorLevelYear.sh
+20 7 1 1 * root /root/shell/report/TotalMediumVoltageLoadFactorCompareYear.sh
+
+
+
 
 
 

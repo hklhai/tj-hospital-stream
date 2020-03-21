@@ -17,14 +17,28 @@ public class LevelUtils {
     private static final Integer Eighty = 80;
     private static final Integer OneHundred = 100;
 
-    public static String computeLevel(Double score) {
+    private static final Double Eighty_PERCENT = 0.8d;
+    private static final Double Ninety_PERCENT = 0.9d;
+    private static final Double OneHundred_PERCENT = 1d;
 
+    public static String computeLevel(Double score) {
         if (Eighty < score && score <= OneHundred) {
             return HealthLevel.excellent.getCode();
         } else if (Sixty < score && score <= Eighty) {
             return HealthLevel.good.getCode();
         } else {
             return HealthLevel.range.getCode();
+        }
+    }
+
+
+    public static String computeLoadFactorLevel(Double score) {
+        if (Eighty_PERCENT < score && score <= Ninety_PERCENT) {
+            return HealthLevel.good.getCode();
+        } else if (Ninety_PERCENT < score && score <= OneHundred_PERCENT) {
+            return HealthLevel.range.getCode();
+        } else {
+            return HealthLevel.excellent.getCode();
         }
     }
 

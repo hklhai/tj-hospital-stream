@@ -40,7 +40,7 @@ kafka-console-producer.sh --broker-list localhost:9092 --topic mediumvoltage
 kafka-console-consumer.sh --zookeeper localhost:2181 --topic mediumvoltage --from-beginning
   
 ### 消费
-kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic mediumvoltage --from-beginning
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic mediumvoltage 
 
 kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic yxtest --from-beginning
 
@@ -48,8 +48,7 @@ kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic yctest
 
 kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic mediumvoltage --partition 0 --offset 25320
 
-
-kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic asset2 --from-beginning
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic mediumvoltage --partition  0 --offset 713684
 
 kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic err1 --from-beginning
 

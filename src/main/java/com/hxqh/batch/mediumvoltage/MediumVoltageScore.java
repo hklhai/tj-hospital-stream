@@ -1,6 +1,6 @@
 package com.hxqh.batch.mediumvoltage;
 
-import com.hxqh.batch.mediumvoltage.input.MediumVoltageInput;
+import com.hxqh.batch.mediumvoltage.input.MediumVoltageInputMonth;
 import com.hxqh.utils.RemindDateUtils;
 import org.apache.flink.api.common.functions.JoinFunction;
 import org.apache.flink.api.common.functions.MapFunction;
@@ -53,7 +53,7 @@ public class MediumVoltageScore {
 
         RowTypeInfo rowTypeInfo = new RowTypeInfo(MEDIUM_VOLTAGE_YX_TYPE, MEDIUM_VOLTAGE_YX_COLUMN);
 
-        MediumVoltageInput build = MediumVoltageInput.builder(
+        MediumVoltageInputMonth build = MediumVoltageInputMonth.builder(
                 httpHosts, INDEX_YX)
                 .setRowTypeInfo(rowTypeInfo)
                 .build();
