@@ -153,5 +153,12 @@ public interface Constant {
 
     Float Proportion = 0.05f;
 
+    Map<Integer, String> HOUR_MAP = new HashMap(12) {
+        {
+            put(0, "00:00:00|07:59:59");
+            put(1, "08:00:00|15:59:59");
+            put(2, "16:00:00|23:59:59");
+        }
+    };
 
 }

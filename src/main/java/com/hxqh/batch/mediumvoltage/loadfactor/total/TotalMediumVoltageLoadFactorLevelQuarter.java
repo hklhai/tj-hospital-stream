@@ -33,7 +33,6 @@ import static com.hxqh.constant.Constant.*;
 public class TotalMediumVoltageLoadFactorLevelQuarter {
 
     public static void main(String[] args) throws Exception {
-
         final int[] type = getType();
 
         ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
@@ -115,7 +114,6 @@ public class TotalMediumVoltageLoadFactorLevelQuarter {
                 return row;
             }
         });
-        // sink.print();
 
         String insertQuery = "INSERT INTO RE_TOTAL_LOAD_HEALTH_QUARTER(ASSETYPE,PRODUCTMODEL,LOCATION,excellent,good,range,CREATETIME) VALUES(?,?,?,?,?,?,?)";
         JDBCOutputFormat.JDBCOutputFormatBuilder outputBuilder =

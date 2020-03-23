@@ -98,7 +98,6 @@ public class TotalMediumVoltageLoadFactorLevelYear {
             }
         });
 
-
         DataSet<Row> sink = reduce.map(new MapFunction<Tuple4<String, Integer, Integer, Integer>, Row>() {
             @Override
             public Row map(Tuple4<String, Integer, Integer, Integer> value) throws Exception {

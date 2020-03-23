@@ -69,6 +69,12 @@ nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.batch.mediumvoltage.loadfa
 
 nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.batch.mediumvoltage.loadfactor.total.TotalMediumVoltageLoadFactorLevelYear /root/TJJar/batch/tj-hospital.jar > /root/TJJar/TotalMediumVoltageLoadFactorLevelYear.log 2>&1 &
 
+### 中压-电压状况
+nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.batch.mediumvoltage.condition.MediumVoltageCondition /root/TJJar/batch/tj-hospital.jar > /root/TJJar/MediumVoltageCondition.log 2>&1 &
+
+### 中压-平均功率因数
+
+
 
 ## 批量停止Flink作业
 ps -ef | grep flink | grep -v grep | awk '{print "kill -9 "$2}'|sh

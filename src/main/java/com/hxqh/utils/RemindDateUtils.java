@@ -6,6 +6,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import static com.hxqh.constant.Constant.HOUR_MAP;
+
 /**
  * Created by Ocean lin on 2020/3/11.
  *
@@ -18,7 +20,6 @@ public class RemindDateUtils {
     private final static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
     private final static SimpleDateFormat formatMonth = new SimpleDateFormat("yyyy-MM");
     private final static SimpleDateFormat formatYear = new SimpleDateFormat("yyyy");
-
 
 
     /**
@@ -40,6 +41,28 @@ public class RemindDateUtils {
         String last = format.format(ca.getTime());
 
         return new DataStartEnd(first + " 00:00:00", last + " 23:59:59");
+    }
+
+
+    /**
+     * 获取当天的前8小时
+     *
+     * @return
+     */
+    public static DataStartEnd getLast8HoursStartEndTime() {
+        String s = "";
+        Calendar c = Calendar.getInstance();
+        int i = c.get(Calendar.HOUR_OF_DAY);
+        int cn = i / 8 - 1;
+        if (cn == -1) {
+            c.add(Calendar.DAY_OF_MONTH, -1);
+            s = HOUR_MAP.get(2);
+        } else {
+            s = HOUR_MAP.get(cn);
+        }
+        String now = format.format(c.getTime());
+        String[] split = s.split("\\|");
+        return new DataStartEnd(now + " " + split[0], now + " " + split[1]);
     }
 
 
@@ -97,14 +120,14 @@ public class RemindDateUtils {
         return formatMonth.format(c.getTime());
     }
 
-
     /**
      * 获取前季度 年月信息
+     * <p>
+     * ('2020-1','2019-4')
      *
      * @return
      */
     public static String getLastTwoQuarterString() {
-        // ('2020-1','2019-4')
         StringBuilder stringBuilder = new StringBuilder(64);
         stringBuilder.append("(");
         int season = getSeason(new Date()) - 1;
@@ -127,11 +150,12 @@ public class RemindDateUtils {
 
     /**
      * 获取前两年份信息
+     * <p>
+     * ('2020','2019')
      *
      * @return
      */
     public static String getLastTwoYearString() {
-        // ('2020','2019')
         Calendar c = Calendar.getInstance();
         c.add(Calendar.YEAR, -1);
         String y1 = formatYear.format(c.getTime());
@@ -158,11 +182,12 @@ public class RemindDateUtils {
 
     /**
      * 获取上一季度的所有月份字符串
+     * <p>
+     * ('2020-02','2020-01','2020-03')
      *
      * @return
      */
     public static String getLastQuarterString() {
-        // ('2020-02','2020-01','2020-03')
         StringBuilder stringBuilder = new StringBuilder(64);
         stringBuilder.append("(");
         int season = getSeason(new Date()) - 1;

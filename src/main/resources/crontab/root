@@ -14,6 +14,7 @@
 0 8 * * * root /root/shell/restart.sh
 
 
+
 ## 报告
 # 每月1号1点执行
 0 1 1 * * root /root/shell/report/MediumVoltageScoreMonth.sh
@@ -105,7 +106,10 @@
 20 7 1 1 * root /root/shell/report/TotalMediumVoltageLoadFactorCompareYear.sh
 
 
-
+# 中压设备-电压状况
+5 8 * * * root /root/shell/report/MediumVoltageCondition.sh
+5 16 * * * root /root/shell/report/MediumVoltageCondition.sh
+5 0 * * * root /root/shell/report/MediumVoltageCondition.sh
 
 
 
