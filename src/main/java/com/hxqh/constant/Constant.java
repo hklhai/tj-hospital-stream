@@ -161,4 +161,13 @@ public interface Constant {
         }
     };
 
+    Map<Integer, String> HOUR_PER6_MAP = new HashMap(12) {
+        {
+            put(0, "00:00:00|05:59:59");
+            put(1, "06:00:00|11:59:59");
+            put(2, "12:00:00|17:59:59");
+            put(3, "18:00:00|23:59:59");
+        }
+    };
+
 }

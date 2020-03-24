@@ -96,7 +96,7 @@ public class TotalMediumVoltageLoadFactorCompareQuarter {
             }
         });
 
-        String insertQuery = "INSERT INTO RE_TOTAL_LOAD_COMPARE_QUARTER(ASSETYPE,PRODUCTMODEL,LOCATION,LOADFACTOR,CREATETIME,COMPARISON,RATIO) VALUES(?,?,?,?,?,?,?)";
+        String insertQuery = "INSERT INTO RE_TOTAL_LOAD_COMP_QUARTER(ASSETYPE,PRODUCTMODEL,LOCATION,LOADFACTOR,CREATETIME,COMPARISON,RATIO) VALUES(?,?,?,?,?,?,?)";
         JDBCOutputFormat.JDBCOutputFormatBuilder outputBuilder =
                 JDBCOutputFormat.buildJDBCOutputFormat().setDrivername(DB2_DRIVER_NAME).setDBUrl(DB2_DB_URL)
                         .setQuery(insertQuery).setSqlTypes(type).setUsername(DB2_USERNAME).setPassword(DB2_PASSWORD);

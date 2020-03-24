@@ -1,4 +1,4 @@
-package com.hxqh.batch.mediumvoltage.condition;
+package com.hxqh.batch.mediumvoltage.powerfactor;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.pool.ElasticSearchDruidDataSourceFactory;
@@ -22,13 +22,13 @@ import java.util.Properties;
 import static com.hxqh.constant.Constant.*;
 
 /**
- * 中压设备-电压状况
+ * 中压设备-平均功率因数
  * <p>
- * Created by Ocean lin on 2020/3/23.
+ * Created by Ocean lin on 2020/3/24.
  *
  * @author Ocean lin
  */
-public class MediumVoltageCondition {
+public class MediumVoltagePowerFactor {
 
     public static void main(String[] args) throws Exception {
         final int[] type = getType();
@@ -41,11 +41,12 @@ public class MediumVoltageCondition {
         DruidDataSource dds = (DruidDataSource) ElasticSearchDruidDataSourceFactory.createDataSource(properties);
         dds.setInitialSize(1);
         Connection connection = dds.getConnection();
-        DataStartEnd startEnd = RemindDateUtils.getLast8HoursStartEndTime();
+        DataStartEnd startEnd = RemindDateUtils.getLast6HoursStartEndTime();
         String start = startEnd.getStart();
         String end = startEnd.getEnd();
-        // String sql = "select assetYpe,productModel,location,productModelC,avg(ABLineVoltage) as avgA,avg(BCLineVoltage) as avgB,avg(CALineVoltage) as avgC from yc_mediumvoltage3 where CreateTime>'2020-03-11 08:00:00' and CreateTime<'2020-03-11 15:59:59' group by assetYpe,productModel,location,productModelC";
-        String sql = "select assetYpe,productModel,location,productModelC,avg(ABLineVoltage) as avgA,avg(BCLineVoltage) as avgB,avg(CALineVoltage) as avgC from yc_mediumvoltage3" +
+
+        // String sql = "select assetYpe,productModel,location,productModelC,avg(ActivePower) as ActivePowerAvg,avg(ReactivePower) as ReactivePowerAvg from yc_mediumvoltage3 where CreateTime>'2020-03-11 08:00:00' and CreateTime<'2020-03-11 15:59:59' group by assetYpe,productModel,location,productModelC";
+        String sql = "select assetYpe,productModel,location,productModelC,avg(ActivePower) as ActivePowerAvg,avg(ReactivePower) as ReactivePowerAvg from yc_mediumvoltage3" +
                 " where CreateTime>'" + start + "' and CreateTime<'" + end + "' group by assetYpe,productModel,location,productModelC";
         System.out.println(sql);
         PreparedStatement ps = connection.prepareStatement(sql);
@@ -56,7 +57,7 @@ public class MediumVoltageCondition {
             row.setField(1, resultSet.getString("productModel"));
             row.setField(2, resultSet.getString("location"));
             row.setField(3, resultSet.getString("productModelC"));
-            row.setField(4, (resultSet.getDouble("avgA") + resultSet.getDouble("avgB") + resultSet.getDouble("avgC")) / 3);
+            row.setField(4, (resultSet.getDouble("ActivePowerAvg") / (resultSet.getDouble("ActivePowerAvg") + resultSet.getDouble("ReactivePowerAvg"))));
             row.setField(5, end);
             row.setField(6, DateUtils.formatDate(new Date()));
             list.add(row);
@@ -67,13 +68,13 @@ public class MediumVoltageCondition {
         DataSource<Row> source = env.fromCollection(list);
         // source.print();
 
-        String insertQuery = "INSERT INTO RE_VOLTAGE_CONDITION(ASSETYPE,PRODUCTMODEL,LOCATION,productModelC,VOLTAGECONDITION,TIMEPOINT,CREATETIME) VALUES(?,?,?,?,?,?,?)";
+        String insertQuery = "INSERT INTO RE_VOLTAGE_POWERFACTOR(ASSETYPE,PRODUCTMODEL,LOCATION,productModelC,POWERFACTOR,TIMEPOINT,CREATETIME) VALUES(?,?,?,?,?,?,?)";
         JDBCOutputFormat.JDBCOutputFormatBuilder outputBuilder =
                 JDBCOutputFormat.buildJDBCOutputFormat().setDrivername(DB2_DRIVER_NAME).setDBUrl(DB2_DB_URL)
                         .setQuery(insertQuery).setSqlTypes(type).setUsername(DB2_USERNAME).setPassword(DB2_PASSWORD);
         source.output(outputBuilder.finish());
 
-        env.execute("MediumVoltageCondition");
+        env.execute("MediumVoltagePowerFactor");
     }
 
     private static int[] getType() {

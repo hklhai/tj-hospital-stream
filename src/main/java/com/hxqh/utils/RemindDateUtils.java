@@ -7,6 +7,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import static com.hxqh.constant.Constant.HOUR_MAP;
+import static com.hxqh.constant.Constant.HOUR_PER6_MAP;
 
 /**
  * Created by Ocean lin on 2020/3/11.
@@ -43,6 +44,27 @@ public class RemindDateUtils {
         return new DataStartEnd(first + " 00:00:00", last + " 23:59:59");
     }
 
+
+    /**
+     * 获取当天的前6小时
+     *
+     * @return
+     */
+    public static DataStartEnd getLast6HoursStartEndTime() {
+        String s = "";
+        Calendar c = Calendar.getInstance();
+        int i = c.get(Calendar.HOUR_OF_DAY);
+        int cn = i / 6 - 1;
+        if (cn == -1) {
+            c.add(Calendar.DAY_OF_MONTH, -1);
+            s = HOUR_PER6_MAP.get(3);
+        } else {
+            s = HOUR_PER6_MAP.get(cn);
+        }
+        String now = format.format(c.getTime());
+        String[] split = s.split("\\|");
+        return new DataStartEnd(now + " " + split[0], now + " " + split[1]);
+    }
 
     /**
      * 获取当天的前8小时
@@ -94,13 +116,13 @@ public class RemindDateUtils {
      * @return
      */
     public static DataStartEnd getLastYearStartEndTime() {
-        //获取当前月第一天：
+        //获取当前年第一天：
         Calendar c = Calendar.getInstance();
         c.add(Calendar.MONTH, -12);
         c.set(Calendar.DAY_OF_MONTH, 1);
         String first = format.format(c.getTime());
 
-        //获取当前月最后一天
+        //获取当前年最后一天
         Calendar ca = Calendar.getInstance();
         ca.add(Calendar.MONTH, -1);
         ca.set(Calendar.DAY_OF_MONTH, ca.getActualMaximum(Calendar.DAY_OF_MONTH));
