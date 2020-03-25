@@ -21,14 +21,14 @@ import java.util.List;
 import static com.hxqh.constant.Constant.*;
 
 /**
- * 单台中压设备-季度有功电度量和无功电度量
+ * 单台中压设备-年度有功电度量和无功电度量
  * <p>
- * Created by Ocean lin on 2020/3/25.
+ * Created by Ocean lin on 2020/3/26.
  *
  * @author Ocean lin
  */
 @SuppressWarnings("Duplicates")
-public class MediumVoltageElectricalMeasurementQuarter {
+public class MediumVoltageElectricalMeasurementYear {
 
     public static void main(String[] args) throws Exception {
         final int[] type = getType();
@@ -38,12 +38,12 @@ public class MediumVoltageElectricalMeasurementQuarter {
         List<Tuple2<String, Row>> list = new ArrayList<>();
         List<Tuple2<String, Row>> endList = new ArrayList<>();
         Connection connection = ElasticSearchUtils.getConnection();
-        DataStartEnd startEnd = RemindDateUtils.getLastMonthStartEndTime();
+        DataStartEnd startEnd = RemindDateUtils.getLastYearStartEndTime();
         String start = startEnd.getStart();
         String end = startEnd.getEnd();
 
-//        String sqlFirst = "select IEDName,assetYpe,productModel,location,productModelC,ActiveElectricDegree,ReactiveElectricDegree,ColTime,CreateTime from yc_mediumvoltage3 where  ColTime>'2020-03-01 00:00:00' order by CreateTime asc limit 1";
-//        String sqlEnd = "select IEDName,assetYpe,productModel,location,productModelC,ActiveElectricDegree,ReactiveElectricDegree,ColTime,CreateTime from yc_mediumvoltage3 where  ColTime<'2020-03-31 23:59:59' order by CreateTime desc limit 1";
+//        String sqlFirst = "select IEDName,assetYpe,productModel,location,productModelC,ActiveElectricDegree,ReactiveElectricDegree,ColTime,CreateTime from yc_mediumvoltage3 where  ColTime>'2020-01-01 00:00:00' order by CreateTime asc limit 1";
+//        String sqlEnd = "select IEDName,assetYpe,productModel,location,productModelC,ActiveElectricDegree,ReactiveElectricDegree,ColTime,CreateTime from yc_mediumvoltage3 where ColTime<'2020-12-31 23:59:59' order by CreateTime desc limit 1";
 
         String sqlFirst = "select IEDName,assetYpe,productModel,location,productModelC,ActiveElectricDegree,ReactiveElectricDegree,ColTime,CreateTime from yc_mediumvoltage3 where  ColTime>'" + start + "' order by ColTime asc limit 1";
         String sqlEnd = "select IEDName,assetYpe,productModel,location,productModelC,ActiveElectricDegree,ReactiveElectricDegree,ColTime,CreateTime from yc_mediumvoltage3 where ColTime<'" + end + "' order by ColTime desc limit 1";
@@ -83,7 +83,7 @@ public class MediumVoltageElectricalMeasurementQuarter {
             row.setField(6, resultEnd.getDouble("ReactiveElectricDegree"));
             row.setField(7, resultEnd.getString("ColTime"));
             row.setField(8, resultEnd.getString("CreateTime"));
-            row.setField(9, RemindDateUtils.getLastQuarter());
+            row.setField(9, RemindDateUtils.getLastYear());
             endList.add(Tuple2.of(iedName, row));
         }
         DataSource<Tuple2<String, Row>> endDataSet = env.fromCollection(endList);
@@ -97,19 +97,19 @@ public class MediumVoltageElectricalMeasurementQuarter {
                 Double reactiveElectricDegree = Double.parseDouble(second.f1.getField(6).toString()) - Double.parseDouble(first.f1.getField(6).toString());
                 second.f1.setField(5, activeElectricDegree);
                 second.f1.setField(6, reactiveElectricDegree);
-                second.f1.setField(9, RemindDateUtils.getLastQuarter());
+                second.f1.setField(9, RemindDateUtils.getLastYear());
                 return second.f1;
             }
         });
 
-        String insertQuery = "INSERT INTO RE_VOLTAGE_EM_QUARTER(IEDName,ASSETYPE,PRODUCTMODEL,LOCATION,productModelC,ActiveElectricDegree,ReactiveElectricDegree,ColTime,TIMEPOINT,CREATETIME) VALUES(?,?,?,?,?,?,?,?,?,?)";
+        String insertQuery = "INSERT INTO RE_VOLTAGE_EM_YEAR(IEDName,ASSETYPE,PRODUCTMODEL,LOCATION,productModelC,ActiveElectricDegree,ReactiveElectricDegree,ColTime,TIMEPOINT,CREATETIME) VALUES(?,?,?,?,?,?,?,?,?,?)";
         // ElectricalMeasurement
         JDBCOutputFormat.JDBCOutputFormatBuilder outputBuilder =
                 JDBCOutputFormat.buildJDBCOutputFormat().setDrivername(DB2_DRIVER_NAME).setDBUrl(DB2_DB_URL)
                         .setQuery(insertQuery).setSqlTypes(type).setUsername(DB2_USERNAME).setPassword(DB2_PASSWORD);
         join.output(outputBuilder.finish());
 
-        env.execute("MediumVoltageElectricalMeasurementQuarter");
+        env.execute("MediumVoltageElectricalMeasurementYear");
 
     }
 
