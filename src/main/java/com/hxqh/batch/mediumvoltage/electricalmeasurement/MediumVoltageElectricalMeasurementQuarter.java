@@ -27,7 +27,6 @@ import static com.hxqh.constant.Constant.*;
  *
  * @author Ocean lin
  */
-@SuppressWarnings("Duplicates")
 public class MediumVoltageElectricalMeasurementQuarter {
 
     public static void main(String[] args) throws Exception {
@@ -72,7 +71,8 @@ public class MediumVoltageElectricalMeasurementQuarter {
         PreparedStatement psEnd = connection.prepareStatement(sqlEnd);
         ResultSet resultEnd = psEnd.executeQuery();
         while (resultEnd.next()) {
-            Row row = new Row(10);
+            Row row = new Row(12);
+            Double electricDegree = resultEnd.getDouble("ActiveElectricDegree") + resultEnd.getDouble("ReactiveElectricDegree");
             String iedName = resultEnd.getString("IEDName");
             row.setField(0, iedName);
             row.setField(1, resultEnd.getString("assetYpe"));
@@ -84,6 +84,8 @@ public class MediumVoltageElectricalMeasurementQuarter {
             row.setField(7, resultEnd.getString("ColTime"));
             row.setField(8, resultEnd.getString("CreateTime"));
             row.setField(9, RemindDateUtils.getLastQuarter());
+            row.setField(10, electricDegree);
+            row.setField(11, resultEnd.getDouble("ReactiveElectricDegree") / electricDegree);
             endList.add(Tuple2.of(iedName, row));
         }
         DataSource<Tuple2<String, Row>> endDataSet = env.fromCollection(endList);
@@ -102,7 +104,7 @@ public class MediumVoltageElectricalMeasurementQuarter {
             }
         });
 
-        String insertQuery = "INSERT INTO RE_VOLTAGE_EM_QUARTER(IEDName,ASSETYPE,PRODUCTMODEL,LOCATION,productModelC,ActiveElectricDegree,ReactiveElectricDegree,ColTime,TIMEPOINT,CREATETIME) VALUES(?,?,?,?,?,?,?,?,?,?)";
+        String insertQuery = "INSERT INTO RE_VOLTAGE_EM_QUARTER(IEDName,ASSETYPE,PRODUCTMODEL,LOCATION,productModelC,ActiveElectricDegree,ReactiveElectricDegree,ColTime,TIMEPOINT,CREATETIME,ElectricDegree,ReactivePercent) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
         // ElectricalMeasurement
         JDBCOutputFormat.JDBCOutputFormatBuilder outputBuilder =
                 JDBCOutputFormat.buildJDBCOutputFormat().setDrivername(DB2_DRIVER_NAME).setDBUrl(DB2_DB_URL)
@@ -115,6 +117,6 @@ public class MediumVoltageElectricalMeasurementQuarter {
 
 
     private static int[] getType() {
-        return new int[]{Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.DOUBLE, Types.DOUBLE, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR};
+        return new int[]{Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.DOUBLE, Types.DOUBLE, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.DOUBLE, Types.DOUBLE};
     }
 }

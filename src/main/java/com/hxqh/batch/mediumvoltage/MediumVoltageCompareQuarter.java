@@ -107,7 +107,7 @@ public class MediumVoltageCompareQuarter {
 
 
     private static int[] getType() {
-        return new int[]{Types.VARCHAR, Types.VARCHAR, Types.DOUBLE, Types.VARCHAR, Types.VARCHAR, Types.DOUBLE,
+        return new int[]{Types.VARCHAR, Types.VARCHAR, Types.DOUBLE, Types.VARCHAR, Types.VARCHAR, Types.DOUBLE
         };
     }
 

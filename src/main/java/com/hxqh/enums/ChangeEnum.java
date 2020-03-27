@@ -19,8 +19,8 @@ public enum ChangeEnum implements Change {
 
     Decreased("有所下降"),
 
-    Roughly_flat("大致持平（分数相差±5%内）");
-
+    // （分数相差±5%内）
+    Roughly_flat("大致持平");
 
     private String code;
 

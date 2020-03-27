@@ -23,11 +23,10 @@ import static com.hxqh.constant.Constant.*;
 /**
  * 单台中压设备-年度有功电度量和无功电度量
  * <p>
- * Created by Ocean lin on 2020/3/26.
+ * Created by Ocean lin on 2020/3/27.
  *
  * @author Ocean lin
  */
-@SuppressWarnings("Duplicates")
 public class MediumVoltageElectricalMeasurementYear {
 
     public static void main(String[] args) throws Exception {
@@ -72,8 +71,9 @@ public class MediumVoltageElectricalMeasurementYear {
         PreparedStatement psEnd = connection.prepareStatement(sqlEnd);
         ResultSet resultEnd = psEnd.executeQuery();
         while (resultEnd.next()) {
-            Row row = new Row(10);
+            Row row = new Row(12);
             String iedName = resultEnd.getString("IEDName");
+            Double electricDegree = resultEnd.getDouble("ActiveElectricDegree") + resultEnd.getDouble("ReactiveElectricDegree");
             row.setField(0, iedName);
             row.setField(1, resultEnd.getString("assetYpe"));
             row.setField(2, resultEnd.getString("productModel"));
@@ -84,6 +84,8 @@ public class MediumVoltageElectricalMeasurementYear {
             row.setField(7, resultEnd.getString("ColTime"));
             row.setField(8, resultEnd.getString("CreateTime"));
             row.setField(9, RemindDateUtils.getLastYear());
+            row.setField(10, electricDegree);
+            row.setField(11, resultEnd.getDouble("ReactiveElectricDegree") / electricDegree);
             endList.add(Tuple2.of(iedName, row));
         }
         DataSource<Tuple2<String, Row>> endDataSet = env.fromCollection(endList);
@@ -102,7 +104,7 @@ public class MediumVoltageElectricalMeasurementYear {
             }
         });
 
-        String insertQuery = "INSERT INTO RE_VOLTAGE_EM_YEAR(IEDName,ASSETYPE,PRODUCTMODEL,LOCATION,productModelC,ActiveElectricDegree,ReactiveElectricDegree,ColTime,TIMEPOINT,CREATETIME) VALUES(?,?,?,?,?,?,?,?,?,?)";
+        String insertQuery = "INSERT INTO RE_VOLTAGE_EM_YEAR(IEDName,ASSETYPE,PRODUCTMODEL,LOCATION,productModelC,ActiveElectricDegree,ReactiveElectricDegree,ColTime,TIMEPOINT,CREATETIME,ElectricDegree,ReactivePercent) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
         // ElectricalMeasurement
         JDBCOutputFormat.JDBCOutputFormatBuilder outputBuilder =
                 JDBCOutputFormat.buildJDBCOutputFormat().setDrivername(DB2_DRIVER_NAME).setDBUrl(DB2_DB_URL)
@@ -115,6 +117,6 @@ public class MediumVoltageElectricalMeasurementYear {
 
 
     private static int[] getType() {
-        return new int[]{Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.DOUBLE, Types.DOUBLE, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR};
+        return new int[]{Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.DOUBLE, Types.DOUBLE, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.DOUBLE, Types.DOUBLE};
     }
 }

@@ -73,7 +73,17 @@ nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.batch.mediumvoltage.loadfa
 nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.batch.mediumvoltage.condition.MediumVoltageCondition /root/TJJar/batch/tj-hospital.jar > /root/TJJar/MediumVoltageCondition.log 2>&1 &
 
 ### 中压-平均功率因数
+nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.batch.mediumvoltage.condition.MediumVoltagePowerFactor /root/TJJar/batch/tj-hospital.jar > /root/TJJar/MediumVoltagePowerFactor.log 2>&1 &
 
+### 单台中压设备-季度、年度有功电度量和无功电度量
+nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.batch.mediumvoltage.electricalmeasurement.MediumVoltageElectricalMeasurementQuarter /root/TJJar/batch/tj-hospital.jar > /root/TJJar/MediumVoltageElectricalMeasurementQuarter.log 2>&1 &
+
+nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.batch.mediumvoltage.electricalmeasurement.MediumVoltageElectricalMeasurementYear /root/TJJar/batch/tj-hospital.jar > /root/TJJar/MediumVoltageElectricalMeasurementYear.log 2>&1 &
+
+### 单台中压设备-季度、年度总度量对比
+nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.batch.mediumvoltage.electricalmeasurement.MediumVoltageElectricalMeasurementCompQuarter /root/TJJar/batch/tj-hospital.jar > /root/TJJar/MediumVoltageElectricalMeasurementCompQuarter.log 2>&1 &
+
+nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.batch.mediumvoltage.electricalmeasurement.MediumVoltageElectricalMeasurementCompYear /root/TJJar/batch/tj-hospital.jar > /root/TJJar/MediumVoltageElectricalMeasurementCompYear.log 2>&1 &
 
 
 ## 批量停止Flink作业

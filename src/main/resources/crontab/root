@@ -85,6 +85,21 @@
 10 6 1 10 * root /root/shell/report/TotalMediumVoltageLoadFactorLevelQuarter.sh
 
 
+# 单台中压设备-季度有功电度量和无功电度量
+20 6 1 1 * root /root/shell/report/MediumVoltageElectricalMeasurementQuarter.sh
+20 6 1 4 * root /root/shell/report/MediumVoltageElectricalMeasurementQuarter.sh
+20 6 1 7 * root /root/shell/report/MediumVoltageElectricalMeasurementQuarter.sh
+20 6 1 10 * root /root/shell/report/MediumVoltageElectricalMeasurementQuarter.sh
+
+
+# 单台中压设备-季度总电度量比对
+30 6 1 1 * root /root/shell/report/MediumVoltageElectricalMeasurementCompQuarter.sh
+30 6 1 4 * root /root/shell/report/MediumVoltageElectricalMeasurementCompQuarter.sh
+30 6 1 7 * root /root/shell/report/MediumVoltageElectricalMeasurementCompQuarter.sh
+30 6 1 10 * root /root/shell/report/MediumVoltageElectricalMeasurementCompQuarter.sh
+
+
+
 
 
 # 每年执行年度报告
@@ -104,12 +119,24 @@
 0 7 1 1 * root /root/shell/report/TotalMediumVoltageLoadFactorYear.sh
 10 7 1 1 * root /root/shell/report/TotalMediumVoltageLoadFactorLevelYear.sh
 20 7 1 1 * root /root/shell/report/TotalMediumVoltageLoadFactorCompareYear.sh
+30 7 1 1 * root /root/shell/report/MediumVoltageElectricalMeasurementYear.sh
+40 7 1 1 * root /root/shell/report/MediumVoltageElectricalMeasurementCompYear.sh
+
 
 
 # 中压设备-电压状况
 5 8 * * * root /root/shell/report/MediumVoltageCondition.sh
 5 16 * * * root /root/shell/report/MediumVoltageCondition.sh
 5 0 * * * root /root/shell/report/MediumVoltageCondition.sh
+
+
+# 中压设备-平均功率因数
+5 6 * * * root /root/shell/report/MediumVoltagePowerFactor.sh
+5 12 * * * root /root/shell/report/MediumVoltagePowerFactor.sh
+5 18 * * * root /root/shell/report/MediumVoltagePowerFactor.sh
+5 0 * * * root /root/shell/report/MediumVoltagePowerFactor.sh
+
+
 
 
 
