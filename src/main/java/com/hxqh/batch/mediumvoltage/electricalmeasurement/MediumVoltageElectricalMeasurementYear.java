@@ -2,6 +2,7 @@ package com.hxqh.batch.mediumvoltage.electricalmeasurement;
 
 import com.hxqh.domain.info.DataStartEnd;
 import com.hxqh.utils.ElasticSearchUtils;
+import com.hxqh.utils.LevelUtils;
 import com.hxqh.utils.RemindDateUtils;
 import org.apache.flink.api.common.functions.JoinFunction;
 import org.apache.flink.api.java.DataSet;
@@ -71,9 +72,8 @@ public class MediumVoltageElectricalMeasurementYear {
         PreparedStatement psEnd = connection.prepareStatement(sqlEnd);
         ResultSet resultEnd = psEnd.executeQuery();
         while (resultEnd.next()) {
-            Row row = new Row(12);
+            Row row = new Row(13);
             String iedName = resultEnd.getString("IEDName");
-            Double electricDegree = resultEnd.getDouble("ActiveElectricDegree") + resultEnd.getDouble("ReactiveElectricDegree");
             row.setField(0, iedName);
             row.setField(1, resultEnd.getString("assetYpe"));
             row.setField(2, resultEnd.getString("productModel"));
@@ -84,8 +84,9 @@ public class MediumVoltageElectricalMeasurementYear {
             row.setField(7, resultEnd.getString("ColTime"));
             row.setField(8, resultEnd.getString("CreateTime"));
             row.setField(9, RemindDateUtils.getLastYear());
-            row.setField(10, electricDegree);
-            row.setField(11, resultEnd.getDouble("ReactiveElectricDegree") / electricDegree);
+            row.setField(10, 0.0d);
+            row.setField(11, 0.0d);
+            row.setField(12, "");
             endList.add(Tuple2.of(iedName, row));
         }
         DataSource<Tuple2<String, Row>> endDataSet = env.fromCollection(endList);
@@ -97,14 +98,19 @@ public class MediumVoltageElectricalMeasurementYear {
             public Row join(Tuple2<String, Row> first, Tuple2<String, Row> second) throws Exception {
                 Double activeElectricDegree = Double.parseDouble(second.f1.getField(5).toString()) - Double.parseDouble(first.f1.getField(5).toString());
                 Double reactiveElectricDegree = Double.parseDouble(second.f1.getField(6).toString()) - Double.parseDouble(first.f1.getField(6).toString());
+                Double electricDegree = activeElectricDegree + reactiveElectricDegree;
+                Double reactivePercent = reactiveElectricDegree / (electricDegree + 0.01);
                 second.f1.setField(5, activeElectricDegree);
                 second.f1.setField(6, reactiveElectricDegree);
                 second.f1.setField(9, RemindDateUtils.getLastYear());
+                second.f1.setField(10, electricDegree);
+                second.f1.setField(11, reactivePercent);
+                second.f1.setField(12, LevelUtils.computePercentageRreactive(reactivePercent));
                 return second.f1;
             }
         });
 
-        String insertQuery = "INSERT INTO RE_VOLTAGE_EM_YEAR(IEDName,ASSETYPE,PRODUCTMODEL,LOCATION,productModelC,ActiveElectricDegree,ReactiveElectricDegree,ColTime,TIMEPOINT,CREATETIME,ElectricDegree,ReactivePercent) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
+        String insertQuery = "INSERT INTO RE_VOLTAGE_EM_YEAR(IEDName,ASSETYPE,PRODUCTMODEL,LOCATION,productModelC,ActiveElectricDegree,ReactiveElectricDegree,ColTime,TIMEPOINT,CREATETIME,ElectricDegree,ReactivePercent,Opinion) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)";
         // ElectricalMeasurement
         JDBCOutputFormat.JDBCOutputFormatBuilder outputBuilder =
                 JDBCOutputFormat.buildJDBCOutputFormat().setDrivername(DB2_DRIVER_NAME).setDBUrl(DB2_DB_URL)
@@ -112,11 +118,11 @@ public class MediumVoltageElectricalMeasurementYear {
         join.output(outputBuilder.finish());
 
         env.execute("MediumVoltageElectricalMeasurementYear");
-
     }
 
 
     private static int[] getType() {
-        return new int[]{Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.DOUBLE, Types.DOUBLE, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.DOUBLE, Types.DOUBLE};
+        return new int[]{Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.DOUBLE, Types.DOUBLE,
+                Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.DOUBLE, Types.DOUBLE, Types.VARCHAR};
     }
 }

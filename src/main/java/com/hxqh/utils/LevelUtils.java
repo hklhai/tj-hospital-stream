@@ -1,6 +1,7 @@
 package com.hxqh.utils;
 
 import com.hxqh.enums.HealthLevel;
+import com.hxqh.enums.PercentageRreactive;
 
 /**
  * 优秀—绿色：80<分数≤100；
@@ -20,6 +21,9 @@ public class LevelUtils {
     private static final Double Eighty_PERCENT = 0.8d;
     private static final Double Ninety_PERCENT = 0.9d;
     private static final Double OneHundred_PERCENT = 1d;
+
+    private static final Double TEN_PERCENT = 0.1d;
+
 
     public static String computeLevel(Double score) {
         if (Eighty < score && score <= OneHundred) {
@@ -42,5 +46,12 @@ public class LevelUtils {
         }
     }
 
+    public static String computePercentageRreactive(Double percentage) {
+        if (percentage > TEN_PERCENT ) {
+            return PercentageRreactive.Concerned.getCode();
+        }else {
+            return PercentageRreactive.Reasonable.getCode();
+        }
+    }
 
 }

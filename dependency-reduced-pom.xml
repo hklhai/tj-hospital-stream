@@ -6,6 +6,23 @@
   <name>TJ Hospital</name>
   <version>1.0</version>
   <build>
+    <resources>
+      <resource>
+        <filtering>true</filtering>
+        <directory>src/main/resources</directory>
+        <excludes>
+          <exclude>crontab/**</exclude>
+          <exclude>db2/**</exclude>
+          <exclude>doc/**</exclude>
+          <exclude>ElasticSearch/**</exclude>
+          <exclude>flink/**</exclude>
+          <exclude>kafka/**</exclude>
+          <exclude>mysql/**</exclude>
+          <exclude>shell/**</exclude>
+          <exclude>template/**</exclude>
+        </excludes>
+      </resource>
+    </resources>
     <finalName>tj-hospital</finalName>
     <pluginManagement>
       <plugins>

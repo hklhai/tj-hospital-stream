@@ -2,6 +2,7 @@ package com.hxqh.batch.mediumvoltage.electricalmeasurement;
 
 import com.hxqh.domain.info.DataStartEnd;
 import com.hxqh.utils.ElasticSearchUtils;
+import com.hxqh.utils.LevelUtils;
 import com.hxqh.utils.RemindDateUtils;
 import org.apache.flink.api.common.functions.JoinFunction;
 import org.apache.flink.api.java.DataSet;
@@ -41,8 +42,8 @@ public class MediumVoltageElectricalMeasurementQuarter {
         String start = startEnd.getStart();
         String end = startEnd.getEnd();
 
-//        String sqlFirst = "select IEDName,assetYpe,productModel,location,productModelC,ActiveElectricDegree,ReactiveElectricDegree,ColTime,CreateTime from yc_mediumvoltage3 where  ColTime>'2020-03-01 00:00:00' order by CreateTime asc limit 1";
-//        String sqlEnd = "select IEDName,assetYpe,productModel,location,productModelC,ActiveElectricDegree,ReactiveElectricDegree,ColTime,CreateTime from yc_mediumvoltage3 where  ColTime<'2020-03-31 23:59:59' order by CreateTime desc limit 1";
+        // String sqlFirst = "select IEDName,assetYpe,productModel,location,productModelC,ActiveElectricDegree,ReactiveElectricDegree,ColTime,CreateTime from yc_mediumvoltage3 where  ColTime>'2020-03-01 00:00:00' order by CreateTime asc limit 1";
+        // String sqlEnd = "select IEDName,assetYpe,productModel,location,productModelC,ActiveElectricDegree,ReactiveElectricDegree,ColTime,CreateTime from yc_mediumvoltage3 where  ColTime<'2020-03-31 23:59:59' order by CreateTime desc limit 1";
 
         String sqlFirst = "select IEDName,assetYpe,productModel,location,productModelC,ActiveElectricDegree,ReactiveElectricDegree,ColTime,CreateTime from yc_mediumvoltage3 where  ColTime>'" + start + "' order by ColTime asc limit 1";
         String sqlEnd = "select IEDName,assetYpe,productModel,location,productModelC,ActiveElectricDegree,ReactiveElectricDegree,ColTime,CreateTime from yc_mediumvoltage3 where ColTime<'" + end + "' order by ColTime desc limit 1";
@@ -71,8 +72,7 @@ public class MediumVoltageElectricalMeasurementQuarter {
         PreparedStatement psEnd = connection.prepareStatement(sqlEnd);
         ResultSet resultEnd = psEnd.executeQuery();
         while (resultEnd.next()) {
-            Row row = new Row(12);
-            Double electricDegree = resultEnd.getDouble("ActiveElectricDegree") + resultEnd.getDouble("ReactiveElectricDegree");
+            Row row = new Row(13);
             String iedName = resultEnd.getString("IEDName");
             row.setField(0, iedName);
             row.setField(1, resultEnd.getString("assetYpe"));
@@ -84,8 +84,9 @@ public class MediumVoltageElectricalMeasurementQuarter {
             row.setField(7, resultEnd.getString("ColTime"));
             row.setField(8, resultEnd.getString("CreateTime"));
             row.setField(9, RemindDateUtils.getLastQuarter());
-            row.setField(10, electricDegree);
-            row.setField(11, resultEnd.getDouble("ReactiveElectricDegree") / electricDegree);
+            row.setField(10, 0.0d);
+            row.setField(11, 0.0d);
+            row.setField(12, "");
             endList.add(Tuple2.of(iedName, row));
         }
         DataSource<Tuple2<String, Row>> endDataSet = env.fromCollection(endList);
@@ -97,14 +98,19 @@ public class MediumVoltageElectricalMeasurementQuarter {
             public Row join(Tuple2<String, Row> first, Tuple2<String, Row> second) throws Exception {
                 Double activeElectricDegree = Double.parseDouble(second.f1.getField(5).toString()) - Double.parseDouble(first.f1.getField(5).toString());
                 Double reactiveElectricDegree = Double.parseDouble(second.f1.getField(6).toString()) - Double.parseDouble(first.f1.getField(6).toString());
+                Double electricDegree = activeElectricDegree + reactiveElectricDegree;
+                Double reactivePercent = reactiveElectricDegree / (electricDegree + 0.01);
                 second.f1.setField(5, activeElectricDegree);
                 second.f1.setField(6, reactiveElectricDegree);
                 second.f1.setField(9, RemindDateUtils.getLastQuarter());
+                second.f1.setField(10, electricDegree);
+                second.f1.setField(11, reactivePercent);
+                second.f1.setField(12, LevelUtils.computePercentageRreactive(reactivePercent));
                 return second.f1;
             }
         });
 
-        String insertQuery = "INSERT INTO RE_VOLTAGE_EM_QUARTER(IEDName,ASSETYPE,PRODUCTMODEL,LOCATION,productModelC,ActiveElectricDegree,ReactiveElectricDegree,ColTime,TIMEPOINT,CREATETIME,ElectricDegree,ReactivePercent) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
+        String insertQuery = "INSERT INTO RE_VOLTAGE_EM_QUARTER(IEDName,ASSETYPE,PRODUCTMODEL,LOCATION,productModelC,ActiveElectricDegree,ReactiveElectricDegree,ColTime,TIMEPOINT,CREATETIME,ElectricDegree,ReactivePercent,Opinion) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)";
         // ElectricalMeasurement
         JDBCOutputFormat.JDBCOutputFormatBuilder outputBuilder =
                 JDBCOutputFormat.buildJDBCOutputFormat().setDrivername(DB2_DRIVER_NAME).setDBUrl(DB2_DB_URL)
@@ -117,6 +123,7 @@ public class MediumVoltageElectricalMeasurementQuarter {
 
 
     private static int[] getType() {
-        return new int[]{Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.DOUBLE, Types.DOUBLE, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.DOUBLE, Types.DOUBLE};
+        return new int[]{Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.DOUBLE, Types.DOUBLE,
+                Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.DOUBLE, Types.DOUBLE, Types.VARCHAR};
     }
 }
