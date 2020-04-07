@@ -3,6 +3,7 @@ package com.hxqh.task;
 import com.alibaba.fastjson.JSON;
 import com.hxqh.domain.YcMediumVoltage;
 import com.hxqh.domain.base.IEDEntity;
+import com.hxqh.sink.MySQLYcMediumVoltageRunStatusSink;
 import com.hxqh.sink.MySQLYcMediumVoltageSink;
 import com.hxqh.transfer.ProcessWaterEmitter;
 import com.hxqh.utils.ConvertUtils;
@@ -77,6 +78,7 @@ public class ProcessYcMediumVoltageTask {
         }).name("YC-MediumVoltage-Filter");
 
         filter.addSink(new MySQLYcMediumVoltageSink()).name("YC-MediumVoltage-DB2-Sink");
+        filter.addSink(new MySQLYcMediumVoltageRunStatusSink()).name("YC-MediumVoltage-RUN-STATUS-DB2-Sink");
 
         persistEs(filter);
 

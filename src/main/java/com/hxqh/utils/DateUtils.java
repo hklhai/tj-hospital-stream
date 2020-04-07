@@ -1,5 +1,6 @@
 package com.hxqh.utils;
 
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -62,5 +63,9 @@ public class DateUtils {
         return s;
     }
 
+    public static int getQuarter(Timestamp timestamp) {
+        int month = timestamp.getMonth() + 1;
+        return month % 3 + 1;
+    }
 
 }

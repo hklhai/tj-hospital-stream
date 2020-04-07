@@ -18,6 +18,8 @@ import java.util.Properties;
 import static com.hxqh.constant.Constant.*;
 
 /**
+ * 温度统计
+ * <p>
  * Created by Ocean lin on 2020/4/2.
  *
  * @author Ocean lin

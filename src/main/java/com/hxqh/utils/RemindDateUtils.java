@@ -283,4 +283,9 @@ public class RemindDateUtils {
         return season;
     }
 
+    public static Integer getNowYear() {
+        Calendar c = Calendar.getInstance();
+        return Integer.parseInt(formatYear.format(c.getTime()));
+    }
+
 }
