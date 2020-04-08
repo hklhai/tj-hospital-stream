@@ -25,7 +25,6 @@ public class DateUtils {
         }
     }
 
-
     /**
      * 日期转换为时间戳
      *
@@ -47,6 +46,12 @@ public class DateUtils {
     }
 
 
+    /**
+     * 字符串转日期
+     *
+     * @param time
+     * @return
+     */
     public static Date formatDate(String time) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
@@ -57,15 +62,24 @@ public class DateUtils {
         }
     }
 
+
+    /**
+     * 日期转字符串
+     *
+     * @param time
+     * @return
+     */
     public static String formatDate(Date time) {
         DateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String s = format1.format(time);
         return s;
     }
 
+
     public static int getQuarter(Timestamp timestamp) {
         int month = timestamp.getMonth() + 1;
         return month % 3 + 1;
     }
+
 
 }

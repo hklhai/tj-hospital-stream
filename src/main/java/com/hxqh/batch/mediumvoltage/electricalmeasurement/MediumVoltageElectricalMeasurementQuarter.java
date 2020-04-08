@@ -5,11 +5,16 @@ import com.hxqh.utils.ElasticSearchUtils;
 import com.hxqh.utils.LevelUtils;
 import com.hxqh.utils.RemindDateUtils;
 import org.apache.flink.api.common.functions.JoinFunction;
+import org.apache.flink.api.common.functions.MapFunction;
+import org.apache.flink.api.common.typeinfo.BasicTypeInfo;
+import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.java.DataSet;
 import org.apache.flink.api.java.ExecutionEnvironment;
+import org.apache.flink.api.java.io.jdbc.JDBCInputFormat;
 import org.apache.flink.api.java.io.jdbc.JDBCOutputFormat;
 import org.apache.flink.api.java.operators.DataSource;
-import org.apache.flink.api.java.tuple.Tuple2;
+import org.apache.flink.api.java.tuple.Tuple5;
+import org.apache.flink.api.java.typeutils.RowTypeInfo;
 import org.apache.flink.types.Row;
 
 import java.sql.Connection;
@@ -32,85 +37,71 @@ public class MediumVoltageElectricalMeasurementQuarter {
 
     public static void main(String[] args) throws Exception {
         final int[] type = getType();
-
         ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
+        List<Tuple5<String, Double, Double, Double, Double>> list = new ArrayList<>();
 
-        List<Tuple2<String, Row>> list = new ArrayList<>();
-        List<Tuple2<String, Row>> endList = new ArrayList<>();
+        // asset
+        String assetQuery = "select ASSETNUM,ASSETYPE,PRODUCTMODEL,LOCATION,productModelC from ASSET where ASSETYPE='中压开关设备'";
+        JDBCInputFormat.JDBCInputFormatBuilder assetInputBuilder =
+                JDBCInputFormat.buildJDBCInputFormat().setDrivername(DB2_DRIVER_NAME).setDBUrl(DB2_DB_URL)
+                        .setQuery(assetQuery).setRowTypeInfo(new RowTypeInfo(
+                        new TypeInformation<?>[]{BasicTypeInfo.STRING_TYPE_INFO, BasicTypeInfo.STRING_TYPE_INFO, BasicTypeInfo.STRING_TYPE_INFO, BasicTypeInfo.STRING_TYPE_INFO, BasicTypeInfo.STRING_TYPE_INFO})).
+                        setUsername(DB2_USERNAME)
+                        .setPassword(DB2_PASSWORD);
+        DataSource<Row> assetRow = env.createInput(assetInputBuilder.finish());
+        DataSet<Tuple5<String, String, String, String, String>> assetDs = assetRow.map(new MapFunction<Row, Tuple5<String, String, String, String, String>>() {
+            @Override
+            public Tuple5<String, String, String, String, String> map(Row row) throws Exception {
+                return Tuple5.of(row.getField(0).toString(), row.getField(1).toString(),
+                        row.getField(2).toString(), row.getField(3).toString(), row.getField(4).toString());
+            }
+        });
+
+
         Connection connection = ElasticSearchUtils.getConnection();
-        DataStartEnd startEnd = RemindDateUtils.getLastMonthStartEndTime();
+        DataStartEnd startEnd = RemindDateUtils.getLastQuarterStartEndTime();
         String start = startEnd.getStart();
         String end = startEnd.getEnd();
 
-        // String sqlFirst = "select IEDName,assetYpe,productModel,location,productModelC,ActiveElectricDegree,ReactiveElectricDegree,ColTime,CreateTime from yc_mediumvoltage3 where  ColTime>'2020-03-01 00:00:00' order by CreateTime asc limit 1";
-        // String sqlEnd = "select IEDName,assetYpe,productModel,location,productModelC,ActiveElectricDegree,ReactiveElectricDegree,ColTime,CreateTime from yc_mediumvoltage3 where  ColTime<'2020-03-31 23:59:59' order by CreateTime desc limit 1";
-
-        String sqlFirst = "select IEDName,assetYpe,productModel,location,productModelC,ActiveElectricDegree,ReactiveElectricDegree,ColTime,CreateTime from yc_mediumvoltage3 where  ColTime>'" + start + "' order by ColTime asc limit 1";
-        String sqlEnd = "select IEDName,assetYpe,productModel,location,productModelC,ActiveElectricDegree,ReactiveElectricDegree,ColTime,CreateTime from yc_mediumvoltage3 where ColTime<'" + end + "' order by ColTime desc limit 1";
-        System.out.println(sqlFirst);
-        System.out.println(sqlEnd);
+//        String sqlFirst = "select IEDName,max(ActiveElectricDegree) as ActiveElectricDegreeMax,max(ReactiveElectricDegree) as ReactiveElectricDegreeMax,min(ActiveElectricDegree) as ActiveElectricDegreeMin,min(ReactiveElectricDegree) as ReactiveElectricDegreeMin from yc_mediumvoltage3 where ColTime>='2020-03-01 00:00:00' and ColTime<='2020-03-31 23:59:59' group by IEDName";
+        String sqlFirst = "select IEDName,max(ActiveElectricDegree) as ActiveElectricDegreeMax,max(ReactiveElectricDegree) as ReactiveElectricDegreeMax,min(ActiveElectricDegree) as ActiveElectricDegreeMin,min(ReactiveElectricDegree) as ReactiveElectricDegreeMin from yc_mediumvoltage3 where ColTime>='" + start + "' and ColTime<='" + end + "' group by IEDName";
 
         PreparedStatement ps = connection.prepareStatement(sqlFirst);
         ResultSet resultSet = ps.executeQuery();
         while (resultSet.next()) {
-            Row row = new Row(9);
             String iedName = resultSet.getString("IEDName");
-            row.setField(0, iedName);
-            row.setField(1, resultSet.getString("assetYpe"));
-            row.setField(2, resultSet.getString("productModel"));
-            row.setField(3, resultSet.getString("location"));
-            row.setField(4, resultSet.getString("productModelC"));
-            row.setField(5, resultSet.getDouble("ActiveElectricDegree"));
-            row.setField(6, resultSet.getDouble("ReactiveElectricDegree"));
-            row.setField(7, resultSet.getString("ColTime"));
-            row.setField(8, resultSet.getString("CreateTime"));
-            list.add(Tuple2.of(iedName, row));
+            list.add(Tuple5.of(iedName, resultSet.getDouble("ActiveElectricDegreeMax"), resultSet.getDouble("ReactiveElectricDegreeMax"),
+                    resultSet.getDouble("ActiveElectricDegreeMin"), resultSet.getDouble("ReactiveElectricDegreeMin")
+            ));
         }
-        DataSource<Tuple2<String, Row>> startDataSet = env.fromCollection(list);
-
-
-        PreparedStatement psEnd = connection.prepareStatement(sqlEnd);
-        ResultSet resultEnd = psEnd.executeQuery();
-        while (resultEnd.next()) {
-            Row row = new Row(13);
-            String iedName = resultEnd.getString("IEDName");
-            row.setField(0, iedName);
-            row.setField(1, resultEnd.getString("assetYpe"));
-            row.setField(2, resultEnd.getString("productModel"));
-            row.setField(3, resultEnd.getString("location"));
-            row.setField(4, resultEnd.getString("productModelC"));
-            row.setField(5, resultEnd.getDouble("ActiveElectricDegree"));
-            row.setField(6, resultEnd.getDouble("ReactiveElectricDegree"));
-            row.setField(7, resultEnd.getString("ColTime"));
-            row.setField(8, resultEnd.getString("CreateTime"));
-            row.setField(9, RemindDateUtils.getLastQuarter());
-            row.setField(10, 0.0d);
-            row.setField(11, 0.0d);
-            row.setField(12, "");
-            endList.add(Tuple2.of(iedName, row));
-        }
-        DataSource<Tuple2<String, Row>> endDataSet = env.fromCollection(endList);
+        DataSource<Tuple5<String, Double, Double, Double, Double>> dataSet = env.fromCollection(list);
         ElasticSearchUtils.close(connection, ps, resultSet);
-        ElasticSearchUtils.closeResultSet(resultEnd);
 
-        DataSet<Row> join = startDataSet.join(endDataSet).where(0).equalTo(0).with(new JoinFunction<Tuple2<String, Row>, Tuple2<String, Row>, Row>() {
+
+        DataSet<Row> join = dataSet.join(assetDs).where(0).equalTo(0).with(new JoinFunction<Tuple5<String, Double, Double, Double, Double>, Tuple5<String, String, String, String, String>, Row>() {
             @Override
-            public Row join(Tuple2<String, Row> first, Tuple2<String, Row> second) throws Exception {
-                Double activeElectricDegree = Double.parseDouble(second.f1.getField(5).toString()) - Double.parseDouble(first.f1.getField(5).toString());
-                Double reactiveElectricDegree = Double.parseDouble(second.f1.getField(6).toString()) - Double.parseDouble(first.f1.getField(6).toString());
+            public Row join(Tuple5<String, Double, Double, Double, Double> first, Tuple5<String, String, String, String, String> second) throws Exception {
+                Row row = new Row(11);
+                Double activeElectricDegree = first.f1 - first.f3;
+                Double reactiveElectricDegree = first.f2 - first.f4;
                 Double electricDegree = activeElectricDegree + reactiveElectricDegree;
                 Double reactivePercent = reactiveElectricDegree / (electricDegree + 0.01);
-                second.f1.setField(5, activeElectricDegree);
-                second.f1.setField(6, reactiveElectricDegree);
-                second.f1.setField(9, RemindDateUtils.getLastQuarter());
-                second.f1.setField(10, electricDegree);
-                second.f1.setField(11, reactivePercent);
-                second.f1.setField(12, LevelUtils.computePercentageRreactive(reactivePercent));
-                return second.f1;
+                row.setField(0, second.f0);
+                row.setField(1, second.f1);
+                row.setField(2, second.f2);
+                row.setField(3, second.f3);
+                row.setField(4, second.f4);
+                row.setField(5, activeElectricDegree);
+                row.setField(6, reactiveElectricDegree);
+                row.setField(7, RemindDateUtils.getLastQuarter());
+                row.setField(8, electricDegree);
+                row.setField(9, reactivePercent);
+                row.setField(10, LevelUtils.computePercentageRreactive(reactivePercent));
+                return row;
             }
         });
 
-        String insertQuery = "INSERT INTO RE_VOLTAGE_EM_QUARTER(IEDName,ASSETYPE,PRODUCTMODEL,LOCATION,productModelC,ActiveElectricDegree,ReactiveElectricDegree,ColTime,TIMEPOINT,CREATETIME,ElectricDegree,ReactivePercent,Opinion) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        String insertQuery = "INSERT INTO RE_VOLTAGE_EM_QUARTER(IEDName,ASSETYPE,PRODUCTMODEL,LOCATION,productModelC,ActiveElectricDegree,ReactiveElectricDegree,CREATETIME,ElectricDegree,ReactivePercent,Opinion) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
         // ElectricalMeasurement
         JDBCOutputFormat.JDBCOutputFormatBuilder outputBuilder =
                 JDBCOutputFormat.buildJDBCOutputFormat().setDrivername(DB2_DRIVER_NAME).setDBUrl(DB2_DB_URL)
@@ -121,9 +112,19 @@ public class MediumVoltageElectricalMeasurementQuarter {
 
     }
 
+    private static String buildInString(List<String> assetnumList) {
+        StringBuilder stringBuilder = new StringBuilder(1024);
+        for (String s : assetnumList) {
+            stringBuilder.append("'").append(s).append("'").append(",");
+        }
+        String str = stringBuilder.toString();
+        String substring = str.substring(0, str.length() - 1);
+        return substring;
+    }
+
 
     private static int[] getType() {
         return new int[]{Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.DOUBLE, Types.DOUBLE,
-                Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.DOUBLE, Types.DOUBLE, Types.VARCHAR};
+                Types.VARCHAR, Types.DOUBLE, Types.DOUBLE, Types.VARCHAR};
     }
 }

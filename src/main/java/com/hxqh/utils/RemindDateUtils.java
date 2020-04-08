@@ -131,6 +131,13 @@ public class RemindDateUtils {
         return new DataStartEnd(first + " 00:00:00", last + " 23:59:59");
     }
 
+
+    public static String getNowMonth() {
+        Calendar c = Calendar.getInstance();
+        return formatMonth.format(c.getTime());
+    }
+
+
     /**
      * 获取上一月 年月信息
      *
@@ -201,6 +208,11 @@ public class RemindDateUtils {
         return formatYear.format(c.getTime());
     }
 
+
+    public static Integer getNowYear() {
+        Calendar c = Calendar.getInstance();
+        return Integer.parseInt(formatYear.format(c.getTime()));
+    }
 
     /**
      * 获取上一季度的所有月份字符串
@@ -281,11 +293,6 @@ public class RemindDateUtils {
                 break;
         }
         return season;
-    }
-
-    public static Integer getNowYear() {
-        Calendar c = Calendar.getInstance();
-        return Integer.parseInt(formatYear.format(c.getTime()));
     }
 
 }
