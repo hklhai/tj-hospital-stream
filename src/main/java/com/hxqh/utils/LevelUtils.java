@@ -18,9 +18,11 @@ public class LevelUtils {
     private static final Integer Eighty = 80;
     private static final Integer OneHundred = 100;
 
-    private static final Double Eighty_PERCENT = 0.8d;
+    public static final Double Sixty_PERCENT = 0.6d;
+    public static final Double Eighty_PERCENT = 0.8d;
     private static final Double Ninety_PERCENT = 0.9d;
     private static final Double OneHundred_PERCENT = 1d;
+
 
     private static final Double TEN_PERCENT = 0.1d;
 
@@ -35,23 +37,50 @@ public class LevelUtils {
         }
     }
 
-
+    /**
+     * 负载评分
+     *
+     * @param score
+     * @return
+     */
     public static String computeLoadFactorLevel(Double score) {
         if (Eighty_PERCENT < score && score <= Ninety_PERCENT) {
-            return HealthLevel.good.getCode();
+            return HealthLevel.excellent.getCode();
         } else if (Ninety_PERCENT < score && score <= OneHundred_PERCENT) {
             return HealthLevel.range.getCode();
         } else {
-            return HealthLevel.excellent.getCode();
+            return HealthLevel.good.getCode();
         }
     }
 
+    /**
+     * 无功点度量意见
+     *
+     * @param percentage
+     * @return
+     */
     public static String computePercentageRreactive(Double percentage) {
-        if (percentage > TEN_PERCENT ) {
+        if (percentage > TEN_PERCENT) {
             return PercentageRreactive.Concerned.getCode();
-        }else {
+        } else {
             return PercentageRreactive.Reasonable.getCode();
         }
     }
 
+    /**
+     * 使用效率评分
+     *
+     * @param score
+     * @return
+     */
+    public static String computeUseEfficiencyLevel(Double score) {
+        if (Sixty_PERCENT < score && score <= Eighty_PERCENT) {
+            return HealthLevel.good.getCode();
+        } else if (Eighty_PERCENT < score && score <= OneHundred_PERCENT) {
+            return HealthLevel.excellent.getCode();
+        } else {
+            return HealthLevel.range.getCode();
+        }
+
+    }
 }
