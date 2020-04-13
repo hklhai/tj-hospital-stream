@@ -15,7 +15,7 @@
 
 
 
-## 报告
+# 报告-中压
 # 每月1号1点执行
 0 1 1 * * root /root/shell/report/MediumVoltageScoreMonth.sh
 30 1 1 * * root /root/shell/report/TotalMediumVoltageScoreMonth.sh
@@ -106,15 +106,73 @@
 40 6 1 7 * root /root/shell/report/TotalMediumVoltageElectricalMeasurementQuarter.sh
 40 6 1 10 * root /root/shell/report/TotalMediumVoltageElectricalMeasurementQuarter.sh
 
-
 # 整体中压设备-季度总电度量比对
 50 6 1 1 * root /root/shell/report/TotalMediumVoltageElectricalMeasurementCompQuarter.sh
 50 6 1 4 * root /root/shell/report/TotalMediumVoltageElectricalMeasurementCompQuarter.sh
 50 6 1 7 * root /root/shell/report/TotalMediumVoltageElectricalMeasurementCompQuarter.sh
 50 6 1 10 * root /root/shell/report/TotalMediumVoltageElectricalMeasurementCompQuarter.sh
 
+# 使用效率
+55 6 1 1 * root /root/shell/report/MediumVoltageUseEfficiencyQuarter.sh
+55 6 1 4 * root /root/shell/report/MediumVoltageUseEfficiencyQuarter.sh
+55 6 1 7 * root /root/shell/report/MediumVoltageUseEfficiencyQuarter.sh
+55 6 1 10 * root /root/shell/report/MediumVoltageUseEfficiencyQuarter.sh
 
 
+0 7 1 1 * root /root/shell/report/MediumVoltageUseEfficiencyCompareQuarter.sh
+0 7 1 4 * root /root/shell/report/MediumVoltageUseEfficiencyCompareQuarter.sh
+0 7 1 7 * root /root/shell/report/MediumVoltageUseEfficiencyCompareQuarter.sh
+0 7 1 10 * root /root/shell/report/MediumVoltageUseEfficiencyCompareQuarter.sh
+
+
+10 7 1 1 * root /root/shell/report/MediumVoltageUseEfficiencyStatisticsQuarter.sh
+10 7 1 4 * root /root/shell/report/MediumVoltageUseEfficiencyStatisticsQuarter.sh
+10 7 1 7 * root /root/shell/report/MediumVoltageUseEfficiencyStatisticsQuarter.sh
+10 7 1 10 * root /root/shell/report/MediumVoltageUseEfficiencyStatisticsQuarter.sh
+
+15 7 1 1 * root /root/shell/report/TotalMediumVoltageUseEfficiencyQuarter.sh
+15 7 1 4 * root /root/shell/report/TotalMediumVoltageUseEfficiencyQuarter.sh
+15 7 1 7 * root /root/shell/report/TotalMediumVoltageUseEfficiencyQuarter.sh
+15 7 1 10 * root /root/shell/report/TotalMediumVoltageUseEfficiencyQuarter.sh
+
+
+20 7 1 1 * root /root/shell/report/TotalMediumVoltageUseEfficiencyCompareQuarter.sh
+20 7 1 4 * root /root/shell/report/TotalMediumVoltageUseEfficiencyCompareQuarter.sh
+20 7 1 7 * root /root/shell/report/TotalMediumVoltageUseEfficiencyCompareQuarter.sh
+20 7 1 10 * root /root/shell/report/TotalMediumVoltageUseEfficiencyCompareQuarter.sh
+
+
+25 7 1 1 * root /root/shell/report/TotalMediumVoltageUseEfficiencyStatisticsQuarter.sh
+25 7 1 4 * root /root/shell/report/TotalMediumVoltageUseEfficiencyStatisticsQuarter.sh
+25 7 1 7 * root /root/shell/report/TotalMediumVoltageUseEfficiencyStatisticsQuarter.sh
+25 7 1 10 * root /root/shell/report/TotalMediumVoltageUseEfficiencyStatisticsQuarter.sh
+
+
+30 7 1 1 * root /root/shell/report/TotalMediumVoltageUseEfficiencyLevelQuarter.sh
+30 7 1 4 * root /root/shell/report/TotalMediumVoltageUseEfficiencyLevelQuarter.sh
+30 7 1 7 * root /root/shell/report/TotalMediumVoltageUseEfficiencyLevelQuarter.sh
+30 7 1 10 * root /root/shell/report/TotalMediumVoltageUseEfficiencyLevelQuarter.sh
+
+
+# 报警分析
+35 7 1 1 * root /root/shell/report/MediumVoltageAlarmQuarter.sh
+35 7 1 4 * root /root/shell/report/MediumVoltageAlarmQuarter.sh
+35 7 1 7 * root /root/shell/report/MediumVoltageAlarmQuarter.sh
+35 7 1 10 * root /root/shell/report/MediumVoltageAlarmQuarter.sh
+
+40 7 1 1 * root /root/shell/report/TotalMediumVoltageAlarmQuarter.sh
+40 7 1 4 * root /root/shell/report/TotalMediumVoltageAlarmQuarter.sh
+40 7 1 7 * root /root/shell/report/TotalMediumVoltageAlarmQuarter.sh
+40 7 1 10 * root /root/shell/report/TotalMediumVoltageAlarmQuarter.sh
+
+45 7 1 1 * root /root/shell/report/TotalMediumVoltageUEMostFailuresQuarter.sh
+45 7 1 4 * root /root/shell/report/TotalMediumVoltageUEMostFailuresQuarter.sh
+45 7 1 7 * root /root/shell/report/TotalMediumVoltageUEMostFailuresQuarter.sh
+45 7 1 10 * root /root/shell/report/TotalMediumVoltageUEMostFailuresQuarter.sh
+
+
+# ========================================================================
+# 年度
 # 每年执行年度报告
 0 6 1 1 * root /root/shell/report/MediumVoltageScoreYear.sh
 30 6 1 1 * root /root/shell/report/TotalMediumVoltageScoreYear.sh
@@ -138,19 +196,41 @@
 0 8 1 1 * root /root/shell/report/TotalMediumVoltageElectricalMeasurementCompYear.sh
 
 
+# 中压开关柜运行时长及使用效率
+10 8 1 1 * root /root/shell/report/MediumVoltageUseEfficiencyYear.sh
+20 8 1 1 * root /root/shell/report/MediumVoltageUseEfficiencyCompareYear.sh
+30 8 1 1 * root /root/shell/report/MediumVoltageUseEfficiencyStatisticsYear.sh
+40 8 1 1 * root /root/shell/report/TotalMediumVoltageUseEfficiencyYear.sh
+50 8 1 1 * root /root/shell/report/TotalMediumVoltageUseEfficiencyCompareYear.sh
+0 9 1 1 * root /root/shell/report/TotalMediumVoltageUseEfficiencyStatisticsYear.sh
+10 9 1 1 * root /root/shell/report/TotalMediumVoltageUseEfficiencyLevelYear.sh
 
-# 中压设备-电压状况
+
+# 报警分析
+20 9 1 1 * root /root/shell/report/MediumVoltageAlarmYear.sh
+30 9 1 1 * root /root/shell/report/TotalMediumVoltageAlarmYear.sh
+40 9 1 1 * root /root/shell/report/TotalMediumVoltageUEMostFailuresYear.sh
+
+
+# ========================================================================
+## 温度-每6小时执行
+0 0 * * * root /root/shell/report/MediumVoltageTemperature.sh
+0 6 * * * root /root/shell/report/MediumVoltageTemperature.sh
+0 12 * * * root /root/shell/report/MediumVoltageTemperature.sh
+0 18 * * * root /root/shell/report/MediumVoltageTemperature.sh
+
+
+# 中压设备-电压状况 每8小时执行
 5 8 * * * root /root/shell/report/MediumVoltageCondition.sh
 5 16 * * * root /root/shell/report/MediumVoltageCondition.sh
 5 0 * * * root /root/shell/report/MediumVoltageCondition.sh
 
 
-# 中压设备-平均功率因数
+# 中压设备-平均功率因数  每6小时执行
 5 6 * * * root /root/shell/report/MediumVoltagePowerFactor.sh
 5 12 * * * root /root/shell/report/MediumVoltagePowerFactor.sh
 5 18 * * * root /root/shell/report/MediumVoltagePowerFactor.sh
 5 0 * * * root /root/shell/report/MediumVoltagePowerFactor.sh
-
 
 
 

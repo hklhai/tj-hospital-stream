@@ -48,7 +48,7 @@ kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic yctest
 
 kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic mediumvoltage --partition 0 --offset 25320
 
-kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic mediumvoltage --partition  0 --offset 713684
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic mediumvoltage --partition  0 --offset 620019
 
 kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic err1 --from-beginning
 
@@ -61,7 +61,9 @@ kafka-run-class.sh kafka.tools.ConsumerOffsetChecker --topic mediumvoltage  --zo
 ### 计算消息的消息堆积情况
 kafka-consumer-groups.sh --bootstrap-server localhost:9092 --describe --group asset2
 
-kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic --group yxtest
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --describe --group yxtest
+
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --describe --group  yctest 
 
 ### 查询
 kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic mediumvoltage --partition 0 --offset 60

@@ -30,7 +30,7 @@ import static com.hxqh.constant.RowTypeConstants.MEDIUM_VOLTAGE_YX_TYPE;
 
 /**
  * 中压开关柜单台运行状况及评分-月度
- *
+ * <p>
  * Created by Ocean lin on 2020/3/11.
  *
  * @author Ocean lin
@@ -86,10 +86,10 @@ public class MediumVoltageScore {
                 // AH01,2,1,10,70  AH01,1,1,40,0
                 // 存在多个报警级别以最高报警级别的最低分为准
                 if (v1.f1 < v2.f1) {
-                    v1.f3 = v1.f3 + v2.f3;
+                    v1.f3 += v2.f3;
                     return v1;
                 } else {
-                    v2.f3 = v2.f3 + v2.f3;
+                    v2.f3 += v1.f3;
                     return v2;
                 }
             }

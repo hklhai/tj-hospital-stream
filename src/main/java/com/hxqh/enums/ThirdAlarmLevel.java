@@ -16,6 +16,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public enum ThirdAlarmLevel implements AlarmLevel {
 
+    // todo 中压开关
+
+    // 变压器
+    TemperatureControlFailure("TemperatureControlFailure","温控装置故障"),
+
+    // todo 低压设备
+
+
     // todo 未提供
     NO_INFO("0", "温度预警（zenon处提供的三相不平衡计算结果）");
 

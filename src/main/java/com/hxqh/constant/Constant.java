@@ -129,6 +129,17 @@ public interface Constant {
             put(SecondAlarmLevel.BUpperArmOvertemperature.getCode(), 2);
             put(SecondAlarmLevel.AUpperArmOvertemperature.getCode(), 2);
 
+
+            //  变压器
+            put(FirstAlarmLevel.WindingOvertemperatureTrip.getCode(), 1);
+
+            put(SecondAlarmLevel.WindingOvertemperatureAlarm.getCode(), 2);
+
+            put(ThirdAlarmLevel.TemperatureControlFailure.getCode(), 3);
+
+
+            // todo 低压设备
+
             put(ThirdAlarmLevel.NO_INFO, 3);
         }
     };

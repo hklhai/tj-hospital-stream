@@ -15,4 +15,5 @@ export HBASE_MANAGES_ZK=false
 export PATH=$JAVA_HOME/bin:$PATH:$SCALA_HOME/bin:$MAVEN_HOME/bin:$FLUME_HOME/bin:$KAFKA_HOME/bin:$FLINK_HOME/bin:$REDIS_HOME/bin:$ZK_HOME/bin:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$HBASE_HOME/bin
 export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
 
-nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.batch.mediumvoltage.MediumVoltageCompareQuarter /root/TJJar/batch/tj-hospital.jar > /root/TJJar/MediumVoltageCompareQuarter.log 2>&1 &
+nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.batch.mediumvoltage.useefficiency.total.TotalMediumVoltageUseEfficiencyQuarter /root/TJJar/batch/tj-hospital.jar > /root/TJJar/TotalMediumVoltageUseEfficiencyQuarter.log 2>&1 &
+

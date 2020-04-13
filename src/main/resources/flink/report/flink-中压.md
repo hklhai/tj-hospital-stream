@@ -81,4 +81,67 @@ nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.batch.mediumvoltage.electr
 nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.batch.mediumvoltage.electricalmeasurement.total.TotalMediumVoltageElectricalMeasurementCompYear /root/TJJar/batch/tj-hospital.jar > /root/TJJar/TotalMediumVoltageElectricalMeasurementCompYear.log 2>&1 &
 
 
- 
+
+
+## 温度统计
+nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.batch.mediumvoltage.temperature.MediumVoltageTemperature /root/TJJar/batch/tj-hospital.jar > /root/TJJar/MediumVoltageTemperature.log 2>&1 &
+
+
+## 中压开关柜运行时长及使用效率
+### 单台
+nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.batch.mediumvoltage.useefficiency.MediumVoltageUseEfficiencyQuarter /root/TJJar/batch/tj-hospital.jar > /root/TJJar/MediumVoltageUseEfficiencyQuarter.log 2>&1 &
+
+nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.batch.mediumvoltage.useefficiency.MediumVoltageUseEfficiencyYear /root/TJJar/batch/tj-hospital.jar > /root/TJJar/MediumVoltageUseEfficiencyYear.log 2>&1 &
+
+nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.batch.mediumvoltage.useefficiency.MediumVoltageUseEfficiencyCompareQuarter /root/TJJar/batch/tj-hospital.jar > /root/TJJar/MediumVoltageUseEfficiencyCompareQuarter.log 2>&1 &
+
+nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.batch.mediumvoltage.useefficiency.MediumVoltageUseEfficiencyCompareYear /root/TJJar/batch/tj-hospital.jar > /root/TJJar/MediumVoltageUseEfficiencyCompareYear.log 2>&1 &
+
+### 单台中压开关柜季度统计信息
+nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.batch.mediumvoltage.useefficiency.MediumVoltageUseEfficiencyStatisticsQuarter /root/TJJar/batch/tj-hospital.jar > /root/TJJar/MediumVoltageUseEfficiencyStatisticsQuarter.log 2>&1 &
+
+### 单台中压开关柜年度统计信息
+nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.batch.mediumvoltage.useefficiency.MediumVoltageUseEfficiencyStatisticsYear /root/TJJar/batch/tj-hospital.jar > /root/TJJar/MediumVoltageUseEfficiencyStatisticsYear.log 2>&1 &
+
+
+### 整体
+nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.batch.mediumvoltage.useefficiency.total.TotalMediumVoltageUseEfficiencyQuarter /root/TJJar/batch/tj-hospital.jar > /root/TJJar/TotalMediumVoltageUseEfficiencyQuarter.log 2>&1 &
+
+nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.batch.mediumvoltage.useefficiency.total.TotalMediumVoltageUseEfficiencyYear /root/TJJar/batch/tj-hospital.jar > /root/TJJar/TotalMediumVoltageUseEfficiencyYear.log 2>&1 &
+
+nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.batch.mediumvoltage.useefficiency.total.TotalMediumVoltageUseEfficiencyCompareQuarter /root/TJJar/batch/tj-hospital.jar > /root/TJJar/TotalMediumVoltageUseEfficiencyCompareQuarter.log 2>&1 &
+
+nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.batch.mediumvoltage.useefficiency.total.TotalMediumVoltageUseEfficiencyCompareYear /root/TJJar/batch/tj-hospital.jar > /root/TJJar/TotalMediumVoltageUseEfficiencyCompareYear.log 2>&1 &
+
+### 整体中压开关柜季度统计信息
+nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.batch.mediumvoltage.useefficiency.total.TotalMediumVoltageUseEfficiencyStatisticsQuarter /root/TJJar/batch/tj-hospital.jar > /root/TJJar/TotalMediumVoltageUseEfficiencyStatisticsQuarter.log 2>&1 &
+
+### 整体中压开关柜年度统计信息
+nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.batch.mediumvoltage.useefficiency.total.TotalMediumVoltageUseEfficiencyStatisticsYear /root/TJJar/batch/tj-hospital.jar > /root/TJJar/TotalMediumVoltageUseEfficiencyStatisticsYear.log 2>&1 &
+
+### 整体中压开关柜季度评分信息
+nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.batch.mediumvoltage.useefficiency.total.TotalMediumVoltageUseEfficiencyLevelQuarter /root/TJJar/batch/tj-hospital.jar > /root/TJJar/TotalMediumVoltageUseEfficiencyLevelQuarter.log 2>&1 &
+
+### 整体中压开关柜年度评分信息
+nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.batch.mediumvoltage.useefficiency.total.TotalMediumVoltageUseEfficiencyLevelYear /root/TJJar/batch/tj-hospital.jar > /root/TJJar/TotalMediumVoltageUseEfficiencyLevelYear.log 2>&1 &
+
+
+
+
+## 报警统计
+### 单台中压设备-季度报警统计信息
+nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.batch.mediumvoltage.alarm.MediumVoltageAlarmQuarter /root/TJJar/batch/tj-hospital.jar > /root/TJJar/MediumVoltageAlarmQuarter.log 2>&1 &
+### 单台中压设备-年度报警统计信息
+nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.batch.mediumvoltage.alarm.MediumVoltageAlarmYear /root/TJJar/batch/tj-hospital.jar > /root/TJJar/MediumVoltageAlarmYear.log 2>&1 &
+
+
+### 整体中压设备-季度报警统计信息
+nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.batch.mediumvoltage.alarm.total.TotalMediumVoltageAlarmQuarter /root/TJJar/batch/tj-hospital.jar > /root/TJJar/TotalMediumVoltageAlarmQuarter.log 2>&1 &
+### 整体中压设备-年度报警统计信息
+nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.batch.mediumvoltage.alarm.total.TotalMediumVoltageAlarmYear /root/TJJar/batch/tj-hospital.jar > /root/TJJar/TotalMediumVoltageAlarmYear.log 2>&1 &
+
+### 整体中压设备速断和过流、延时过流、差动保护最多的设备-季度
+nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.batch.mediumvoltage.useefficiency.total.TotalMediumVoltageUEMostFailuresQuarter /root/TJJar/batch/tj-hospital.jar > /root/TJJar/TotalMediumVoltageUEMostFailuresQuarter.log 2>&1 &
+
+### 整体中压设备速断和过流、延时过流、差动保护最多的设备-年度
+nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.batch.mediumvoltage.useefficiency.total.TotalMediumVoltageUEMostFailuresYear /root/TJJar/batch/tj-hospital.jar > /root/TJJar/TotalMediumVoltageUEMostFailuresYear.log 2>&1 &

@@ -11,3 +11,8 @@ cp target/tj-hospital.jar ~/TJJar/sync/
 
 
 cp target/tj-hospital.jar ~/TJJar/batch/
+
+
+
+/root/shell/restart.sh
+

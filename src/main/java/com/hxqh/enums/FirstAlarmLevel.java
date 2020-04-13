@@ -15,12 +15,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public enum FirstAlarmLevel implements AlarmLevel {
 
-
+    // 中压开关柜
     QuickBreak("QuickBreak", "速断"),
 
     OverCurrent("OverCurrent", "过流"),
 
     OverCurrentDelay("OverCurrentDelay", "延时过流"),
+
+
+    // 变压器
+    WindingOvertemperatureTrip("WindingOvertemperatureTrip", "超温跳闸"),
+
 
     // todo 未提供
     noinfo("0", "差动保护");

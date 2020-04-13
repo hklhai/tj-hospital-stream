@@ -22,7 +22,7 @@ import java.util.Properties;
 import static com.hxqh.constant.Constant.*;
 
 /**
- * 中压设备-电压状况
+ * 中压设备-电压状况 每8h取一个点
  * <p>
  * Created by Ocean lin on 2020/3/23.
  *

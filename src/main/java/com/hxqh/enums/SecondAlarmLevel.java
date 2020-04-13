@@ -16,6 +16,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public enum SecondAlarmLevel implements AlarmLevel {
 
+    // 中压开关柜
     NoEnergyDtorage("NoEnergyDtorage", "未储能告警"),
     CircuitDisconnection("CircuitDisconnection", "回路断线告警"),
 
@@ -30,6 +31,12 @@ public enum SecondAlarmLevel implements AlarmLevel {
     CUpperArmOvertemperature("CUpperArmOvertemperature", "C相上触臂超温报警"),
     BUpperArmOvertemperature("BUpperArmOvertemperature", "B相上触臂超温报警"),
     AUpperArmOvertemperature("AUpperArmOvertemperature", "A相上触臂超温报警"),
+
+    // 变压器
+    WindingOvertemperatureAlarm("WindingOvertemperatureAlarm", "超温报警"),
+
+    // todo 低压设备
+
 
     // todo 未提供
     NO_INFO("0", "小电流接地选线报警");
