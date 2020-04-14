@@ -66,7 +66,7 @@ public interface Constant {
     /**
      * ElasticSearch
      */
-
+    String HTTP = "http";
     String ES_HOST = "tj-hospital.com";
     Integer ES_PORT = 9200;
 

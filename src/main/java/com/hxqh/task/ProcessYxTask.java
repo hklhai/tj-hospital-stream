@@ -140,7 +140,7 @@ public class ProcessYxTask {
 
     private static void persistEs(DataStream<Row> input) {
         List<HttpHost> httpHosts = new ArrayList<>();
-        httpHosts.add(new HttpHost(ES_HOST, ES_PORT, "http"));
+        httpHosts.add(new HttpHost(ES_HOST, ES_PORT, HTTP));
         Date now = new Date();
 
         ElasticsearchSink.Builder<Row> esSinkBuilder = new ElasticsearchSink.Builder<>(
