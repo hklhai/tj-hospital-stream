@@ -103,6 +103,13 @@ public interface Constant {
     String TYPE_YX = "yx";
 
     /**
+     * 遥测-低压设备
+     */
+    String INDEX_YC_LOWPRESSURE = "yc_lowpressure";
+    String TYPE_YC_LOWPRESSURE = "lowpressure";
+
+
+    /**
      * MySQL 连接信息
      */
     String MYSQL_DRIVER_NAME = "com.mysql.cj.jdbc.Driver";

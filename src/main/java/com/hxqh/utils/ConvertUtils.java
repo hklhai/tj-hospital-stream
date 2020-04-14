@@ -1,10 +1,7 @@
 package com.hxqh.utils;
 
 import com.alibaba.fastjson.JSON;
-import com.hxqh.domain.YcAts;
-import com.hxqh.domain.YcMediumVoltage;
-import com.hxqh.domain.YcTransformer;
-import com.hxqh.domain.YxAts;
+import com.hxqh.domain.*;
 import com.hxqh.domain.base.IEDEntity;
 import com.hxqh.domain.base.IEDParam;
 import org.apache.commons.lang3.StringUtils;
@@ -58,6 +55,7 @@ public class ConvertUtils {
         return ycAts;
     }
 
+
     @Deprecated
     public static YxAts convert2YxAts(IEDEntity entity) {
         YxAts yxAts = new YxAts();
@@ -71,6 +69,12 @@ public class ConvertUtils {
     }
 
 
+    /**
+     * IEDEntity转换成中压开关柜遥测
+     *
+     * @param entity
+     * @return
+     */
     public static YcMediumVoltage convert2YcMediumVoltage(IEDEntity entity) {
         YcMediumVoltage ycMediumVoltage = new YcMediumVoltage();
         ycMediumVoltage.setIEDName(entity.getIEDName());
@@ -109,13 +113,18 @@ public class ConvertUtils {
     }
 
 
+    /**
+     * Row转低压设备遥测
+     *
+     * @param row TRA2,YC,2020-04-13 14:26:03,变压器,A001,AH20,SCZB11-2500/35,2500kVA,35/0.4kV,0.0,0.0,[APhaseTemperature,90, BPhaseTemperature,40, CPhaseTemperature,50, DRoadTemperature,31]
+     * @return
+     */
     public static YcTransformer convert2YcTransformer(Row row) {
-        // TRA2,YC,2020-04-13 14:26:03,变压器,A001,AH20,SCZB11-2500/35,2500kVA,35/0.4kV,0.0,0.0,[APhaseTemperature,90, BPhaseTemperature,40, CPhaseTemperature,50, DRoadTemperature,31]
         YcTransformer ycTransformer = new YcTransformer();
         ycTransformer.setIEDName(row.getField(0).toString());
         ycTransformer.setColTime(DateUtils.formatDate(row.getField(2).toString()));
         ycTransformer.setAssetYpe(row.getField(3).toString());
-        ycTransformer. setLocation(row.getField(4).toString());
+        ycTransformer.setLocation(row.getField(4).toString());
         ycTransformer.setParent(row.getField(5).toString());
         ycTransformer.setProductModel(row.getField(6).toString());
 
@@ -156,6 +165,66 @@ public class ConvertUtils {
     }
 
 
+    /**
+     * Row转低压设备遥测
+     *
+     * @param row 2AA1,YC,2020-04-14 16:50:03,低压开关设备-ACB,A001,TRA2,72E,2500kVA,TRA2,[PhaseL1CurrentPercent,89, PhaseL1L2Voltage,22, PhaseL2CurrentPercent,33, PhaseL2L3Voltage,44, PhaseL3CurrentPercent,88, PhaseL3L1Voltage,90, PositiveActive,555, PositiveReactive,888, PowerFactor,999, OperationNumber,234]
+     * @return
+     */
+    public static YcLowPressure convert2YcLowPressure(Row row) {
+        YcLowPressure ycLowPressure = new YcLowPressure();
+        ycLowPressure.setIEDName(row.getField(0).toString());
+        ycLowPressure.setColTime(DateUtils.formatDate(row.getField(2).toString()));
+        ycLowPressure.setAssetYpe(row.getField(3).toString());
+        ycLowPressure.setLocation(row.getField(4).toString());
+        ycLowPressure.setParent(row.getField(5).toString());
+        ycLowPressure.setProductModel(row.getField(6).toString());
+
+        ycLowPressure.setProductModelB(row.getField(7).toString());
+        ycLowPressure.setProductModelC(row.getField(8).toString());
+
+        Row[] rows = (Row[]) row.getField(9);
+        List<IEDParam> iedParams = new ArrayList<>();
+        if (rows.length > 0) {
+            for (Row r : rows) {
+                IEDParam param = new IEDParam(r.getField(0).toString(), Double.parseDouble(r.getField(1).toString()));
+                iedParams.add(param);
+            }
+        }
+        Map<String, List<IEDParam>> parameterMap = iedParams.stream().collect(Collectors.groupingBy(IEDParam::getVariableName));
+
+        Field[] declaredFields = ycLowPressure.getClass().getDeclaredFields();
+
+        for (Field field : declaredFields) {
+            String attr = StringUtils.capitalize(field.getName());
+            if (!"SerialVersionUID".equals(attr)) {
+                try {
+                    Method getMethod = ycLowPressure.getClass().getDeclaredMethod("get" + attr);
+                    Type genericReturnType = getMethod.getGenericReturnType();
+                    if (genericReturnType.getTypeName().equals(Double.class.getName())) {
+                        Method setMethod = ycLowPressure.getClass().getDeclaredMethod("set" + attr, Double.class);
+                        setMethod.invoke(ycLowPressure, null == parameterMap.get(attr) ? 0.0 : parameterMap.get(attr).get(0).getValue());
+                    }
+                    if (genericReturnType.getTypeName().equals(Integer.class.getName())) {
+                        Method setMethod = ycLowPressure.getClass().getDeclaredMethod("set" + attr, Integer.class);
+                        setMethod.invoke(ycLowPressure, null == parameterMap.get(attr) ? 0 : parameterMap.get(attr).get(0).getValue().intValue());
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return ycLowPressure;
+    }
+
+
+    /**
+     * 对象属性转换成Map
+     *
+     * @param object
+     * @return
+     * @throws IllegalAccessException
+     */
     public static TreeMap<String, Object> objToMap(Object object) throws IllegalAccessException {
 
         Class clazz = object.getClass();
@@ -188,4 +257,6 @@ public class ConvertUtils {
         }
         return treeMap;
     }
+
+
 }
