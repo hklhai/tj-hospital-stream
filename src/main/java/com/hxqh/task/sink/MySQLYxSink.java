@@ -1,4 +1,4 @@
-package com.hxqh.sink;
+package com.hxqh.task.sink;
 
 import com.hxqh.utils.DateUtils;
 import com.hxqh.utils.JdbcUtil;

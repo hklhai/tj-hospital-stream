@@ -191,4 +191,7 @@ public interface Constant {
     Integer MEDIUMVOLTAGE_RUN = 1;
     Integer MEDIUMVOLTAGE_STOP = 0;
 
+
+    Integer SOCRE_ONEHUNDRED = 100;
+
 }

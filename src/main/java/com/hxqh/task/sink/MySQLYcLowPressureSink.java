@@ -1,4 +1,4 @@
-package com.hxqh.sink;
+package com.hxqh.task.sink;
 
 import com.hxqh.domain.YcLowPressure;
 import com.hxqh.utils.ConvertUtils;
@@ -52,7 +52,7 @@ public class MySQLYcLowPressureSink extends RichSinkFunction<Row> {
             }
 
             // 更新设备
-            String updateSql = "update yc_lowpressure_current set COLTIME=?,CREATETIME=?,PhaseL1CurrentPercent=?,PhaseL1L2Voltage=?,PhaseL2CurrentPercent=?,PhaseL2L3Voltage=?,PhaseL3CurrentPercent=?,PhaseL3L1Voltage=?" +
+            String updateSql = "update yc_lowpressure_current set COLTIME=?,CREATETIME=?,PhaseL1CurrentPercent=?,PhaseL1L2Voltage=?,PhaseL2CurrentPercent=?,PhaseL2L3Voltage=?,PhaseL3CurrentPercent=?,PhaseL3L1Voltage=?," +
                     " PositiveActive=?,PositiveReactive=?,PowerFactor=?,OperationNumber=? where YCLOWPRESSURECURRENTID =?";
 
             preparedStatement = connection.prepareStatement(updateSql);

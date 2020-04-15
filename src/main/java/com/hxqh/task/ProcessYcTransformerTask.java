@@ -1,8 +1,8 @@
 package com.hxqh.task;
 
 import com.hxqh.domain.YcTransformer;
-import com.hxqh.sink.MySQLYcTransformerSink;
-import com.hxqh.transfer.ProcessYcTransformerWaterEmitter;
+import com.hxqh.task.sink.MySQLYcTransformerSink;
+import com.hxqh.transfer.ProcessYcLowPressureWaterEmitter;
 import com.hxqh.utils.ConvertUtils;
 import com.hxqh.utils.DateUtils;
 import org.apache.flink.api.common.functions.RuntimeContext;
@@ -100,14 +100,14 @@ public class ProcessYcTransformerTask {
                         .field("IEDParam", ObjectArrayTypeInfo.getInfoFor(
                                 Row[].class,
                                 Types.ROW(new String[]{"variableName", "value"},
-                                        new TypeInformation[]{Types.STRING(), Types.INT()})))
+                                        new TypeInformation[]{Types.STRING(), Types.DOUBLE()})))
 
         ).inAppendMode().registerTableSource("yc_transformer");
 
         Table table = tableEnvironment.sqlQuery("select * from yc_transformer where assetYpe='" + TRANSFORMER + "'");
         DataStream<Row> data = tableEnvironment.toAppendStream(table, Row.class);
 
-        data.assignTimestampsAndWatermarks(new ProcessYcTransformerWaterEmitter());
+        data.assignTimestampsAndWatermarks(new ProcessYcLowPressureWaterEmitter());
 
         data.addSink(new MySQLYcTransformerSink()).name("Yc-Transformer-MySQL-Sink");
 

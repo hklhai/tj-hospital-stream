@@ -1,7 +1,7 @@
 package com.hxqh.task;
 
 import com.hxqh.domain.YcLowPressure;
-import com.hxqh.sink.MySQLYcLowPressureSink;
+import com.hxqh.task.sink.MySQLYcLowPressureSink;
 import com.hxqh.transfer.ProcessYcTransformerWaterEmitter;
 import com.hxqh.utils.ConvertUtils;
 import com.hxqh.utils.DateUtils;
@@ -43,7 +43,6 @@ import static com.hxqh.constant.Constant.*;
  */
 @SuppressWarnings("Duplicates")
 public class ProcessYcYcLowPressureTask {
-
 
     public static void main(String[] args) {
         args = new String[]{"--input-topic", "yctest", "--bootstrap.servers", "tj-hospital.com:9092",
@@ -96,7 +95,7 @@ public class ProcessYcYcLowPressureTask {
                         .field("IEDParam", ObjectArrayTypeInfo.getInfoFor(
                                 Row[].class,
                                 Types.ROW(new String[]{"variableName", "value"},
-                                        new TypeInformation[]{Types.STRING(), Types.INT()})))
+                                        new TypeInformation[]{Types.STRING(), Types.DOUBLE()})))
 
         ).inAppendMode().registerTableSource("yc_lowpressure");
 

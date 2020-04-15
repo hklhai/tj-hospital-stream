@@ -1,6 +1,7 @@
 package com.hxqh.task;
 
-import com.hxqh.sink.MySQLYxSink;
+import com.hxqh.task.sink.MySQLYxScoreSink;
+import com.hxqh.task.sink.MySQLYxSink;
 import com.hxqh.transfer.ProcessYxWaterEmitter;
 import com.hxqh.utils.DateUtils;
 import org.apache.flink.api.common.functions.FilterFunction;
@@ -127,6 +128,8 @@ public class ProcessYxTask {
         data.assignTimestampsAndWatermarks(new ProcessYxWaterEmitter());
 
         data.addSink(new MySQLYxSink()).name("YX-MySQL-Sink");
+        // 处理实时得分
+        data.addSink(new MySQLYxScoreSink()).name("YX-MySQL-Score-Sink");
 
         persistEs(data);
 
@@ -167,7 +170,7 @@ public class ProcessYxTask {
                         map.put("IEDName", iedName);
                         map.put("ColTime", DateUtils.formatDate(new Date(colTime.getTime())));
                         map.put("VariableName", variableName);
-                        map.put("Value", val);
+                        map.put("Val", val);
 
                         map.put("assetYpe", assetYpe);
                         map.put("location", location);

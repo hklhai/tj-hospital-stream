@@ -1,4 +1,4 @@
-package com.hxqh.sink;
+package com.hxqh.task.sink;
 
 import com.alibaba.fastjson.JSON;
 import com.hxqh.domain.YxAts;

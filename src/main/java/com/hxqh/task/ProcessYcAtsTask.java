@@ -3,7 +3,7 @@ package com.hxqh.task;
 import com.alibaba.fastjson.JSON;
 import com.hxqh.domain.YcAts;
 import com.hxqh.domain.base.IEDEntity;
-import com.hxqh.sink.Db2YcAtsSink;
+import com.hxqh.task.sink.Db2YcAtsSink;
 import com.hxqh.transfer.ProcessWaterEmitter;
 import com.hxqh.utils.ConvertUtils;
 import com.hxqh.utils.DateUtils;

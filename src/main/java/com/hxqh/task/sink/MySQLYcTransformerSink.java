@@ -1,4 +1,4 @@
-package com.hxqh.sink;
+package com.hxqh.task.sink;
 
 import com.hxqh.domain.YcTransformer;
 import com.hxqh.utils.ConvertUtils;

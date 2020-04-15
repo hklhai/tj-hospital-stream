@@ -21,7 +21,7 @@ public class ProcessWaterEmitter implements AssignerWithPunctuatedWatermarks<Str
         if (lastElement != null && !"".equals(lastElement) && JsonUtils.isjson(lastElement)) {
             IEDEntity iedEntity = JSON.parseObject(lastElement, IEDEntity.class);
 
-            if (iedEntity.getColTime() == null) {
+            if (iedEntity.getColTime() != null) {
                 long triggerExecTime = DateUtils.timeToStamp(DateUtils.formatDate(iedEntity.getIEDParam().get(0).getColTime()));
                 return new Watermark(triggerExecTime);
             } else {
@@ -37,7 +37,7 @@ public class ProcessWaterEmitter implements AssignerWithPunctuatedWatermarks<Str
 
         if (element != null && !"".equals(element) && JsonUtils.isjson(element)) {
             IEDEntity iedEntity = JSON.parseObject(element, IEDEntity.class);
-            if (iedEntity.getColTime() == null) {
+            if (iedEntity.getColTime() != null) {
                 long triggerExecTime = DateUtils.timeToStamp(DateUtils.formatDate(iedEntity.getIEDParam().get(0).getColTime()));
                 return triggerExecTime;
             } else {
