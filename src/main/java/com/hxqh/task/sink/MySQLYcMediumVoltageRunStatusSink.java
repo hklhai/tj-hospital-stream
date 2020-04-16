@@ -14,8 +14,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 
-import static com.hxqh.constant.Constant.MEDIUMVOLTAGE_RUN;
-import static com.hxqh.constant.Constant.MEDIUMVOLTAGE_STOP;
+import static com.hxqh.constant.Constant.DEVICE_RUN;
+import static com.hxqh.constant.Constant.DEVICE_STOP;
 
 /**
  * Created by Ocean lin on 2020/4/7.
@@ -34,7 +34,7 @@ public class MySQLYcMediumVoltageRunStatusSink extends RichSinkFunction<String> 
     Double phaseCurrent = 0.0d;
     Double runningTime1 = 0.0d, runningTime2 = 0.0d, runningTime3 = 0.0d, runningTime4 = 0.0d;
     Double downtime1 = 0.0d, downtime2 = 0.0d, downtime3 = 0.0d, downtime4 = 0.0d;
-    Integer runstatus = MEDIUMVOLTAGE_STOP;
+    Integer runstatus = DEVICE_STOP;
 
     @Override
     public void invoke(String value, Context context) throws Exception {
@@ -83,7 +83,7 @@ public class MySQLYcMediumVoltageRunStatusSink extends RichSinkFunction<String> 
             // 分钟
             long sub = (ycMediumVoltage.getColTime().getTime() - colTime.getTime()) / 1000 / 60;
             if (nowPhaseCurrent >= 1) {
-                if (runstatus.equals(MEDIUMVOLTAGE_RUN)) {
+                if (runstatus.equals(DEVICE_RUN)) {
                     if (DateUtils.getQuarter(colTime) == 1) {
                         runningTime1 += sub;
                     } else if (DateUtils.getQuarter(colTime) == 2) {
@@ -94,7 +94,7 @@ public class MySQLYcMediumVoltageRunStatusSink extends RichSinkFunction<String> 
                         runningTime4 += sub;
                     }
                 } else {
-                    runstatus = MEDIUMVOLTAGE_RUN;
+                    runstatus = DEVICE_RUN;
                     if (DateUtils.getQuarter(colTime) == 1) {
                         downtime1 += sub;
                     } else if (DateUtils.getQuarter(colTime) == 2) {
@@ -106,8 +106,8 @@ public class MySQLYcMediumVoltageRunStatusSink extends RichSinkFunction<String> 
                     }
                 }
             } else {
-                if (runstatus.equals(MEDIUMVOLTAGE_RUN)) {
-                    runstatus = MEDIUMVOLTAGE_STOP;
+                if (runstatus.equals(DEVICE_RUN)) {
+                    runstatus = DEVICE_STOP;
                     if (DateUtils.getQuarter(colTime) == 1) {
                         runningTime1 += sub;
                     } else if (DateUtils.getQuarter(colTime) == 2) {
@@ -154,16 +154,16 @@ public class MySQLYcMediumVoltageRunStatusSink extends RichSinkFunction<String> 
             preparedStatement.setString(1, ycMediumVoltage.getIEDName());
             preparedStatement.setTimestamp(2, new Timestamp(ycMediumVoltage.getColTime().getTime()));
             preparedStatement.setDouble(3, nowPhaseCurrent);
-            preparedStatement.setDouble(4, runningTime1);
-            preparedStatement.setDouble(5, downtime1);
-            preparedStatement.setDouble(6, runningTime2);
-            preparedStatement.setDouble(7, downtime2);
-            preparedStatement.setDouble(8, runningTime3);
-            preparedStatement.setDouble(9, downtime3);
-            preparedStatement.setDouble(10, runningTime4);
-            preparedStatement.setDouble(11, downtime4);
+            preparedStatement.setDouble(4, 0.0d);
+            preparedStatement.setDouble(5, 0.0d);
+            preparedStatement.setDouble(6, 0.0d);
+            preparedStatement.setDouble(7, 0.0d);
+            preparedStatement.setDouble(8, 0.0d);
+            preparedStatement.setDouble(9, 0.0d);
+            preparedStatement.setDouble(10, 0.0d);
+            preparedStatement.setDouble(11, 0.0d);
 
-            preparedStatement.setInt(12, nowPhaseCurrent > 1 ? MEDIUMVOLTAGE_RUN : MEDIUMVOLTAGE_STOP);
+            preparedStatement.setInt(12, nowPhaseCurrent > 1 ? DEVICE_RUN : DEVICE_STOP);
             preparedStatement.setTimestamp(13, new Timestamp(DateUtils.getFormatDate().getTime()));
             preparedStatement.setInt(14, RemindDateUtils.getNowYear());
             preparedStatement.executeUpdate();

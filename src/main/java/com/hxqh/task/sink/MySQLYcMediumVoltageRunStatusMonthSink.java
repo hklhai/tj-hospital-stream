@@ -14,8 +14,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 
-import static com.hxqh.constant.Constant.MEDIUMVOLTAGE_RUN;
-import static com.hxqh.constant.Constant.MEDIUMVOLTAGE_STOP;
+import static com.hxqh.constant.Constant.DEVICE_RUN;
+import static com.hxqh.constant.Constant.DEVICE_STOP;
 
 /**
  * Created by Ocean lin on 2020/4/8.
@@ -33,7 +33,7 @@ public class MySQLYcMediumVoltageRunStatusMonthSink extends RichSinkFunction<Str
     Timestamp colTime = new Timestamp(DateUtils.getFormatDate().getTime());
     Double runningTime = 0.0d;
     Double downtime = 0.0d;
-    Integer runstatus = MEDIUMVOLTAGE_STOP;
+    Integer runstatus = DEVICE_STOP;
 
     @Override
     public void invoke(String value, Context context) throws Exception {
@@ -75,15 +75,15 @@ public class MySQLYcMediumVoltageRunStatusMonthSink extends RichSinkFunction<Str
             // 分钟
             long sub = (ycMediumVoltage.getColTime().getTime() - colTime.getTime()) / 1000 / 60;
             if (nowPhaseCurrent >= 1) {
-                if (runstatus.equals(MEDIUMVOLTAGE_RUN)) {
+                if (runstatus.equals(DEVICE_RUN)) {
                     runningTime += sub;
                 } else {
-                    runstatus = MEDIUMVOLTAGE_RUN;
+                    runstatus = DEVICE_RUN;
                     downtime += sub;
                 }
             } else {
-                if (runstatus.equals(MEDIUMVOLTAGE_RUN)) {
-                    runstatus = MEDIUMVOLTAGE_STOP;
+                if (runstatus.equals(DEVICE_RUN)) {
+                    runstatus = DEVICE_STOP;
                     runningTime += sub;
                 } else {
                     downtime += sub;
@@ -108,7 +108,7 @@ public class MySQLYcMediumVoltageRunStatusMonthSink extends RichSinkFunction<Str
             preparedStatement.setTimestamp(2, new Timestamp(ycMediumVoltage.getColTime().getTime()));
             preparedStatement.setDouble(3, 0.0d);
             preparedStatement.setDouble(4, 0.0d);
-            preparedStatement.setInt(5, nowPhaseCurrent > 1 ? MEDIUMVOLTAGE_RUN : MEDIUMVOLTAGE_STOP);
+            preparedStatement.setInt(5, nowPhaseCurrent > 1 ? DEVICE_RUN : DEVICE_STOP);
             preparedStatement.setTimestamp(6, new Timestamp(DateUtils.getFormatDate().getTime()));
             preparedStatement.setString(7, RemindDateUtils.getNowMonth());
             preparedStatement.executeUpdate();

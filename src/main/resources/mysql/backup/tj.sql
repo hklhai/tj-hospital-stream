@@ -10,10 +10,37 @@ Target Server Type    : MYSQL
 Target Server Version : 80019
 File Encoding         : 65001
 
-Date: 2020-03-25 16:51:21
+Date: 2020-04-15 11:36:48
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for yc_lowpressure_current
+-- ----------------------------
+DROP TABLE IF EXISTS `yc_lowpressure_current`;
+CREATE TABLE `yc_lowpressure_current` (
+  `YCLOWPRESSURECURRENTID` int NOT NULL AUTO_INCREMENT,
+  `IEDNAME` varchar(100) DEFAULT NULL,
+  `COLTIME` datetime DEFAULT NULL,
+  `PhaseL1CurrentPercent` double(31,2) DEFAULT NULL,
+  `PhaseL1L2Voltage` double(31,2) DEFAULT NULL,
+  `PhaseL2CurrentPercent` double(31,2) DEFAULT NULL,
+  `PhaseL2L3Voltage` double(31,2) DEFAULT NULL,
+  `PhaseL3CurrentPercent` double(31,2) DEFAULT NULL,
+  `PhaseL3L1Voltage` double(31,2) DEFAULT NULL,
+  `PositiveActive` double(31,2) DEFAULT NULL,
+  `PositiveReactive` double(31,2) DEFAULT NULL,
+  `PowerFactor` double(31,2) DEFAULT NULL,
+  `OperationNumber` int DEFAULT NULL,
+  `CREATETIME` datetime DEFAULT NULL,
+  PRIMARY KEY (`YCLOWPRESSURECURRENTID`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of yc_lowpressure_current
+-- ----------------------------
+INSERT INTO `yc_lowpressure_current` VALUES ('1', '2AA1', '2020-04-15 09:09:03', '89.89', '22.32', '33.00', '44.02', '88.00', '90.03', '555.03', '888.03', '999.03', '234', '2020-04-15 09:15:50');
 
 -- ----------------------------
 -- Table structure for yc_medium_voltage_current
@@ -69,12 +96,15 @@ CREATE TABLE `yc_medium_voltage_current` (
   `NO3CCAPACITANCECURRENT` double(31,2) unsigned DEFAULT NULL COMMENT '3＃C相电容电流',
   `CREATETIME` datetime DEFAULT NULL COMMENT '处理时间',
   PRIMARY KEY (`YCMEDIUMVOLTAGEID`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of yc_medium_voltage_current
 -- ----------------------------
-INSERT INTO `yc_medium_voltage_current` VALUES ('1', 'AH01', '2020-03-22 03:22:22', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '27.55', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '2020-03-25 15:50:18');
+INSERT INTO `yc_medium_voltage_current` VALUES ('1', 'AH01', '2020-04-12 14:59:00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '11.00', '1.00', '1.00', '1.00', '1.00', '1.00', '1.00', '1.00', '1.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '2020-04-08 15:52:35');
+INSERT INTO `yc_medium_voltage_current` VALUES ('2', 'AH02', '2020-03-26 17:54:03', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '1.00', '1.00', '1.00', '1.00', '1.00', '1.00', '1.00', '1.00', '1.00', '1.00', '1.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '2020-04-13 17:55:04');
+INSERT INTO `yc_medium_voltage_current` VALUES ('3', 'AH03', '2020-03-16 18:28:03', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '1.00', '1.00', '1.00', '1.00', '1.00', '1.00', '1.00', '1.00', '1.00', '1.00', '1.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '2020-04-14 18:29:01');
+INSERT INTO `yc_medium_voltage_current` VALUES ('4', 'AH20', '2020-03-16 18:28:03', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '1.00', '1.00', '1.00', '1.00', '1.00', '1.00', '1.00', '1.00', '1.00', '1.00', '1.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '2020-04-14 18:42:07');
 
 -- ----------------------------
 -- Table structure for yc_medium_voltage_log
@@ -137,6 +167,67 @@ CREATE TABLE `yc_medium_voltage_log` (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for yc_medium_voltage_run
+-- ----------------------------
+DROP TABLE IF EXISTS `yc_medium_voltage_run`;
+CREATE TABLE `yc_medium_voltage_run` (
+  `YCMEDIUMVOLTAGERUNID` int NOT NULL AUTO_INCREMENT,
+  `IEDNAME` varchar(100) DEFAULT NULL,
+  `COLTIME` datetime DEFAULT NULL,
+  `PHASECURRENT` double(31,2) DEFAULT NULL,
+  `RUNNINGTIME1` double(31,4) DEFAULT NULL,
+  `DOWNTIME1` double(31,4) DEFAULT NULL,
+  `RUNNINGTIME2` double(31,4) DEFAULT NULL,
+  `DOWNTIME2` double(31,4) DEFAULT NULL,
+  `RUNNINGTIME3` double(31,4) DEFAULT NULL,
+  `DOWNTIME3` double(31,4) DEFAULT NULL,
+  `RUNNINGTIME4` double(31,4) DEFAULT NULL,
+  `DOWNTIME4` double(31,4) DEFAULT NULL,
+  `RUNSTATUS` int DEFAULT NULL,
+  `CREATETIME` datetime DEFAULT NULL,
+  `PARTICULARYEAR` int DEFAULT NULL,
+  PRIMARY KEY (`YCMEDIUMVOLTAGERUNID`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of yc_medium_voltage_run
+-- ----------------------------
+INSERT INTO `yc_medium_voltage_run` VALUES ('1', 'AH01', '2020-04-12 14:59:00', '3.67', '4320000.0000', '0.0000', '-226115.0000', '192960.0000', '-51840.0000', '48960.0000', '0.0000', '0.0000', '1', '2020-04-08 15:52:35', '2020');
+INSERT INTO `yc_medium_voltage_run` VALUES ('2', 'AH02', '2020-03-26 17:54:03', '1.00', '0.0000', '0.0000', '0.0000', '0.0000', '0.0000', '0.0000', '0.0000', '0.0000', '0', '2020-04-13 17:55:04', '2020');
+INSERT INTO `yc_medium_voltage_run` VALUES ('3', 'AH03', '2020-03-16 18:28:03', '1.00', '0.0000', '0.0000', '0.0000', '0.0000', '0.0000', '0.0000', '0.0000', '0.0000', '0', '2020-04-14 18:29:01', '2020');
+INSERT INTO `yc_medium_voltage_run` VALUES ('4', 'AH20', '2020-03-16 18:28:03', '1.00', '0.0000', '0.0000', '0.0000', '0.0000', '0.0000', '0.0000', '0.0000', '0.0000', '0', '2020-04-14 18:42:07', '2020');
+
+-- ----------------------------
+-- Table structure for yc_medium_voltage_run_month
+-- ----------------------------
+DROP TABLE IF EXISTS `yc_medium_voltage_run_month`;
+CREATE TABLE `yc_medium_voltage_run_month` (
+  `YCMEDIUMVOLTAGERUNMONTHID` int NOT NULL AUTO_INCREMENT,
+  `IEDNAME` varchar(100) DEFAULT NULL,
+  `COLTIME` datetime DEFAULT NULL,
+  `RUNNINGTIME` double(31,4) DEFAULT NULL,
+  `DOWNTIME` double(31,4) DEFAULT NULL,
+  `RUNSTATUS` int DEFAULT NULL,
+  `CREATETIME` datetime DEFAULT NULL,
+  `PARTICULARTIME` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`YCMEDIUMVOLTAGERUNMONTHID`)
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of yc_medium_voltage_run_month
+-- ----------------------------
+INSERT INTO `yc_medium_voltage_run_month` VALUES ('8', 'AH01', '2020-04-12 14:59:00', '2880.0000', '2880.0000', '1', '2020-04-08 15:52:35', '2020-04');
+INSERT INTO `yc_medium_voltage_run_month` VALUES ('9', 'AH01', '2020-04-12 14:59:00', '2880.0000', '2880.0000', '1', '2020-04-08 15:52:35', '2020-03');
+INSERT INTO `yc_medium_voltage_run_month` VALUES ('10', 'AH01', '2020-04-12 14:59:00', '5880.0000', '5880.0000', '1', '2020-04-08 15:52:35', '2020-02');
+INSERT INTO `yc_medium_voltage_run_month` VALUES ('11', 'AH01', '2020-04-12 14:59:00', '1880.0000', '1880.0000', '1', '2020-04-08 15:52:35', '2020-01');
+INSERT INTO `yc_medium_voltage_run_month` VALUES ('12', 'AH02', '2020-04-12 14:59:00', '1880.0000', '1880.0000', '1', '2020-04-08 15:52:35', '2020-01');
+INSERT INTO `yc_medium_voltage_run_month` VALUES ('13', 'AH02', '2020-04-12 14:59:00', '3880.0000', '3880.0000', '1', '2020-04-08 15:52:35', '2020-02');
+INSERT INTO `yc_medium_voltage_run_month` VALUES ('14', 'AH02', '2020-04-12 14:59:00', '8880.0000', '8880.0000', '1', '2020-04-08 15:52:35', '2020-03');
+INSERT INTO `yc_medium_voltage_run_month` VALUES ('15', 'AH02', '2020-03-26 17:54:03', '0.0000', '0.0000', '0', '2020-04-13 17:55:04', '2020-04');
+INSERT INTO `yc_medium_voltage_run_month` VALUES ('16', 'AH03', '2020-03-16 18:28:03', '0.0000', '0.0000', '0', '2020-04-14 18:29:01', '2020-04');
+INSERT INTO `yc_medium_voltage_run_month` VALUES ('17', 'AH20', '2020-03-16 18:28:03', '0.0000', '0.0000', '0', '2020-04-14 18:42:07', '2020-04');
+
+-- ----------------------------
 -- Table structure for yc_transformer_current
 -- ----------------------------
 DROP TABLE IF EXISTS `yc_transformer_current`;
@@ -155,7 +246,7 @@ CREATE TABLE `yc_transformer_current` (
 -- ----------------------------
 -- Records of yc_transformer_current
 -- ----------------------------
-INSERT INTO `yc_transformer_current` VALUES ('1', 'TRA2', '2020-03-23 18:08:37', '0.00', '0.00', '49.00', '0.00', '2020-03-25 15:47:12');
+INSERT INTO `yc_transformer_current` VALUES ('1', 'TRA2', '2020-04-13 14:35:03', '90.00', '40.00', '50.00', '31.00', '2020-04-13 14:35:41');
 
 -- ----------------------------
 -- Table structure for yc_transformer_log
@@ -189,7 +280,7 @@ CREATE TABLE `yx_current` (
   `VAL` int DEFAULT NULL COMMENT '状态',
   `CREATETIME` datetime DEFAULT NULL COMMENT '处理时间',
   PRIMARY KEY (`YXID`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of yx_current
@@ -198,7 +289,7 @@ INSERT INTO `yx_current` VALUES ('1', 'AH02', '2020-03-23 17:58:44', 'OverCurren
 INSERT INTO `yx_current` VALUES ('2', 'AH01', '2020-03-23 17:58:44', 'QuickBreak', '0', '2020-03-25 15:46:44');
 INSERT INTO `yx_current` VALUES ('3', 'AH03', '2020-03-23 17:58:44', 'OverCurrentDelay', '0', '2020-03-25 15:46:44');
 INSERT INTO `yx_current` VALUES ('4', 'AH22', '2020-03-23 17:58:44', 'CircuitBreaker', '0', '2020-03-25 15:46:44');
-INSERT INTO `yx_current` VALUES ('9', 'TRA1', '2020-03-11 09:01:40', 'FanOperationStatus', '1', '2020-03-11 09:01:17');
+INSERT INTO `yx_current` VALUES ('9', 'TRA1', '2020-04-13 11:27:40', 'FanOperationStatus', '1', '2020-04-13 11:27:52');
 INSERT INTO `yx_current` VALUES ('10', 'AH01', '2020-03-23 17:58:45', 'CircuitDisconnection', '0', '2020-03-25 15:46:44');
 INSERT INTO `yx_current` VALUES ('11', 'AH01', '2020-03-23 17:58:44', 'NoEnergyDtorage', '0', '2020-03-25 15:46:44');
 INSERT INTO `yx_current` VALUES ('12', 'AH22', '2020-03-23 17:58:45', 'EarthKnife', '0', '2020-03-25 15:46:44');
@@ -207,6 +298,10 @@ INSERT INTO `yx_current` VALUES ('14', 'AH01', '2020-03-23 17:58:45', 'CCableOve
 INSERT INTO `yx_current` VALUES ('15', 'AH01', '2020-03-23 17:58:45', 'BCableOvertemperature', '0', '2020-03-25 15:46:44');
 INSERT INTO `yx_current` VALUES ('16', 'AH01', '2020-03-23 17:58:45', 'ACableOvertemperature', '0', '2020-03-25 15:46:44');
 INSERT INTO `yx_current` VALUES ('17', 'AH01', '2020-03-23 17:58:45', 'CLowerArmOvertemperature', '0', '2020-03-25 15:46:44');
+INSERT INTO `yx_current` VALUES ('18', 'TRA1', '2020-04-13 14:03:40', 'TemperatureControlFailure', '1', '2020-04-13 14:03:30');
+INSERT INTO `yx_current` VALUES ('19', 'TRA2', '2020-03-01 10:05:40', 'WindingOvertemperatureTrip', '1', '2020-04-15 10:52:32');
+INSERT INTO `yx_current` VALUES ('20', 'TRA1', '2020-04-15 11:13:40', 'WindingOvertemperatureAlarm', '1', '2020-04-15 11:13:47');
+INSERT INTO `yx_current` VALUES ('21', 'TRA1', '2020-04-15 11:15:40', 'WindingOvertemperatureTrip', '0', '2020-04-15 11:15:16');
 
 -- ----------------------------
 -- Table structure for yx_log
@@ -225,3 +320,24 @@ CREATE TABLE `yx_log` (
 -- ----------------------------
 -- Records of yx_log
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for yx_score
+-- ----------------------------
+DROP TABLE IF EXISTS `yx_score`;
+CREATE TABLE `yx_score` (
+  `YXSCOREID` int NOT NULL AUTO_INCREMENT,
+  `IEDNAME` varchar(100) DEFAULT NULL,
+  `COLTIME` datetime DEFAULT NULL,
+  `SCORE` int DEFAULT NULL,
+  `HIGHLEVEL` int DEFAULT NULL,
+  `VARIABLENAME` varchar(100) DEFAULT NULL,
+  `VAL` int DEFAULT NULL,
+  `CREATETIME` datetime DEFAULT NULL,
+  PRIMARY KEY (`YXSCOREID`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of yx_score
+-- ----------------------------
+INSERT INTO `yx_score` VALUES ('1', 'TRA1', '2020-04-15 11:15:40', '90', '1', 'WindingOvertemperatureTrip', '0', '2020-04-15 11:15:17');

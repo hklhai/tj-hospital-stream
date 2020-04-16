@@ -6,6 +6,7 @@
 */1 * * * * root /root/shell/syncMediumVoltageYc.sh
 */1 * * * * root /root/shell/syncTransformerYc.sh
 */1 * * * * root /root/shell/syncYx.sh
+*/1 * * * * root /root/shell/syncLowPressure.sh
 
 
 # 重启

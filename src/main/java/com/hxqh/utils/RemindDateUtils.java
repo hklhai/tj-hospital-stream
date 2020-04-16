@@ -2,7 +2,9 @@ package com.hxqh.utils;
 
 import com.hxqh.domain.info.DataStartEnd;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -21,6 +23,7 @@ public class RemindDateUtils {
     private final static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
     private final static SimpleDateFormat formatMonth = new SimpleDateFormat("yyyy-MM");
     private final static SimpleDateFormat formatYear = new SimpleDateFormat("yyyy");
+    private final static SimpleDateFormat formatAll = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 
     /**
@@ -132,11 +135,54 @@ public class RemindDateUtils {
     }
 
 
+    /**
+     * 获取当前月份
+     * 2020-01
+     *
+     * @return
+     */
     public static String getNowMonth() {
         Calendar c = Calendar.getInstance();
         return formatMonth.format(c.getTime());
     }
 
+    /**
+     * 获取下月天数
+     *
+     * @return
+     */
+    public static int countDaysInNextMonth() {
+        LocalDate nextMonth = LocalDate.now().plusMonths(1);
+        return nextMonth.lengthOfMonth();
+    }
+
+    /**
+     * 获取下一月 年月信息
+     *
+     * @return
+     */
+    public static String getNextMonth() {
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.MONTH, 1);
+        return formatMonth.format(c.getTime());
+    }
+
+
+    public static Date getNextMonthStartTime() {
+        // 获取当下月第一天：
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.MONTH, 1);
+        c.set(Calendar.DAY_OF_MONTH, 1);
+        String first = format.format(c.getTime());
+        String nextMonthFirstDay = first + " 00:00:00";
+        Date date = new Date();
+        try {
+            date = formatAll.parse(nextMonthFirstDay);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
+    }
 
     /**
      * 获取上一月 年月信息

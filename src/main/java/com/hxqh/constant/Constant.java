@@ -1,6 +1,7 @@
 package com.hxqh.constant;
 
 import com.hxqh.enums.FirstAlarmLevel;
+import com.hxqh.enums.OtherAlarmLevel;
 import com.hxqh.enums.SecondAlarmLevel;
 import com.hxqh.enums.ThirdAlarmLevel;
 
@@ -145,7 +146,12 @@ public interface Constant {
             put(ThirdAlarmLevel.TemperatureControlFailure.getCode(), 3);
 
 
+            put(OtherAlarmLevel.FanOperationStatus.getCode(), 1);
+
+
             // todo 低压设备
+
+
 
             put(ThirdAlarmLevel.NO_INFO, 3);
         }
@@ -188,8 +194,8 @@ public interface Constant {
         }
     };
 
-    Integer MEDIUMVOLTAGE_RUN = 1;
-    Integer MEDIUMVOLTAGE_STOP = 0;
+    Integer DEVICE_RUN = 1;
+    Integer DEVICE_STOP = 0;
 
 
     Integer SOCRE_ONEHUNDRED = 100;

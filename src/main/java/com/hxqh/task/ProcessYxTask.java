@@ -1,5 +1,7 @@
 package com.hxqh.task;
 
+import com.hxqh.enums.OtherAlarmLevel;
+import com.hxqh.task.sink.MySQLYxFanSink;
 import com.hxqh.task.sink.MySQLYxScoreSink;
 import com.hxqh.task.sink.MySQLYxSink;
 import com.hxqh.transfer.ProcessYxWaterEmitter;
@@ -130,6 +132,16 @@ public class ProcessYxTask {
         data.addSink(new MySQLYxSink()).name("YX-MySQL-Sink");
         // 处理实时得分
         data.addSink(new MySQLYxScoreSink()).name("YX-MySQL-Score-Sink");
+
+        // 处理变压器风机运行时长
+        DataStream<Row> transformerFan = data.filter(new FilterFunction<Row>() {
+            @Override
+            public boolean filter(Row row) throws Exception {
+                String variableName = ((Row[]) row.getField(11))[0].getField(0).toString();
+                return OtherAlarmLevel.FanOperationStatus.getCode().equals(variableName) ? true : false;
+            }
+        });
+        transformerFan.addSink(new MySQLYxFanSink()).name("YX-MySQL-Fan-Sink");
 
         persistEs(data);
 

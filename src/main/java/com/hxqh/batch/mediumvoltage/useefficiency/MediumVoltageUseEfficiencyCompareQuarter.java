@@ -22,9 +22,9 @@ import static com.hxqh.constant.Constant.*;
 /**
  * 单台中压设备-季度运行时长使用效率对比
  * <p>
- * Created by zdd on 2020/4/8.
+ * Created by Ocean on 2020/4/8.
  *
- * @author zdd
+ * @author Ocean
  */
 @SuppressWarnings("Duplicates")
 public class MediumVoltageUseEfficiencyCompareQuarter {
