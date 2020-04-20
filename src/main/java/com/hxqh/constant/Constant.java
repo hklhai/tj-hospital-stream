@@ -46,13 +46,29 @@ public interface Constant {
      */
     String MEDIUM_VOLTAG_ESWITCH = "中压开关设备";
     String TRANSFORMER = "变压器";
-
     String LOW_VOLTAGE_SWITCHGEAR = "低压开关设备";
 
-    String ATS = "低压开关设备-ATS";
-    String CAPACITOR = "低压开关设备-电容器";
-    String DRAWER_CABINET = "低压开关设备-抽屉柜";
-    String ACB = "低压开关设备-ACB";
+
+
+    /**
+     * 低压开关柜细分类
+     */
+    String LOW_VOLTAGE_ATS = "低压开关设备-ATS";
+    String LOW_VOLTAGE_CAPACITOR = "低压开关设备-电容器";
+    String LOW_VOLTAGE_DRAWER_CABINET = "低压开关设备-抽屉柜";
+    String LOW_VOLTAGE_INCOMING_CABINET = "低压开关设备-进线柜";
+    String LOW_VOLTAGE_COUPLER_CABINET = "低压开关设备-母联柜";
+    String LOW_VOLTAGE_FEEDER_CABINET = "低压开关设备-馈线柜";
+
+    /**
+     * 低压开关柜细分类
+     */
+    String ATS = "ATS";
+    String CAPACITOR = "电容器";
+    String DRAWER_CABINET = "抽屉柜";
+    String INCOMING_CABINET = "进线柜";
+    String COUPLER_CABINET = "母联柜";
+    String FEEDER_CABINET = "馈线柜";
 
 
     /**
@@ -121,9 +137,11 @@ public interface Constant {
 
     Map<String, Integer> ALARM_MAP = new HashMap(12) {
         {
+            // 中压设备
             put(FirstAlarmLevel.QuickBreak.getCode(), 1);
             put(FirstAlarmLevel.OverCurrent.getCode(), 1);
             put(FirstAlarmLevel.OverCurrentDelay.getCode(), 1);
+            put(FirstAlarmLevel.DifferentialProtection.getCode(), 1);
 
             put(SecondAlarmLevel.NoEnergyDtorage.getCode(), 2);
             put(SecondAlarmLevel.CircuitDisconnection.getCode(), 2);
@@ -140,16 +158,14 @@ public interface Constant {
 
             //  变压器
             put(FirstAlarmLevel.WindingOvertemperatureTrip.getCode(), 1);
-
             put(SecondAlarmLevel.WindingOvertemperatureAlarm.getCode(), 2);
-
             put(ThirdAlarmLevel.TemperatureControlFailure.getCode(), 3);
+            put(FirstAlarmLevel.FanOperationStatus.getCode(), 1);
 
 
-            put(OtherAlarmLevel.FanOperationStatus.getCode(), 1);
+            // 低压设备
+            put(FirstAlarmLevel.InsertionCycles.getCode(), 1);
 
-
-            // todo 低压设备
 
 
 

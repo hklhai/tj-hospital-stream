@@ -2,7 +2,7 @@ package com.hxqh.task;
 
 import com.hxqh.domain.YcLowPressure;
 import com.hxqh.task.sink.MySQLYcLowPressureSink;
-import com.hxqh.transfer.ProcessYcTransformerWaterEmitter;
+import com.hxqh.transfer.ProcessYcLowPressureWaterEmitter;
 import com.hxqh.utils.ConvertUtils;
 import com.hxqh.utils.DateUtils;
 import org.apache.flink.api.common.functions.RuntimeContext;
@@ -102,7 +102,7 @@ public class ProcessYcYcLowPressureTask {
         Table table = tableEnvironment.sqlQuery("select * from yc_lowpressure where assetYpe like'" + LOW_VOLTAGE_SWITCHGEAR + "%'");
         DataStream<Row> data = tableEnvironment.toAppendStream(table, Row.class);
 
-        data.assignTimestampsAndWatermarks(new ProcessYcTransformerWaterEmitter());
+        data.assignTimestampsAndWatermarks(new ProcessYcLowPressureWaterEmitter());
 
         data.addSink(new MySQLYcLowPressureSink()).name("Yc-LowPressure-MySQL-Sink");
 

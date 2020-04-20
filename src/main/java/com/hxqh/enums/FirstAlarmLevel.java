@@ -17,6 +17,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public enum FirstAlarmLevel implements AlarmLevel {
 
+
     // 中压开关柜
     QuickBreak("QuickBreak", "速断"),
 
@@ -24,13 +25,24 @@ public enum FirstAlarmLevel implements AlarmLevel {
 
     OverCurrentDelay("OverCurrentDelay", "延时过流"),
 
+    DifferentialProtection("DifferentialProtection", "差动保护"),
 
     // 变压器
     WindingOvertemperatureTrip("WindingOvertemperatureTrip", "超温跳闸"),
+    // 变压器-风机
+    FanOperationStatus("FanOperationStatus","风机运行报警"),
+
+
+    // 低压开关柜
+    InsertionCycles("InsertionCycles", "插入周期报警"),
+
+
+
+
 
 
     // todo 未提供
-    noinfo("0", "差动保护");
+    noinfo("0", "未提供");
 
     private String code;
 

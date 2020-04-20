@@ -3,6 +3,7 @@ package com.hxqh.task;
 import com.hxqh.domain.YcTransformer;
 import com.hxqh.task.sink.MySQLYcTransformerSink;
 import com.hxqh.transfer.ProcessYcLowPressureWaterEmitter;
+import com.hxqh.transfer.ProcessYcTransformerWaterEmitter;
 import com.hxqh.utils.ConvertUtils;
 import com.hxqh.utils.DateUtils;
 import org.apache.flink.api.common.functions.RuntimeContext;
@@ -107,7 +108,7 @@ public class ProcessYcTransformerTask {
         Table table = tableEnvironment.sqlQuery("select * from yc_transformer where assetYpe='" + TRANSFORMER + "'");
         DataStream<Row> data = tableEnvironment.toAppendStream(table, Row.class);
 
-        data.assignTimestampsAndWatermarks(new ProcessYcLowPressureWaterEmitter());
+        data.assignTimestampsAndWatermarks(new ProcessYcTransformerWaterEmitter());
 
         data.addSink(new MySQLYcTransformerSink()).name("Yc-Transformer-MySQL-Sink");
 
