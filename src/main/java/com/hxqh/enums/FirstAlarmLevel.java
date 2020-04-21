@@ -17,7 +17,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public enum FirstAlarmLevel implements AlarmLevel {
 
-
     // 中压开关柜
     QuickBreak("QuickBreak", "速断"),
 
@@ -30,13 +29,17 @@ public enum FirstAlarmLevel implements AlarmLevel {
     // 变压器
     WindingOvertemperatureTrip("WindingOvertemperatureTrip", "超温跳闸"),
     // 变压器-风机
-    FanOperationStatus("FanOperationStatus","风机运行报警"),
+    FanOperationStatus("FanOperationStatus", "风机运行报警"),
 
 
     // 低压开关柜
     InsertionCycles("InsertionCycles", "插入周期报警"),
 
-
+    OverVoltage("OverVoltage", "电压过高"),
+    UnderVoltage("UnderVoltage", "电压过低"),
+    ContactWear("ContactWear", "触头磨损100%"),
+    LifeBit("LifeBit", "表计/ACB不在线"),
+    GPI1("GPI1", "一次断路器故障脱扣"),
 
 
 

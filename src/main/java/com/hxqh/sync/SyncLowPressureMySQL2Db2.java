@@ -36,7 +36,7 @@ public class SyncLowPressureMySQL2Db2 {
 
         ExecutionEnvironment environment = ExecutionEnvironment.getExecutionEnvironment();
 
-        String selectQuery = "select IEDNAME,COLTIME,PhaseL1CurrentPercent,PhaseL1L2Voltage,PhaseL2CurrentPercent,PhaseL2L3Voltage,PhaseL3CurrentPercent,PhaseL3L1Voltage,PositiveActive,PositiveReactive,PowerFactor,OperationNumber,CREATETIME from yc_lowpressure_current";
+        String selectQuery = "select IEDNAME,COLTIME,PhaseL1CurrentPercent,PhaseL1L2Voltage,PhaseL2CurrentPercent,PhaseL2L3Voltage,PhaseL3CurrentPercent,PhaseL3L1Voltage,ActiveElectricDegree,ReactiveElectricDegree,PowerFactor,OperationNumber,CONTACTWEAR,CREATETIME from yc_lowpressure_current";
 
         JDBCInputFormat.JDBCInputFormatBuilder inputBuilder =
                 JDBCInputFormat.buildJDBCInputFormat().setDrivername(MYSQL_DRIVER_NAME).setDBUrl(MYSQL_DB_URL)
@@ -51,7 +51,7 @@ public class SyncLowPressureMySQL2Db2 {
         preparedStatement.execute();
         JdbcUtil4Db2.close(preparedStatement, connection);
 
-        String insertQuery = "INSERT INTO YC_LOWPRESSURE_CURRENT (IEDNAME,COLTIME,PhaseL1CurrentPercent,PhaseL1L2Voltage,PhaseL2CurrentPercent,PhaseL2L3Voltage,PhaseL3CurrentPercent,PhaseL3L1Voltage,PositiveActive,PositiveReactive,PowerFactor,OperationNumber,CREATETIME) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        String insertQuery = "INSERT INTO YC_LOWPRESSURE_CURRENT (IEDNAME,COLTIME,PhaseL1CurrentPercent,PhaseL1L2Voltage,PhaseL2CurrentPercent,PhaseL2L3Voltage,PhaseL3CurrentPercent,PhaseL3L1Voltage,ActiveElectricDegree,ReactiveElectricDegree,PowerFactor,OperationNumber,CONTACTWEAR,CREATETIME) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         JDBCOutputFormat.JDBCOutputFormatBuilder outputBuilder =
                 JDBCOutputFormat.buildJDBCOutputFormat().setDrivername(DB2_DRIVER_NAME).setDBUrl(DB2_DB_URL)
                         .setQuery(insertQuery).setSqlTypes(type).setUsername(DB2_USERNAME).setPassword(DB2_PASSWORD);
@@ -65,13 +65,13 @@ public class SyncLowPressureMySQL2Db2 {
         return new TypeInformation<?>[]{BasicTypeInfo.STRING_TYPE_INFO, SqlTimeTypeInfo.TIMESTAMP,
                 BasicTypeInfo.DOUBLE_TYPE_INFO, BasicTypeInfo.DOUBLE_TYPE_INFO, BasicTypeInfo.DOUBLE_TYPE_INFO, BasicTypeInfo.DOUBLE_TYPE_INFO,
                 BasicTypeInfo.DOUBLE_TYPE_INFO, BasicTypeInfo.DOUBLE_TYPE_INFO, BasicTypeInfo.DOUBLE_TYPE_INFO, BasicTypeInfo.DOUBLE_TYPE_INFO,
-                BasicTypeInfo.DOUBLE_TYPE_INFO, BasicTypeInfo.INT_TYPE_INFO, SqlTimeTypeInfo.TIMESTAMP
+                BasicTypeInfo.DOUBLE_TYPE_INFO, BasicTypeInfo.INT_TYPE_INFO, BasicTypeInfo.DOUBLE_TYPE_INFO, SqlTimeTypeInfo.TIMESTAMP
         };
     }
 
     private static int[] getType() {
         return new int[]{Types.VARCHAR, Types.TIMESTAMP, Types.DOUBLE, Types.DOUBLE, Types.DOUBLE, Types.DOUBLE,
-                Types.DOUBLE, Types.DOUBLE, Types.DOUBLE, Types.DOUBLE, Types.DOUBLE, Types.INTEGER, Types.TIMESTAMP
+                Types.DOUBLE, Types.DOUBLE, Types.DOUBLE, Types.DOUBLE, Types.DOUBLE, Types.INTEGER, Types.DOUBLE, Types.TIMESTAMP
         };
     }
 

@@ -163,12 +163,27 @@ public interface Constant {
             put(FirstAlarmLevel.FanOperationStatus.getCode(), 1);
 
 
-            // 低压设备
+            // 低压设备-1级
             put(FirstAlarmLevel.InsertionCycles.getCode(), 1);
+            put(FirstAlarmLevel.OverVoltage.getCode(), 1);
+            put(FirstAlarmLevel.UnderVoltage.getCode(), 1);
+            put(FirstAlarmLevel.ContactWear.getCode(), 1);
+            put(FirstAlarmLevel.LifeBit.getCode(), 1);
+            put(FirstAlarmLevel.GPI1.getCode(), 1);
 
 
+            // 低压设备-2级
+            put(SecondAlarmLevel.SlightOverCurrent.getCode(), 2);
+            put(SecondAlarmLevel.ContactWear90.getCode(), 2);
 
 
+            // 低压设备-3级
+            put(ThirdAlarmLevel.UnderCurrent.getCode(), 3);
+            put(ThirdAlarmLevel.SlightOverVoltage.getCode(), 3);
+            put(ThirdAlarmLevel.SlightUnderVoltage.getCode(), 3);
+
+
+            // 未提供
             put(ThirdAlarmLevel.NO_INFO, 3);
         }
     };
@@ -210,10 +225,34 @@ public interface Constant {
         }
     };
 
+
+
     Integer DEVICE_RUN = 1;
     Integer DEVICE_STOP = 0;
 
 
     Integer SOCRE_ONEHUNDRED = 100;
+
+
+    Double OverCurrentRatio_UP = 1.05d;
+
+    Double OverVoltageRatio_UP = 1.1d;
+    Double OverVoltageRatio_DOWN = 0.85d;
+
+
+    /**
+     *
+     */
+    Double ContactWear90 = 0.9d;
+
+
+    Double One = 1.0d;
+    /**
+     * 低压设备额定电压
+     */
+    Integer Rated_Voltage = 400;
+
+    Double Ten_Percent = 0.1d;
+    Double Fifteen_Percent = 0.15d;
 
 }

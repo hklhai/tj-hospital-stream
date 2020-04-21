@@ -19,14 +19,14 @@ import java.sql.Types;
 import static com.hxqh.constant.Constant.*;
 
 /**
- * 变压器遥测数据同步
+ * 变压器、中压设备、低压设备实时分数同步
  * <p>
- * Created by Ocean lin on 2020/3/9.
+ * Created by Ocean lin on 2020/4/16.
  *
  * @author Ocean lin
  */
 @SuppressWarnings("Duplicates")
-public class SyncTransformerMySQL2Db2 {
+public class SyncYxScoreMySQL2Db2 {
 
     public static void main(String[] args) throws Exception {
         final TypeInformation<?>[] fieldTypes = getFieldTypes();
@@ -36,7 +36,7 @@ public class SyncTransformerMySQL2Db2 {
 
         ExecutionEnvironment environment = ExecutionEnvironment.getExecutionEnvironment();
 
-        String selectQuery = "select IEDNAME,COLTIME,APhaseTemperature,BPhaseTemperature,CPhaseTemperature,DRoadTemperature,CREATETIME from yc_transformer_current";
+        String selectQuery = "select IEDNAME,COLTIME,SCORE,HIGHLEVEL,VARIABLENAME,VAL,CREATETIME from yx_score";
 
         JDBCInputFormat.JDBCInputFormatBuilder inputBuilder =
                 JDBCInputFormat.buildJDBCInputFormat().setDrivername(MYSQL_DRIVER_NAME).setDBUrl(MYSQL_DB_URL)
@@ -45,34 +45,32 @@ public class SyncTransformerMySQL2Db2 {
 
         DataSet<Row> source = environment.createInput(inputBuilder.finish());
 
+
         Connection connection = JdbcUtil4Db2.getConnection();
-        String truncateSql = "TRUNCATE TABLE YC_TRANSFORMER_CURRENT IMMEDIATE";
+        String truncateSql = "TRUNCATE TABLE YX_SCORE IMMEDIATE";
         PreparedStatement preparedStatement = connection.prepareStatement(truncateSql);
         preparedStatement.execute();
         JdbcUtil4Db2.close(preparedStatement, connection);
 
-        String insertQuery = "INSERT INTO YC_TRANSFORMER_CURRENT (IEDNAME,COLTIME,APHASETEMPERATURE,BPHASETEMPERATURE,CPHASETEMPERATURE,DROADTEMPERATURE,CREATETIME) VALUES(?,?,?,?,?,?,?)";
+        String insertQuery = "INSERT INTO YX_SCORE (IEDNAME,COLTIME,SCORE,HIGHLEVEL,VARIABLENAME,VAL,CREATETIME) VALUES(?,?,?,?,?,?,?)";
         JDBCOutputFormat.JDBCOutputFormatBuilder outputBuilder =
                 JDBCOutputFormat.buildJDBCOutputFormat().setDrivername(DB2_DRIVER_NAME).setDBUrl(DB2_DB_URL)
                         .setQuery(insertQuery).setSqlTypes(type).setUsername(DB2_USERNAME).setPassword(DB2_PASSWORD);
         source.output(outputBuilder.finish());
 
-        environment.execute("SyncTransformerMySQL2Db2");
-
+        environment.execute("SyncYxScoreMySQL2Db2");
     }
 
 
     private static TypeInformation<?>[] getFieldTypes() {
-        return new TypeInformation<?>[]{BasicTypeInfo.STRING_TYPE_INFO, SqlTimeTypeInfo.TIMESTAMP,
-                BasicTypeInfo.DOUBLE_TYPE_INFO, BasicTypeInfo.DOUBLE_TYPE_INFO, BasicTypeInfo.DOUBLE_TYPE_INFO, BasicTypeInfo.DOUBLE_TYPE_INFO,
-                SqlTimeTypeInfo.TIMESTAMP
+        return new TypeInformation<?>[]{BasicTypeInfo.STRING_TYPE_INFO, SqlTimeTypeInfo.TIMESTAMP, BasicTypeInfo.INT_TYPE_INFO, BasicTypeInfo.INT_TYPE_INFO,
+                BasicTypeInfo.STRING_TYPE_INFO, BasicTypeInfo.INT_TYPE_INFO, SqlTimeTypeInfo.TIMESTAMP
         };
     }
 
 
     private static int[] getType() {
-        return new int[]{Types.VARCHAR, Types.TIMESTAMP,
-                Types.DOUBLE, Types.DOUBLE, Types.DOUBLE, Types.DOUBLE, Types.TIMESTAMP
+        return new int[]{Types.VARCHAR, Types.TIMESTAMP, Types.INTEGER, Types.INTEGER, Types.VARCHAR, Types.INTEGER, Types.TIMESTAMP
         };
     }
 }

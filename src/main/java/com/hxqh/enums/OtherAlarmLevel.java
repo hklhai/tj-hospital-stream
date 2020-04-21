@@ -20,12 +20,9 @@ public enum OtherAlarmLevel implements AlarmLevel {
 
     // todo 中压开关
 
-    // 变压器
-    FanOperationStatus("FanOperationStatus","风机运行报警");
-
     // todo 低压设备
 
-
+    noinfo("0", "未提供");
 
     private String code;
 
