@@ -1,5 +1,6 @@
 package com.hxqh.domain;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,7 +13,7 @@ import java.util.Date;
  *
  * @author Ocean lin
  */
-
+@Deprecated
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,7 +21,7 @@ public class YxAts implements Serializable {
 
     private static final long serialVersionUID = -2157864192815826188L;
     private String IEDName;
-
+    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     private Date ColTime;
 
     private String VariableName;

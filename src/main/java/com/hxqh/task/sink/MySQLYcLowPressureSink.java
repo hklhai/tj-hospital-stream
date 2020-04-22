@@ -65,8 +65,8 @@ public class MySQLYcLowPressureSink extends RichSinkFunction<Row> {
             preparedStatement.setDouble(7, ycLowPressure.getPhaseL3CurrentPercent());
             preparedStatement.setDouble(8, ycLowPressure.getPhaseL3L1Voltage());
 
-            preparedStatement.setDouble(9, ycLowPressure.getPositiveActive());
-            preparedStatement.setDouble(10, ycLowPressure.getPositiveReactive());
+            preparedStatement.setDouble(9, ycLowPressure.getActiveElectricDegree());
+            preparedStatement.setDouble(10, ycLowPressure.getReactiveElectricDegree());
             preparedStatement.setDouble(11, ycLowPressure.getPowerFactor());
             preparedStatement.setInt(12, ycLowPressure.getOperationNumber());
 
@@ -86,8 +86,8 @@ public class MySQLYcLowPressureSink extends RichSinkFunction<Row> {
             preparedStatement.setDouble(7, ycLowPressure.getPhaseL2L3Voltage());
             preparedStatement.setDouble(8, ycLowPressure.getPhaseL3CurrentPercent());
             preparedStatement.setDouble(9, ycLowPressure.getPhaseL3L1Voltage());
-            preparedStatement.setDouble(10, ycLowPressure.getPositiveActive());
-            preparedStatement.setDouble(11, ycLowPressure.getPositiveReactive());
+            preparedStatement.setDouble(10, ycLowPressure.getActiveElectricDegree());
+            preparedStatement.setDouble(11, ycLowPressure.getReactiveElectricDegree());
             preparedStatement.setDouble(12, ycLowPressure.getPowerFactor());
             preparedStatement.setInt(13, ycLowPressure.getOperationNumber());
 

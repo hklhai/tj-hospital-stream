@@ -39,12 +39,12 @@ public class YcLowPressure implements Serializable {
     private Double PhaseL2L3Voltage;
     private Double PhaseL3CurrentPercent;
     private Double PhaseL3L1Voltage;
-
-    private Double PositiveActive;
-    private Double PositiveReactive;
-
+    private Double ActiveElectricDegree;
+    private Double ReactiveElectricDegree;
     private Double PowerFactor;
     private Integer OperationNumber;
+
+    private Double ContactWear;
 
 
 }

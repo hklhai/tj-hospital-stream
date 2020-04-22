@@ -8,11 +8,12 @@ import org.apache.flink.types.Row;
 import javax.annotation.Nullable;
 
 /**
+ * 低压设备水位线
+ *
  * Created by Ocean lin on 2020/4/14.
  *
  * @author Ocean lin
  */
-
 public class ProcessYcLowPressureWaterEmitter implements AssignerWithPunctuatedWatermarks<Row> {
     @Nullable
     @Override

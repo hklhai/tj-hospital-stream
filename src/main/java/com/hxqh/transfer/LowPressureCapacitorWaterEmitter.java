@@ -6,16 +6,15 @@ import org.apache.flink.streaming.api.watermark.Watermark;
 import org.apache.flink.types.Row;
 
 import javax.annotation.Nullable;
-import java.sql.Date;
-import java.sql.Timestamp;
 
 /**
- * Created by Ocean lin on 2020/3/6.
+ * 低压设备-电容器水位线
+ *
+ * Created by Ocean lin on 2020/4/14.
  *
  * @author Ocean lin
  */
-
-public class ProcessYxWaterEmitter implements AssignerWithPunctuatedWatermarks<Row> {
+public class LowPressureCapacitorWaterEmitter implements AssignerWithPunctuatedWatermarks<Row> {
     @Nullable
     @Override
     public Watermark checkAndGetNextWatermark(Row row, long l) {

@@ -60,12 +60,12 @@ public class Db2YcAtsSink extends RichSinkFunction<String> {
             String updateSql = "update YCATS_CURRENT set COLTIME=?,UA=?,UB=?,UC=?,IA=?,IB=?,IC=?,CREATETIME=? where YCATSID=? ";
             preparedStatement = connection.prepareStatement(updateSql);
             preparedStatement.setTimestamp(1, new Timestamp(ycAts.getColTime().getTime()));
-            preparedStatement.setDouble(2, ycAts.getUA());
-            preparedStatement.setDouble(3, ycAts.getUB());
-            preparedStatement.setDouble(4, ycAts.getUC());
-            preparedStatement.setDouble(5, ycAts.getIA());
-            preparedStatement.setDouble(6, ycAts.getIB());
-            preparedStatement.setDouble(7, ycAts.getIC());
+            preparedStatement.setDouble(2, ycAts.getUa());
+            preparedStatement.setDouble(3, ycAts.getUb());
+            preparedStatement.setDouble(4, ycAts.getUc());
+            preparedStatement.setDouble(5, ycAts.getIa());
+            preparedStatement.setDouble(6, ycAts.getIb());
+            preparedStatement.setDouble(7, ycAts.getIc());
             preparedStatement.setTimestamp(8, new Timestamp(now.getTime()));
             preparedStatement.setInt(9, pkId);
             preparedStatement.executeUpdate();
@@ -76,12 +76,12 @@ public class Db2YcAtsSink extends RichSinkFunction<String> {
             preparedStatement = connection.prepareStatement(insertSql);
             preparedStatement.setString(1, ycAts.getIEDName());
             preparedStatement.setTimestamp(2, new Timestamp(ycAts.getColTime().getTime()));
-            preparedStatement.setDouble(3, ycAts.getUA());
-            preparedStatement.setDouble(4, ycAts.getUB());
-            preparedStatement.setDouble(5, ycAts.getUC());
-            preparedStatement.setDouble(6, ycAts.getIA());
-            preparedStatement.setDouble(7, ycAts.getIB());
-            preparedStatement.setDouble(8, ycAts.getIC());
+            preparedStatement.setDouble(3, ycAts.getUa());
+            preparedStatement.setDouble(4, ycAts.getUb());
+            preparedStatement.setDouble(5, ycAts.getUc());
+            preparedStatement.setDouble(6, ycAts.getIa());
+            preparedStatement.setDouble(7, ycAts.getIb());
+            preparedStatement.setDouble(8, ycAts.getIc());
             preparedStatement.setTimestamp(9, new Timestamp(now.getTime()));
             preparedStatement.executeUpdate();
         }
@@ -91,12 +91,12 @@ public class Db2YcAtsSink extends RichSinkFunction<String> {
         preparedStatement = connection.prepareStatement(insertLogSql);
         preparedStatement.setString(1, ycAts.getIEDName());
         preparedStatement.setTimestamp(2, new Timestamp(ycAts.getColTime().getTime()));
-        preparedStatement.setDouble(3, ycAts.getUA());
-        preparedStatement.setDouble(4, ycAts.getUB());
-        preparedStatement.setDouble(5, ycAts.getUC());
-        preparedStatement.setDouble(6, ycAts.getIA());
-        preparedStatement.setDouble(7, ycAts.getIB());
-        preparedStatement.setDouble(8, ycAts.getIC());
+        preparedStatement.setDouble(3, ycAts.getUa());
+        preparedStatement.setDouble(4, ycAts.getUb());
+        preparedStatement.setDouble(5, ycAts.getUc());
+        preparedStatement.setDouble(6, ycAts.getIa());
+        preparedStatement.setDouble(7, ycAts.getIb());
+        preparedStatement.setDouble(8, ycAts.getIc());
         preparedStatement.setTimestamp(9, new Timestamp(now.getTime()));
         preparedStatement.executeUpdate();
     }

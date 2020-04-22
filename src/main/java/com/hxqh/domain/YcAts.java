@@ -1,5 +1,6 @@
 package com.hxqh.domain;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,17 +21,17 @@ public class YcAts implements Serializable {
 
     private static final long serialVersionUID = -1353078868954635748L;
     private String IEDName;
-
+    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     private Date ColTime;
 
 
-    private Double UA;
-    private Double UB;
-    private Double UC;
+    private Double Ua;
+    private Double Ub;
+    private Double Uc;
 
-    private Double IA;
-    private Double IB;
-    private Double IC;
+    private Double Ia;
+    private Double Ib;
+    private Double Ic;
 
     private String assetYpe;
     private String productModel;

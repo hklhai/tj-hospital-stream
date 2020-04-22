@@ -105,12 +105,12 @@ public class ProcessYcAtsTask {
                         Map<String, Object> map = new HashMap<>(24);
                         map.put("IEDName", ycAts.getIEDName());
                         map.put("ColTime", DateUtils.formatDate(ycAts.getColTime()));
-                        map.put("UA", ycAts.getUA());
-                        map.put("UB", ycAts.getUB());
-                        map.put("UC", ycAts.getUC());
-                        map.put("IA", ycAts.getIA());
-                        map.put("IB", ycAts.getIB());
-                        map.put("IC", ycAts.getIC());
+                        map.put("UA", ycAts.getUa());
+                        map.put("UB", ycAts.getUb());
+                        map.put("UC", ycAts.getUc());
+                        map.put("IA", ycAts.getIa());
+                        map.put("IB", ycAts.getIb());
+                        map.put("IC", ycAts.getIc());
                         map.put("CreateTime", DateUtils.formatDate(now));
                         map.put("assetYpe", ycAts.getAssetYpe());
                         map.put("productModel", ycAts.getProductModel());

@@ -34,7 +34,7 @@ public class IEDEntity implements Serializable {
     private Date ColTime;
 
     @JSONField(name = "IEDParam")
-    private List<com.hxqh.domain.base.IEDParam> IEDParam;
+    private List<IEDParam> IEDParam;
 
     private String assetYpe;
 

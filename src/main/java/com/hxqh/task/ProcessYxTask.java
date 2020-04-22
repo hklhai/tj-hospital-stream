@@ -1,5 +1,6 @@
 package com.hxqh.task;
 
+import com.hxqh.enums.FirstAlarmLevel;
 import com.hxqh.enums.OtherAlarmLevel;
 import com.hxqh.task.sink.MySQLYxFanSink;
 import com.hxqh.task.sink.MySQLYxScoreSink;
@@ -138,7 +139,7 @@ public class ProcessYxTask {
             @Override
             public boolean filter(Row row) throws Exception {
                 String variableName = ((Row[]) row.getField(11))[0].getField(0).toString();
-                return OtherAlarmLevel.FanOperationStatus.getCode().equals(variableName) ? true : false;
+                return FirstAlarmLevel.FanOperationStatus.getCode().equals(variableName) ? true : false;
             }
         });
         transformerFan.addSink(new MySQLYxFanSink()).name("YX-MySQL-Fan-Sink");
