@@ -25,6 +25,7 @@ import static com.hxqh.constant.Constant.DEVICE_STOP;
 @SuppressWarnings("Duplicates")
 public class MySQLYcMediumVoltageRunStatusSink extends RichSinkFunction<String> {
 
+    // todo 状态
     private Connection connection;
     private PreparedStatement preparedStatement;
 

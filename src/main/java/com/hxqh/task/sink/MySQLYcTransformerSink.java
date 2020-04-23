@@ -43,7 +43,7 @@ public class MySQLYcTransformerSink extends RichSinkFunction<Row> {
 
         if (1 == count) {
             // 获取主键
-            String iedNameSQL = "select  YCRANSFORMERID from yc_transformer_current where IEDNAME=?";
+            String iedNameSQL = "select  YCTRANSFORMERID from yc_transformer_current where IEDNAME=?";
             preparedStatement = connection.prepareStatement(iedNameSQL);
             preparedStatement.setString(1, ycTransformer.getIEDName());
             ResultSet edNameResult = preparedStatement.executeQuery();
@@ -52,7 +52,7 @@ public class MySQLYcTransformerSink extends RichSinkFunction<Row> {
             }
 
             // 更新设备
-            String updateSql = "update yc_transformer_current set COLTIME=?,CREATETIME=?,APhaseTemperature=?,BPhaseTemperature=?,CPhaseTemperature=?,DRoadTemperature=? where YCRANSFORMERID =?";
+            String updateSql = "update yc_transformer_current set COLTIME=?,CREATETIME=?,APhaseTemperature=?,BPhaseTemperature=?,CPhaseTemperature=?,DRoadTemperature=? where YCTRANSFORMERID =?";
 
             preparedStatement = connection.prepareStatement(updateSql);
 

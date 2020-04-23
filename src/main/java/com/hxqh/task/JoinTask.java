@@ -4,7 +4,7 @@ package com.hxqh.task;
 import com.hxqh.domain.Config;
 import com.hxqh.domain.EvaluatedResult;
 import com.hxqh.domain.UserEvent;
-import com.hxqh.function.ConnectedBroadcastProcessFunction;
+import com.hxqh.task.function.ConnectedBroadcastProcessFunction;
 import com.hxqh.schema.ConfigDeserializationSchema;
 import com.hxqh.schema.EvaluatedResultSerializationSchema;
 import com.hxqh.schema.UserEventDeserializationSchema;

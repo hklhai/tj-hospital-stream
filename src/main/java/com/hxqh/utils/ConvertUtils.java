@@ -259,4 +259,31 @@ public class ConvertUtils {
     }
 
 
+    public static YcLowPressure rowConvert2YcLowPressure(Row row) {
+        YcLowPressure ycLowPressure = new YcLowPressure();
+        ycLowPressure.setIEDName(row.getField(0).toString());
+        ycLowPressure.setColTime(DateUtils.formatDate(row.getField(2).toString()));
+        ycLowPressure.setAssetYpe(row.getField(3).toString());
+        ycLowPressure.setLocation(row.getField(4).toString());
+        ycLowPressure.setParent(row.getField(5).toString());
+        ycLowPressure.setProductModel(row.getField(6).toString());
+
+        ycLowPressure.setProductModelB(row.getField(7).toString());
+        ycLowPressure.setProductModelC(row.getField(8).toString());
+
+
+        ycLowPressure.setActiveElectricDegree(Double.parseDouble(row.getField(9).toString()));
+        ycLowPressure.setContactWear(Double.parseDouble(row.getField(10).toString()));
+        ycLowPressure.setOperationNumber(Integer.parseInt(row.getField(11).toString()));
+        ycLowPressure.setPhaseL1CurrentPercent(Double.parseDouble(row.getField(12).toString()));
+        ycLowPressure.setPhaseL1L2Voltage(Double.parseDouble(row.getField(13).toString()));
+        ycLowPressure.setPhaseL2CurrentPercent(Double.parseDouble(row.getField(14).toString()));
+        ycLowPressure.setPhaseL2L3Voltage(Double.parseDouble(row.getField(15).toString()));
+        ycLowPressure.setPhaseL3CurrentPercent(Double.parseDouble(row.getField(16).toString()));
+        ycLowPressure.setPhaseL3L1Voltage(Double.parseDouble(row.getField(17).toString()));
+        ycLowPressure.setPowerFactor(Double.parseDouble(row.getField(18).toString()));
+        ycLowPressure.setReactiveElectricDegree(Double.parseDouble(row.getField(19).toString()));
+
+        return ycLowPressure;
+    }
 }

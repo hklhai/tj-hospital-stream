@@ -36,11 +36,11 @@ public enum SecondAlarmLevel implements AlarmLevel {
     // 变压器
     WindingOvertemperatureAlarm("WindingOvertemperatureAlarm", "超温报警"),
 
-    // todo 低压设备
+    // 低压设备
     SlightOverCurrent("SlightOverCurrent", "轻微过流"),
     ContactWear90("ContactWear90", "触头磨损90%"),
-
-
+    OperationNumber100("OperationNumber100", "抽屉插拔次数超过100次"),
+    NoMaintenanceMore2Years("NoMaintenanceMore2Years", "运行时间超过2年未进行维保"),
 
 
     // todo 未提供

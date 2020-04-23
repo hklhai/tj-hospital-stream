@@ -3,12 +3,12 @@ package com.hxqh.task.sink;
 import com.hxqh.utils.DateUtils;
 import com.hxqh.utils.JdbcUtil;
 import org.apache.flink.streaming.api.functions.sink.RichSinkFunction;
+import org.apache.flink.streaming.api.functions.sink.SinkFunction;
 import org.apache.flink.types.Row;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
+import java.sql.*;
+
+import static com.hxqh.constant.Constant.*;
 
 /**
  * Created by Ocean lin on 2020/3/6.
@@ -25,13 +25,13 @@ public class MySQLYxSink extends RichSinkFunction<Row> {
     Integer pkId = 0;
 
     @Override
-    public void invoke(Row row, Context context) throws Exception {
+    public void invoke(Row row, SinkFunction.Context context) throws Exception {
         connection = JdbcUtil.getConnection();
 
         String iedName = row.getField(0).toString();
         Timestamp colTime = new Timestamp(DateUtils.formatDate(row.getField(2).toString()).getTime());
-        String variableName = ((Row[]) row.getField(7))[0].getField(0).toString();
-        Integer val = Integer.parseInt(((Row[]) row.getField(7))[0].getField(1).toString());
+        String variableName = ((Row[]) row.getField(11))[0].getField(0).toString();
+        Integer val = Integer.parseInt(((Row[]) row.getField(11))[0].getField(1).toString());
 
         String countSql = "select count(*) from YX_CURRENT  where IEDNAME=? and VariableName=?";
         preparedStatement = connection.prepareStatement(countSql);

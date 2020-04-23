@@ -38,7 +38,7 @@ public class LowPressureAtsTask {
 
     public static void main(String[] args) {
         args = new String[]{"--input-topic", "lowats", "--bootstrap.servers", "tj-hospital.com:9092",
-                "--zookeeper.connect", "tj-hospital.com:2181", "--group.id", "yctest", "--output-topic", "yxtest"};
+                "--zookeeper.connect", "tj-hospital.com:2181", "--group.id", "yctest", "--output-topic", "mediumvoltage"};
 
 
         final ParameterTool parameterTool = ParameterTool.fromArgs(args);
@@ -78,17 +78,25 @@ public class LowPressureAtsTask {
                 new Schema()
                         .field("IEDName", Types.STRING())
                         .field("CKType", Types.STRING())
-                        .field("ColTime", Types.STRING())
+                        .field("colTime", Types.STRING())
                         .field("assetYpe", Types.STRING())
                         .field("location", Types.STRING())
                         .field("parent", Types.STRING())
                         .field("productModel", Types.STRING())
                         .field("productModelB", Types.STRING())
                         .field("productModelC", Types.STRING())
-                        .field("IEDParam", ObjectArrayTypeInfo.getInfoFor(
-                                Row[].class,
-                                Types.ROW(new String[]{"variableName", "value"},
-                                        new TypeInformation[]{Types.STRING(), Types.INT()})))
+
+                        .field("ActiveElectricDegree", Types.DOUBLE())
+                        .field("ContactWear", Types.DOUBLE())
+                        .field("OperationNumber", Types.INT())
+                        .field("PhaseL1CurrentPercent", Types.DOUBLE())
+                        .field("PhaseL1L2Voltage", Types.DOUBLE())
+                        .field("PhaseL2CurrentPercent", Types.DOUBLE())
+                        .field("PhaseL2L3Voltage", Types.DOUBLE())
+                        .field("PhaseL3CurrentPercent", Types.DOUBLE())
+                        .field("PhaseL3L1Voltage", Types.DOUBLE())
+                        .field("PowerFactor", Types.DOUBLE())
+                        .field("ReactiveElectricDegree", Types.DOUBLE())
 
         ).inAppendMode().registerTableSource("ats");
 

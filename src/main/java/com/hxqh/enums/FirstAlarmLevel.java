@@ -41,7 +41,9 @@ public enum FirstAlarmLevel implements AlarmLevel {
     LifeBit("LifeBit", "表计/ACB不在线"),
     GPI1("GPI1", "一次断路器故障脱扣"),
 
-
+    OperationNumber500("OperationNumber500", "抽屉插拔次数超过500次"),
+    RunVoltage690("RunVoltage690", "抽屉插拔次数超过500次"),
+    NoMaintenanceMore4Years("NoMaintenanceMore4Years", "运行时间超过4年未进行维保"),
 
 
     // todo 未提供

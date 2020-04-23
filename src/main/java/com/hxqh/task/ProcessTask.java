@@ -4,9 +4,8 @@ package com.hxqh.task;
 import com.alibaba.fastjson.JSON;
 import com.hxqh.domain.AssetType;
 import com.hxqh.domain.base.IEDEntity;
-import com.hxqh.function.ConnectedBroadcastProcessFunction;
-import com.hxqh.function.TjBroadcastProcessFunction;
-import com.hxqh.schema.AssetTypeDeserializationSchema;
+import com.hxqh.task.function.ConnectedBroadcastProcessFunction;
+import com.hxqh.task.source.AssetSoure;
 import com.hxqh.transfer.ProcessWaterEmitter;
 import com.hxqh.utils.JsonUtils;
 import org.apache.flink.api.common.restartstrategy.RestartStrategies;
@@ -49,7 +48,11 @@ public class ProcessTask {
     public static void main(String[] args) throws Exception {
         args = new String[]{"--input-topic", "mediumvoltage", "--bootstrap.servers", "tj-hospital.com:9092",
                 "--zookeeper.connect", "tj-hospital.com:2181", "--group.id", "asset2",
-                "--output-topic-yx", "yxtest", "--output-topic-yc", "yctest", "--asset-topic", "asset2"};
+                "--output-topic-yx", "yxtest", "--output-topic-yc", "yctest", "--asset-topic", "asset2", "--error-topic", "err1"};
+
+//        args = new String[]{"--input-topic", "mediumvoltage", "--bootstrap.servers", "tj-hospital.com:9092",
+//                "--zookeeper.connect", "tj-hospital.com:2181", "--group.id", "asset6",
+//                "--output-topic-yx", "yxtest", "--output-topic-yc", "yctest", "--asset-topic", "asset2", "--error-topic", "err1"};
 
         final ParameterTool parameterTool = ParameterTool.fromArgs(args);
 
@@ -75,6 +78,7 @@ public class ProcessTask {
 
         FlinkKafkaConsumer010 flinkKafkaConsumer = new FlinkKafkaConsumer010<>(
                 parameterTool.getRequired("input-topic"), new SimpleStringSchema(), parameterTool.getProperties());
+        // flinkKafkaConsumer.setStartFromEarliest();
 
         FlinkKafkaConsumerBase kafkaConsumerBase = flinkKafkaConsumer.assignTimestampsAndWatermarks(new ProcessWaterEmitter());
         KeyedStream<String, String> input = env.addSource(kafkaConsumerBase).keyBy((s) -> {
@@ -82,18 +86,21 @@ public class ProcessTask {
         });
 
 
-        /**
-         * 读取Kafka 配置流信息
-         */
-        final FlinkKafkaConsumer010<AssetType> kafkaConfigEventSource = new FlinkKafkaConsumer010<AssetType>(
-                parameterTool.getRequired("asset-topic"),
-                new AssetTypeDeserializationSchema(),
-                parameterTool.getProperties());
-        final BroadcastStream<AssetType> configBroadcastStream = env.addSource(kafkaConfigEventSource)
-                .broadcast(configStateDescriptor);
+        BroadcastStream<AssetType> broadcast = env.addSource(new AssetSoure()).broadcast(configStateDescriptor);
+        DataStream<String> process = input.connect(broadcast).process(new ConnectedBroadcastProcessFunction());
+
+        // error
+        DataStream<String> errorData = process.filter(s -> {
+            if (s.startsWith(ERROR)) {
+                return true;
+            } else {
+                return false;
+            }
+        });
+        FlinkKafkaProducer010<String> errorProducer = new FlinkKafkaProducer010<>(parameterTool.getRequired("error-topic"), new SimpleStringSchema(), parameterTool.getProperties());
+        errorData.addSink(errorProducer).name("ERROR-SINK");
 
 
-        DataStream<String> process = input.connect(configBroadcastStream).process(new TjBroadcastProcessFunction());
         DataStream<String> allData = process.filter(s -> {
             if (s != null && !"".equals(s) && JsonUtils.isjson(s)) {
                 return true;
@@ -101,22 +108,22 @@ public class ProcessTask {
             return false;
         });
 
+        // 遥信
         DataStream<String> yx = allData.filter(s -> {
             IEDEntity iedEntity = JSON.parseObject(s, IEDEntity.class);
             return iedEntity.getCKType().equals(YX) ? true : false;
         }).name("YX-Filter");
-
-
         FlinkKafkaProducer010<String> yxProducer = new FlinkKafkaProducer010<>(parameterTool.getRequired("output-topic-yx"), new SimpleStringSchema(), parameterTool.getProperties());
         yx.addSink(yxProducer).name("YX-SINK");
 
+        // 遥测
         DataStream<String> yc = allData.filter(s -> {
             IEDEntity iedEntity = JSON.parseObject(s, IEDEntity.class);
             return iedEntity.getCKType().equals(YC) ? true : false;
         }).name("YC-Filter");
-
         FlinkKafkaProducer010<String> ycProducer = new FlinkKafkaProducer010<>(parameterTool.getRequired("output-topic-yc"), new SimpleStringSchema(), parameterTool.getProperties());
         yc.addSink(ycProducer).name("YC-SINK");
+
 
         try {
             env.execute("ProcessTask");

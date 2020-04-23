@@ -1,10 +1,13 @@
 package com.hxqh.task;
 
 import com.hxqh.domain.YcLowPressure;
+import com.hxqh.schema.LowPressureCustomRowSchema;
 import com.hxqh.task.sink.MySQLYcLowPressureSink;
 import com.hxqh.transfer.ProcessYcLowPressureWaterEmitter;
+import com.hxqh.transfer.ProcessYcTransformerWaterEmitter;
 import com.hxqh.utils.ConvertUtils;
 import com.hxqh.utils.DateUtils;
+import org.apache.flink.api.common.functions.FilterFunction;
 import org.apache.flink.api.common.functions.RuntimeContext;
 import org.apache.flink.api.common.restartstrategy.RestartStrategies;
 import org.apache.flink.api.common.time.Time;
@@ -18,6 +21,7 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.connectors.elasticsearch.ElasticsearchSinkFunction;
 import org.apache.flink.streaming.connectors.elasticsearch.RequestIndexer;
 import org.apache.flink.streaming.connectors.elasticsearch6.ElasticsearchSink;
+import org.apache.flink.streaming.connectors.kafka.FlinkKafkaProducer010;
 import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.java.StreamTableEnvironment;
 import org.apache.flink.table.descriptors.Json;
@@ -46,7 +50,9 @@ public class ProcessYcYcLowPressureTask {
 
     public static void main(String[] args) {
         args = new String[]{"--input-topic", "yctest", "--bootstrap.servers", "tj-hospital.com:9092",
-                "--zookeeper.connect", "tj-hospital.com:2181", "--group.id", "yctest"};
+                "--zookeeper.connect", "tj-hospital.com:2181", "--group.id", "yctest",
+                "--output-topic-ats", "lowats", "--output-topic-capacitor", "lowcapacitor", "--output-topic-drawer", "lowdrawer", "--output-topic-acb", "lowacb"};
+
 
         final ParameterTool parameterTool = ParameterTool.fromArgs(args);
 
@@ -101,11 +107,62 @@ public class ProcessYcYcLowPressureTask {
 
         Table table = tableEnvironment.sqlQuery("select * from yc_lowpressure where assetYpe like'" + LOW_VOLTAGE_SWITCHGEAR + "%'");
         DataStream<Row> data = tableEnvironment.toAppendStream(table, Row.class);
-
         data.assignTimestampsAndWatermarks(new ProcessYcLowPressureWaterEmitter());
 
-        data.addSink(new MySQLYcLowPressureSink()).name("Yc-LowPressure-MySQL-Sink");
 
+        // String LOW_VOLTAGE_ATS = "低压开关设备-ATS";
+        DataStream<Row> ats = data.filter(new FilterFunction<Row>() {
+            @Override
+            public boolean filter(Row row) throws Exception {
+                YcLowPressure lowPressure = ConvertUtils.convert2YcLowPressure(row);
+                return LOW_VOLTAGE_ATS.equals(lowPressure.getAssetYpe()) ? true : false;
+            }
+        });
+        FlinkKafkaProducer010<Row> atsProducer = new FlinkKafkaProducer010<>(parameterTool.getRequired("output-topic-ats"), new LowPressureCustomRowSchema(), parameterTool.getProperties());
+        ats.addSink(atsProducer);
+
+
+        // String LOW_VOLTAGE_CAPACITOR = "低压开关设备-电容器";
+        DataStream<Row> capacitor = data.filter(new FilterFunction<Row>() {
+            @Override
+            public boolean filter(Row row) throws Exception {
+                YcLowPressure lowPressure = ConvertUtils.convert2YcLowPressure(row);
+                return LOW_VOLTAGE_CAPACITOR.equals(lowPressure.getAssetYpe()) ? true : false;
+            }
+        });
+        FlinkKafkaProducer010<Row> capacitorProducer = new FlinkKafkaProducer010<>(parameterTool.getRequired("output-topic-capacitor"), new LowPressureCustomRowSchema(), parameterTool.getProperties());
+        capacitor.addSink(capacitorProducer);
+
+
+        // String LOW_VOLTAGE_DRAWER_CABINET = "低压开关设备-抽屉柜";
+        DataStream<Row> drawer = data.filter(new FilterFunction<Row>() {
+            @Override
+            public boolean filter(Row row) throws Exception {
+                YcLowPressure lowPressure = ConvertUtils.convert2YcLowPressure(row);
+                return LOW_VOLTAGE_DRAWER_CABINET.equals(lowPressure.getAssetYpe()) ? true : false;
+            }
+        });
+        FlinkKafkaProducer010<Row> drawerProducer = new FlinkKafkaProducer010<>(parameterTool.getRequired("output-topic-drawer"), new LowPressureCustomRowSchema(), parameterTool.getProperties());
+        drawer.addSink(drawerProducer);
+
+
+        // String LOW_VOLTAGE_INCOMING_CABINET = "低压开关设备-进线柜"; String LOW_VOLTAGE_COUPLER_CABINET = "低压开关设备-母联柜"; String LOW_VOLTAGE_FEEDER_CABINET = "低压开关设备-馈线柜";
+        DataStream<Row> acb = data.filter(new FilterFunction<Row>() {
+            @Override
+            public boolean filter(Row row) throws Exception {
+                YcLowPressure lowPressure = ConvertUtils.convert2YcLowPressure(row);
+                if (LOW_VOLTAGE_INCOMING_CABINET.equals(lowPressure.getAssetYpe()) || LOW_VOLTAGE_COUPLER_CABINET.equals(lowPressure.getAssetYpe()) || LOW_VOLTAGE_FEEDER_CABINET.equals(lowPressure.getAssetYpe())) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        });
+        FlinkKafkaProducer010<Row> acbProducer = new FlinkKafkaProducer010<>(parameterTool.getRequired("output-topic-acb"), new LowPressureCustomRowSchema(), parameterTool.getProperties());
+        acb.addSink(acbProducer);
+
+
+        data.addSink(new MySQLYcLowPressureSink()).name("Yc-LowPressure-MySQL-Sink");
         persistEs(data);
 
         try {

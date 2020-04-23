@@ -1,14 +1,8 @@
 package com.hxqh.task;
 
-import com.alibaba.fastjson.JSON;
-import com.hxqh.domain.YcMediumVoltage;
-import com.hxqh.domain.base.IEDEntity;
-import com.hxqh.task.sink.MySQLYcMediumVoltageRunStatusMonthSink;
-import com.hxqh.task.sink.MySQLYcMediumVoltageRunStatusSink;
-import com.hxqh.task.sink.MySQLYcMediumVoltageSink;
 import com.hxqh.transfer.ProcessWaterEmitter;
-import com.hxqh.utils.ConvertUtils;
 import com.hxqh.utils.DateUtils;
+import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.common.functions.RuntimeContext;
 import org.apache.flink.api.common.restartstrategy.RestartStrategies;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
@@ -26,25 +20,24 @@ import org.apache.http.HttpHost;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.client.Requests;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import static com.hxqh.constant.Constant.*;
 
 /**
- * Created by Ocean lin on 2020/2/27.
+ * Created by Ocean lin on 2020/3/3.
  *
  * @author Ocean lin
  */
 @SuppressWarnings("Duplicates")
-public class ProcessYcMediumVoltageTask {
+public class ProcessErrorTask {
+
 
     public static void main(String[] args) {
-        args = new String[]{"--input-topic", "yctest", "--bootstrap.servers", "tj-hospital.com:9092",
-                "--zookeeper.connect", "tj-hospital.com:2181", "--group.id", "yctest"};
+
+        args = new String[]{"--input-topic", "err1", "--bootstrap.servers", "tj-hospital.com:9092",
+                "--zookeeper.connect", "tj-hospital.com:2181", "--group.id", "err1"};
 
         final ParameterTool parameterTool = ParameterTool.fromArgs(args);
 
@@ -60,6 +53,7 @@ public class ProcessYcMediumVoltageTask {
 
         env.getConfig().disableSysoutLogging();
         env.getConfig().setRestartStrategy(RestartStrategies.fixedDelayRestart(4, 10000));
+        // create a checkpoint every 5 seconds 非常关键，一定要设置启动检查点！！
         env.enableCheckpointing(5000);
         env.getConfig().setGlobalJobParameters(parameterTool);
         // make parameters available in the web interface
@@ -73,19 +67,21 @@ public class ProcessYcMediumVoltageTask {
 
         FlinkKafkaConsumerBase kafkaConsumerBase = flinkKafkaConsumer.assignTimestampsAndWatermarks(new ProcessWaterEmitter());
         DataStream<String> input = env.addSource(kafkaConsumerBase);
-        DataStream<String> filter = input.filter(s -> {
-            IEDEntity entity = JSON.parseObject(s, IEDEntity.class);
-            return entity.getAssetYpe().equals(MEDIUM_VOLTAG_ESWITCH) ? true : false;
-        }).name("YC-MediumVoltage-Filter");
-
-        filter.addSink(new MySQLYcMediumVoltageSink()).name("YC-MediumVoltage-DB2-Sink");
-        filter.addSink(new MySQLYcMediumVoltageRunStatusSink()).name("YC-MediumVoltage-RUN-STATUS-DB2-Sink");
-        filter.addSink(new MySQLYcMediumVoltageRunStatusMonthSink()).name("YC-MediumVoltage-RUN-STATUS-Month-DB2-Sink");
+        DataStream<String> filter = input.map(new MapFunction<String, String>() {
+            @Override
+            public String map(String value) throws Exception {
+                if (value.startsWith(ERROR)) {
+                    String replace = value.replace(ERROR, "");
+                    return replace;
+                }
+                return "";
+            }
+        });
 
         persistEs(filter);
 
         try {
-            env.execute("ProcessYcMediumVoltageTask");
+            env.execute("ProcessErrorTask");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -95,27 +91,17 @@ public class ProcessYcMediumVoltageTask {
 
     private static void persistEs(DataStream<String> input) {
         List<HttpHost> httpHosts = new ArrayList<>();
-        httpHosts.add(new HttpHost(ES_HOST, ES_PORT, HTTP));
+        httpHosts.add(new HttpHost(ES_HOST, ES_PORT, "http"));
         Date now = new Date();
 
         ElasticsearchSink.Builder<String> esSinkBuilder = new ElasticsearchSink.Builder<>(
                 httpHosts,
                 new ElasticsearchSinkFunction<String>() {
                     public IndexRequest createIndexRequest(String element) {
-                        IEDEntity entity = JSON.parseObject(element, IEDEntity.class);
-                        YcMediumVoltage ycMediumVoltage = ConvertUtils.convert2YcMediumVoltage(entity);
-                        TreeMap<String, Object> map = new TreeMap<>();
-
-                        try {
-                            map = ConvertUtils.objToMap(ycMediumVoltage);
-                        } catch (IllegalAccessException e) {
-                            e.printStackTrace();
-                        }
-
-                        map.put("ColTime", DateUtils.formatDate(ycMediumVoltage.getColTime()));
+                        Map<String, Object> map = new HashMap<>(24);
+                        map.put("Content", element);
                         map.put("CreateTime", DateUtils.formatDate(now));
-                        map.remove("serialVersionUID");
-                        return Requests.indexRequest().index(INDEX_YC_MEDIUMVOLTAGE).type(TYPE_YC_MEDIUMVOLTAGE).source(map);
+                        return Requests.indexRequest().index(INDEX_ERR).type(TYPE_Err).source(map);
                     }
 
                     @Override
@@ -124,12 +110,14 @@ public class ProcessYcMediumVoltageTask {
                     }
                 }
         );
-        esSinkBuilder.setBulkFlushMaxActions(50);
+        esSinkBuilder.setBulkFlushMaxActions(1);
 
         // provide a RestClientFactory for custom configuration on the internally created REST client
         esSinkBuilder.setRestClientFactory(
                 restClientBuilder -> restClientBuilder.setMaxRetryTimeoutMillis(300)
         );
-        input.addSink(esSinkBuilder.build()).name("YC-MediumVoltage-ElasticSearch-Sink");
+        input.addSink(esSinkBuilder.build()).name("YC-Error-ElasticSearch-Sink");
     }
+
+
 }

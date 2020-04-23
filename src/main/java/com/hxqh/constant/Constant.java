@@ -119,6 +119,22 @@ public interface Constant {
     String INDEX_YX = "yx";
     String TYPE_YX = "yx";
 
+
+
+    /**
+     * 错误
+     */
+    String INDEX_ERR = "tjerr";
+    String TYPE_Err = "err";
+
+
+    /**
+     *
+     */
+    String ERROR = "error-";
+
+    String CHARSET = "gbk";
+
     /**
      * 遥测-低压设备
      */
@@ -133,7 +149,6 @@ public interface Constant {
     String MYSQL_DB_URL = "jdbc:mysql://tj-hospital.com:3306/tj?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false&serverTimezone=Asia/Shanghai&autoReconnect=true";
     String MYSQL_USERNAME = "tj";
     String MYSQL_PASSWORD = "mko09ijn*";
-
 
     Map<String, Integer> ALARM_MAP = new HashMap(12) {
         {
@@ -170,17 +185,23 @@ public interface Constant {
             put(FirstAlarmLevel.ContactWear.getCode(), 1);
             put(FirstAlarmLevel.LifeBit.getCode(), 1);
             put(FirstAlarmLevel.GPI1.getCode(), 1);
+            put(FirstAlarmLevel.OperationNumber500.getCode(), 1);
+            put(FirstAlarmLevel.RunVoltage690.getCode(), 1);
+            put(FirstAlarmLevel.NoMaintenanceMore4Years.getCode(), 1);
 
 
             // 低压设备-2级
             put(SecondAlarmLevel.SlightOverCurrent.getCode(), 2);
             put(SecondAlarmLevel.ContactWear90.getCode(), 2);
+            put(SecondAlarmLevel.OperationNumber100.getCode(), 2);
+            put(SecondAlarmLevel.NoMaintenanceMore2Years.getCode(), 2);
 
 
             // 低压设备-3级
             put(ThirdAlarmLevel.UnderCurrent.getCode(), 3);
             put(ThirdAlarmLevel.SlightOverVoltage.getCode(), 3);
             put(ThirdAlarmLevel.SlightUnderVoltage.getCode(), 3);
+            put(ThirdAlarmLevel.NoMaintenanceNearlyYears.getCode(), 3);
 
 
             // 未提供
@@ -227,8 +248,8 @@ public interface Constant {
 
 
 
-    Integer DEVICE_RUN = 1;
-    Integer DEVICE_STOP = 0;
+    Integer DEVICE_RUN = 0;
+    Integer DEVICE_STOP = 1;
 
 
     Integer SOCRE_ONEHUNDRED = 100;
@@ -252,7 +273,23 @@ public interface Constant {
      */
     Integer Rated_Voltage = 400;
 
+
     Double Ten_Percent = 0.1d;
     Double Fifteen_Percent = 0.15d;
+
+    /**
+     * 抽屉插拔次数超过500次
+     */
+    Integer OperationNumber500 = 500;
+
+    /**
+     * 抽屉插拔次数超过100次
+     */
+    Integer OperationNumber100 = 100;
+
+    /**
+     * 运行电压超过690V（大于等于）
+     */
+    Integer Run_Voltage690 = 690;
 
 }

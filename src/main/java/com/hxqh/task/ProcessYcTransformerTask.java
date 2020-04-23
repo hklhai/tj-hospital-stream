@@ -2,7 +2,6 @@ package com.hxqh.task;
 
 import com.hxqh.domain.YcTransformer;
 import com.hxqh.task.sink.MySQLYcTransformerSink;
-import com.hxqh.transfer.ProcessYcLowPressureWaterEmitter;
 import com.hxqh.transfer.ProcessYcTransformerWaterEmitter;
 import com.hxqh.utils.ConvertUtils;
 import com.hxqh.utils.DateUtils;

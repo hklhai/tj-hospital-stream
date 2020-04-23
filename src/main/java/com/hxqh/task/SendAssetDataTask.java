@@ -17,6 +17,7 @@ import static com.hxqh.constant.Constant.*;
  *
  * @author Ocean lin
  */
+@Deprecated
 public class SendAssetDataTask {
 
     public static void main(String[] args) {

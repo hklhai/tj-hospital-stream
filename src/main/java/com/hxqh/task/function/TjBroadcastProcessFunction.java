@@ -1,4 +1,4 @@
-package com.hxqh.function;
+package com.hxqh.task.function;
 
 import com.alibaba.fastjson.JSON;
 import com.hxqh.domain.AssetType;

@@ -53,7 +53,7 @@ public class MySQLYcLowPressureSink extends RichSinkFunction<Row> {
 
             // 更新设备
             String updateSql = "update yc_lowpressure_current set COLTIME=?,CREATETIME=?,PhaseL1CurrentPercent=?,PhaseL1L2Voltage=?,PhaseL2CurrentPercent=?,PhaseL2L3Voltage=?,PhaseL3CurrentPercent=?,PhaseL3L1Voltage=?," +
-                    " PositiveActive=?,PositiveReactive=?,PowerFactor=?,OperationNumber=? where YCLOWPRESSURECURRENTID =?";
+                    " ActiveElectricDegree=?,ReactiveElectricDegree=?,PowerFactor=?,OperationNumber=?,ContactWear=? where YCLOWPRESSURECURRENTID =?";
 
             preparedStatement = connection.prepareStatement(updateSql);
             preparedStatement.setTimestamp(1, new Timestamp(ycLowPressure.getColTime().getTime()));
@@ -69,13 +69,14 @@ public class MySQLYcLowPressureSink extends RichSinkFunction<Row> {
             preparedStatement.setDouble(10, ycLowPressure.getReactiveElectricDegree());
             preparedStatement.setDouble(11, ycLowPressure.getPowerFactor());
             preparedStatement.setInt(12, ycLowPressure.getOperationNumber());
+            preparedStatement.setDouble(13, ycLowPressure.getContactWear());
 
-            preparedStatement.setInt(13, pkId);
+            preparedStatement.setInt(14, pkId);
             preparedStatement.executeUpdate();
             JdbcUtil.close(edNameResult, preparedStatement, connection);
         } else {
             // 新增设备
-            String insertSql = "INSERT INTO yc_lowpressure_current (IEDNAME,COLTIME,CREATETIME,PhaseL1CurrentPercent,PhaseL1L2Voltage,PhaseL2CurrentPercent,PhaseL2L3Voltage,PhaseL3CurrentPercent,PhaseL3L1Voltage,PositiveActive,PositiveReactive,PowerFactor,OperationNumber) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            String insertSql = "INSERT INTO yc_lowpressure_current (IEDNAME,COLTIME,CREATETIME,PhaseL1CurrentPercent,PhaseL1L2Voltage,PhaseL2CurrentPercent,PhaseL2L3Voltage,PhaseL3CurrentPercent,PhaseL3L1Voltage,ActiveElectricDegree,ReactiveElectricDegree,PowerFactor,OperationNumber,ContactWear) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
             preparedStatement = connection.prepareStatement(insertSql);
             preparedStatement.setString(1, ycLowPressure.getIEDName());
             preparedStatement.setTimestamp(2, new Timestamp(ycLowPressure.getColTime().getTime()));
@@ -90,6 +91,7 @@ public class MySQLYcLowPressureSink extends RichSinkFunction<Row> {
             preparedStatement.setDouble(11, ycLowPressure.getReactiveElectricDegree());
             preparedStatement.setDouble(12, ycLowPressure.getPowerFactor());
             preparedStatement.setInt(13, ycLowPressure.getOperationNumber());
+            preparedStatement.setDouble(14, ycLowPressure.getContactWear());
 
             preparedStatement.executeUpdate();
             JdbcUtil.close(resultSet, preparedStatement, connection);

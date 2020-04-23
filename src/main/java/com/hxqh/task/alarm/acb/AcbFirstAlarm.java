@@ -21,7 +21,7 @@ public class AcbFirstAlarm implements FlatMapFunction<Row, Yx> {
 
     @Override
     public void flatMap(Row row, Collector<Yx> out) throws Exception {
-        YcLowPressure acb = ConvertUtils.convert2YcLowPressure(row);
+        YcLowPressure acb = ConvertUtils.rowConvert2YcLowPressure(row);
 
         // 1、 运行电流超过额定电流105%
         String productModelB = acb.getProductModelB();

@@ -1,7 +1,7 @@
 package com.hxqh.task.sink;
 
-import com.hxqh.batch.transformer.powersupply.TransformerPowerSupplyRunTimeMonth;
-import com.hxqh.batch.transformer.powersupply.TransformerPsRunTimeUpdateMonth;
+import com.hxqh.batch.lowpressure.useefficiency.LowpressureUeRunTimeUpdateMonth;
+import com.hxqh.batch.lowpressure.useefficiency.LowpressureUseEfficiencyRunTimeMonth;
 import com.hxqh.utils.DateUtils;
 import com.hxqh.utils.JdbcUtil;
 import com.hxqh.utils.JdbcUtil4Db2;
@@ -18,10 +18,10 @@ import static com.hxqh.constant.Constant.DEVICE_RUN;
 import static com.hxqh.constant.Constant.DEVICE_STOP;
 
 /**
- * 处理变压器风机运行时长统计
+ * 处理低压设备运行时长统计:0:通；1：断
  * <p>
- * 1. 定时任务每月月初将下月时间存入，默认RUNSTATUS=0，默认运行时长为全月小时数，默认停机时长0小时 {@link TransformerPowerSupplyRunTimeMonth}
- * 2. 定时任务每月月初根据上月RUNSTATUS更新当月RUNSTATUS，并计算结算上月运行时间及故障时间 {@link TransformerPsRunTimeUpdateMonth}
+ * 1. 定时任务每月月末将下月时间存入，默认RUNSTATUS=0，默认运行时长为全月小时数，默认停机时长0小时 {@link LowpressureUseEfficiencyRunTimeMonth }
+ * 2. 定时任务每月月初根据上月RUNSTATUS更新当月RUNSTATUS，并计算结算上月运行时间及故障时间 {@link LowpressureUeRunTimeUpdateMonth}
  * 3. 实时处理遥信变压器风机信号量
  * 若RUNSTATUS状态为0，遥信数据1，记录时间，变更状态（正常-->故障）
  * 若RUNSTATUS状态为0，遥信数据0，记录时间，状态不变（正常-->正常）
@@ -29,12 +29,12 @@ import static com.hxqh.constant.Constant.DEVICE_STOP;
  * 若RUNSTATUS状态为1，遥信数据0，记录时间，当前事件时间减数据库上一事件时间得div，运行时间-div，停机时间+div，改变状态（故障-->正常）
  * 若RUNSTATUS状态为1，遥信数据1，记录时间，当前事件时间减数据库上一事件时间得div，运行时间-div，停机时间+div，状态不变（故障-->故障）
  * <p>
- * Created by Ocean lin on 2020/4/16.
+ * Created by Ocean lin on 2020/4/23.
  *
  * @author Ocean lin
  */
 @SuppressWarnings("Duplicates")
-public class MySQLYxFanSink extends RichSinkFunction<Row> {
+public class MySQLYxLowPressureSink extends RichSinkFunction<Row> {
 
     private Connection connection;
     private PreparedStatement preparedStatement;
@@ -57,7 +57,7 @@ public class MySQLYxFanSink extends RichSinkFunction<Row> {
         Timestamp colTime = new Timestamp(DateUtils.formatDate(row.getField(2).toString()).getTime());
         Integer val = Integer.parseInt(((Row[]) row.getField(11))[0].getField(1).toString());
 
-        String countSql = "select count(*) from RE_TRANS_PS_RUN_MONTH where IEDNAME=? and PARTICULARTIME=?";
+        String countSql = "select count(*) from RE_LP_UE_RUN_MONTH where IEDNAME=? and PARTICULARTIME=?";
         preparedStatement = connection.prepareStatement(countSql);
         preparedStatement.setString(1, iedName);
         preparedStatement.setString(2, particularTime);
@@ -68,7 +68,7 @@ public class MySQLYxFanSink extends RichSinkFunction<Row> {
 
         if (1 == count) {
             // 获取主键
-            String iedNameSQL = "select RETRANSPSRUNMONTHID,RUNNINGTIME,DOWNTIME,RUNSTATUS,COLTIME from RE_TRANS_PS_RUN_MONTH where IEDNAME=? and PARTICULARTIME=?";
+            String iedNameSQL = "select RELPUERUNMONTHID,RUNNINGTIME,DOWNTIME,RUNSTATUS,COLTIME from RE_LP_UE_RUN_MONTH where IEDNAME=? and PARTICULARTIME=?";
             preparedStatement = connection.prepareStatement(iedNameSQL);
             preparedStatement.setString(1, iedName);
             preparedStatement.setString(2, particularTime);
@@ -82,7 +82,7 @@ public class MySQLYxFanSink extends RichSinkFunction<Row> {
             }
 
             // 更新设备
-            String updateSql = "update RE_TRANS_PS_RUN_MONTH set COLTIME=?,RUNNINGTIME=?,DOWNTIME=?,RUNSTATUS=? where RETRANSPSRUNMONTHID=?";
+            String updateSql = "update RE_LP_UE_RUN_MONTH set COLTIME=?,RUNNINGTIME=?,DOWNTIME=?,RUNSTATUS=? where RELPUERUNMONTHID=?";
             preparedStatement = connection.prepareStatement(updateSql);
 
             if (DEVICE_RUN.equals(runStatus)) {

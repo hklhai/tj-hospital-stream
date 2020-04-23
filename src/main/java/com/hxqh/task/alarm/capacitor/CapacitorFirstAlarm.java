@@ -11,19 +11,9 @@ import org.apache.flink.util.Collector;
  * @author Ocean lin
  */
 public class CapacitorFirstAlarm implements FlatMapFunction<Row, Yx> {
-
-    /**
-     * 1、	一次断路器故障脱扣（GPI DI1）
-     * 2、	运行时间超过4年未进行维保
-     * 3、	表计不在线
-     *
-     * @param row
-     * @param out
-     * @throws Exception
-     */
     @Override
     public void flatMap(Row row, Collector<Yx> out) throws Exception {
-
+        // todo 1、	运行时间超过4年未进行维保
 
 
     }

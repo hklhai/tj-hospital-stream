@@ -22,12 +22,11 @@ public enum ThirdAlarmLevel implements AlarmLevel {
     // 变压器
     TemperatureControlFailure("TemperatureControlFailure", "温控装置故障"),
 
-    // todo 低压设备
+    // 低压设备
     UnderCurrent("UnderCurrent", "欠流"),
     SlightOverVoltage("SlightOverVoltage", "轻微电压过高"),
     SlightUnderVoltage("SlightUnderVoltage", "轻微电压过低"),
-
-
+    NoMaintenanceNearlyYears("NoMaintenanceNearlyYears", "NoMaintenanceNearlyYears"),
 
 
     // todo 未提供

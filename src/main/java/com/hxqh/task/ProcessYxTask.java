@@ -3,6 +3,7 @@ package com.hxqh.task;
 import com.hxqh.enums.FirstAlarmLevel;
 import com.hxqh.enums.OtherAlarmLevel;
 import com.hxqh.task.sink.MySQLYxFanSink;
+import com.hxqh.task.sink.MySQLYxLowPressureSink;
 import com.hxqh.task.sink.MySQLYxScoreSink;
 import com.hxqh.task.sink.MySQLYxSink;
 import com.hxqh.transfer.ProcessYxWaterEmitter;
@@ -114,20 +115,7 @@ public class ProcessYxTask {
         ).inAppendMode().registerTableSource("yx");
 
         Table table = tableEnvironment.sqlQuery("select * from yx");
-        DataStream<Tuple2<Boolean, Row>> rowDataStream = tableEnvironment.toRetractStream(table, Row.class);
-
-        DataStream<Row> data = rowDataStream.filter(new FilterFunction<Tuple2<Boolean, Row>>() {
-            @Override
-            public boolean filter(Tuple2<Boolean, Row> value) throws Exception {
-                return value.f0;
-            }
-        }).map(new MapFunction<Tuple2<Boolean, Row>, Row>() {
-            @Override
-            public Row map(Tuple2<Boolean, Row> value) throws Exception {
-                return value.f1;
-            }
-        });
-
+        DataStream<Row> data = tableEnvironment.toAppendStream(table, Row.class);
         data.assignTimestampsAndWatermarks(new ProcessYxWaterEmitter());
 
         data.addSink(new MySQLYxSink()).name("YX-MySQL-Sink");
@@ -143,6 +131,16 @@ public class ProcessYxTask {
             }
         });
         transformerFan.addSink(new MySQLYxFanSink()).name("YX-MySQL-Fan-Sink");
+
+        // 处理低压开关柜运行时长
+        DataStream<Row> lowpressure = data.filter(new FilterFunction<Row>() {
+            @Override
+            public boolean filter(Row row) throws Exception {
+                String variableName = ((Row[]) row.getField(11))[0].getField(0).toString();
+                return FirstAlarmLevel.GPI1.getCode().equals(variableName) ? true : false;
+            }
+        });
+        lowpressure.addSink(new MySQLYxLowPressureSink()).name("YX-MySQL-LowPressure-Sink");
 
         persistEs(data);
 
@@ -212,6 +210,6 @@ public class ProcessYxTask {
         esSinkBuilder.setRestClientFactory(
                 restClientBuilder -> restClientBuilder.setMaxRetryTimeoutMillis(300)
         );
-        input.addSink(esSinkBuilder.build()).name("YC-ATS-ElasticSearch-Sink");
+        input.addSink(esSinkBuilder.build()).name("YX-ElasticSearch-Sink");
     }
 }
