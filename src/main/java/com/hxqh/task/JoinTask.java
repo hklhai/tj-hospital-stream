@@ -4,6 +4,7 @@ package com.hxqh.task;
 import com.hxqh.domain.Config;
 import com.hxqh.domain.EvaluatedResult;
 import com.hxqh.domain.UserEvent;
+import com.hxqh.task.function.ConnectedBroadcastJoinProcessFunction;
 import com.hxqh.task.function.ConnectedBroadcastProcessFunction;
 import com.hxqh.schema.ConfigDeserializationSchema;
 import com.hxqh.schema.EvaluatedResultSerializationSchema;
@@ -121,7 +122,7 @@ public class JoinTask {
          */
         DataStream<EvaluatedResult> connectedStream = customerUserEventStream
                 .connect(configBroadcastStream)
-                .process(new ConnectedBroadcastProcessFunction());
+                .process(new ConnectedBroadcastJoinProcessFunction());
 
         Properties producerProps = new Properties();
         producerProps.setProperty(BOOTSTRAP_SERVERS, params.get(BOOTSTRAP_SERVERS));
