@@ -3,12 +3,43 @@
 [![Build Status](https://travis-ci.org/hklhai/tj-hospital-stream.svg?branch=master)](https://travis-ci.org/hklhai/tj-hospital-stream)
  
 ---
+
+![image](https://github.com/hklhai/tj-hospital-stream/blob/master/screenshot/s1.png)
+---
+
+![image](https://github.com/hklhai/tj-hospital-stream/blob/master/screenshot/s2.png)
+---
+
+![image](https://github.com/hklhai/tj-hospital-stream/blob/master/screenshot/s3.png)
+---
+
+![image](https://github.com/hklhai/tj-hospital-stream/blob/master/screenshot/s4.png)
+---
+
+![image](https://github.com/hklhai/tj-hospital-stream/blob/master/screenshot/s5.png)
+---
+
+![image](https://github.com/hklhai/tj-hospital-stream/blob/master/screenshot/s6.png)
+---
+
+![image](https://github.com/hklhai/tj-hospital-stream/blob/master/screenshot/s7.png)
+---
+
+![image](https://github.com/hklhai/tj-hospital-stream/blob/master/screenshot/s8.png)
+---
+
+![image](https://github.com/hklhai/tj-hospital-stream/blob/master/screenshot/s9.png)
+---
+ 
+
+
 > HK  
 > hkhai@outlook.com
 
-
-
+---
+D:\HXQH\CompanyProjectGitLab\Tianjin-Hospital\stream-project\src\main\resources\db2\backup
  
+---
 组件 | 机器 | 位置
 ---|---|---
 flume | ecs-455a | /root/app/apache-flume
