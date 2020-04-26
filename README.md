@@ -12,8 +12,6 @@
 > HK  
 > hkhai@outlook.com
 
----
-D:\HXQH\CompanyProjectGitLab\Tianjin-Hospital\stream-project\src\main\resources\db2\backup
  
 ---
 组件 | 机器 | 位置
