@@ -7,6 +7,7 @@
 */1 * * * * root /root/shell/syncTransformerYc.sh
 */1 * * * * root /root/shell/syncYx.sh
 */1 * * * * root /root/shell/syncLowPressure.sh
+*/1 * * * * root /root/shell/syncYxScore.sh
 
 
 # 重启
@@ -14,7 +15,7 @@
 30 12 * * * root /root/shell/restart.sh
 0 8 * * * root /root/shell/restart.sh
 
-
+10 0 * * * root /root/shell/deleteFlinkTmp.sh
 
 # 报告-中压
 # 每月1号1点执行
@@ -234,8 +235,374 @@
 5 0 * * * root /root/shell/report/MediumVoltagePowerFactor.sh
 
 
+# ========================================================================
+# 变压器
+# 季度
+# 单台变压器运行健康状况
+50 7 1 1 * root /root/shell/report/transformer/TransFormerHealthQuarter.sh
+50 7 1 4 * root /root/shell/report/transformer/TransFormerHealthQuarter.sh
+50 7 1 7 * root /root/shell/report/transformer/TransFormerHealthQuarter.sh
+50 7 1 10 * root /root/shell/report/transformer/TransFormerHealthQuarter.sh
+
+0 8 1 1 * root /root/shell/report/transformer/TransFormerHealthCompareQuarter.sh
+0 8 1 4 * root /root/shell/report/transformer/TransFormerHealthCompareQuarter.sh
+0 8 1 7 * root /root/shell/report/transformer/TransFormerHealthCompareQuarter.sh
+0 8 1 10 * root /root/shell/report/transformer/TransFormerHealthCompareQuarter.sh
+
+10 8 1 1 * root /root/shell/report/transformer/TotalTransFormerHealthQuarter.sh
+10 8 1 4 * root /root/shell/report/transformer/TotalTransFormerHealthQuarter.sh
+10 8 1 7 * root /root/shell/report/transformer/TotalTransFormerHealthQuarter.sh
+10 8 1 10 * root /root/shell/report/transformer/TotalTransFormerHealthQuarter.sh
+
+20 8 1 1 * root /root/shell/report/transformer/TotalTransFormerHealthCompareQuarter.sh
+20 8 1 4 * root /root/shell/report/transformer/TotalTransFormerHealthCompareQuarter.sh
+20 8 1 7 * root /root/shell/report/transformer/TotalTransFormerHealthCompareQuarter.sh
+20 8 1 10 * root /root/shell/report/transformer/TotalTransFormerHealthCompareQuarter.sh
+
+# 供用电
+20 8 1 1 * root /root/shell/report/transformer/TransformerPowerSupplyQuarter.sh
+20 8 1 4 * root /root/shell/report/transformer/TransformerPowerSupplyQuarter.sh
+20 8 1 7 * root /root/shell/report/transformer/TransformerPowerSupplyQuarter.sh
+20 8 1 10 * root /root/shell/report/transformer/TransformerPowerSupplyQuarter.sh
+
+30 8 1 1 * root /root/shell/report/transformer/TransformerPowerSupplyCompareQuarter.sh
+30 8 1 4 * root /root/shell/report/transformer/TransformerPowerSupplyCompareQuarter.sh
+30 8 1 7 * root /root/shell/report/transformer/TransformerPowerSupplyCompareQuarter.sh
+40 8 1 10 * root /root/shell/report/transformer/TransformerPowerSupplyCompareQuarter.sh
+
+40 8 1 1 * root /root/shell/report/transformer/TotalTransformerPowerSupplyQuarter.sh
+40 8 1 4 * root /root/shell/report/transformer/TotalTransformerPowerSupplyQuarter.sh
+50 8 1 7 * root /root/shell/report/transformer/TotalTransformerPowerSupplyQuarter.sh
+40 8 1 10 * root /root/shell/report/transformer/TotalTransformerPowerSupplyQuarter.sh
+
+
+50 8 1 1 * root /root/shell/report/transformer/TotalTransformerPowerSupplyCompareQuarter.sh
+50 8 1 4 * root /root/shell/report/transformer/TotalTransformerPowerSupplyCompareQuarter.sh
+50 8 1 7 * root /root/shell/report/transformer/TotalTransformerPowerSupplyCompareQuarter.sh
+50 8 1 10 * root /root/shell/report/transformer/TotalTransformerPowerSupplyCompareQuarter.sh
+
+0 9 1 1 * root /root/shell/report/transformer/TotalTransformerPowerSupplyTop3Quarter.sh
+0 9 1 4 * root /root/shell/report/transformer/TotalTransformerPowerSupplyTop3Quarter.sh
+0 9 1 7 * root /root/shell/report/transformer/TotalTransformerPowerSupplyTop3Quarter.sh
+0 9 1 10 * root /root/shell/report/transformer/TotalTransformerPowerSupplyTop3Quarter.sh
+
+
+# 报警状况
+10 9 1 1 * root /root/shell/report/transformer/TransFormerAlarmQuarter.sh
+10 9 1 4 * root /root/shell/report/transformer/TransFormerAlarmQuarter.sh
+10 9 1 7 * root /root/shell/report/transformer/TransFormerAlarmQuarter.sh
+10 9 1 10 * root /root/shell/report/transformer/TransFormerAlarmQuarter.sh
+
+
+20 9 1 1 * root /root/shell/report/transformer/TotalTransFormerAlarmQuarter.sh
+20 9 1 4 * root /root/shell/report/transformer/TotalTransFormerAlarmQuarter.sh
+20 9 1 7 * root /root/shell/report/transformer/TotalTransFormerAlarmQuarter.sh
+20 9 1 10 * root /root/shell/report/transformer/TotalTransFormerAlarmQuarter.sh
+
+# 使用效率
+30 9 1 1 * root /root/shell/report/transformer/TransformerUseEfficiencyQuarter.sh
+30 9 1 4 * root /root/shell/report/transformer/TransformerUseEfficiencyQuarter.sh
+30 9 1 7 * root /root/shell/report/transformer/TransformerUseEfficiencyQuarter.sh
+30 9 1 10 * root /root/shell/report/transformer/TransformerUseEfficiencyQuarter.sh
+
+
+40 9 1 1 * root /root/shell/report/transformer/TransformerUseEfficiencyCompareQuarter.sh
+40 9 1 4 * root /root/shell/report/transformer/TransformerUseEfficiencyCompareQuarter.sh
+40 9 1 7 * root /root/shell/report/transformer/TransformerUseEfficiencyCompareQuarter.sh
+40 9 1 10 * root /root/shell/report/transformer/TransformerUseEfficiencyCompareQuarter.sh
+
+
+50 9 1 1 * root /root/shell/report/transformer/TransformerUseEfficiencyStatisticsQuarter.sh
+50 9 1 4 * root /root/shell/report/transformer/TransformerUseEfficiencyStatisticsQuarter.sh
+50 9 1 7 * root /root/shell/report/transformer/TransformerUseEfficiencyStatisticsQuarter.sh
+50 9 1 10 * root /root/shell/report/transformer/TransformerUseEfficiencyStatisticsQuarter.sh
+
+
+0 10 1 1 * root /root/shell/report/transformer/TransFormerUseEfficiencyFengQuarter.sh
+0 10 1 4 * root /root/shell/report/transformer/TransFormerUseEfficiencyFengQuarter.sh
+0 10 1 7 * root /root/shell/report/transformer/TransFormerUseEfficiencyFengQuarter.sh
+0 10 1 10 * root /root/shell/report/transformer/TransFormerUseEfficiencyFengQuarter.sh
 
 
 
+10 10 1 1 * root /root/shell/report/transformer/TransFormerUseEfficiencyFengCompareQuarter.sh
+10 10 1 4 * root /root/shell/report/transformer/TransFormerUseEfficiencyFengCompareQuarter.sh
+10 10 1 7 * root /root/shell/report/transformer/TransFormerUseEfficiencyFengCompareQuarter.sh
+10 10 1 10 * root /root/shell/report/transformer/TransFormerUseEfficiencyFengCompareQuarter.sh
+
+
+20 10 1 1 * root /root/shell/report/transformer/TotalTransformerUseEfficiencyQuarter.sh
+20 10 1 4 * root /root/shell/report/transformer/TotalTransformerUseEfficiencyQuarter.sh
+20 10 1 7 * root /root/shell/report/transformer/TotalTransformerUseEfficiencyQuarter.sh
+20 10 1 10 * root /root/shell/report/transformer/TotalTransformerUseEfficiencyQuarter.sh
+
+
+
+30 10 1 1 * root /root/shell/report/transformer/TotalTransformerUseEfficiencyCompareQuarter.sh
+30 10 1 4 * root /root/shell/report/transformer/TotalTransformerUseEfficiencyCompareQuarter.sh
+30 10 1 7 * root /root/shell/report/transformer/TotalTransformerUseEfficiencyCompareQuarter.sh
+30 10 1 10 * root /root/shell/report/transformer/TotalTransformerUseEfficiencyCompareQuarter.sh
+
+
+40 10 1 1 * root /root/shell/report/transformer/TotalTransformerUseEfficiencyStatisticsQuarter.sh
+40 10 1 4 * root /root/shell/report/transformer/TotalTransformerUseEfficiencyStatisticsQuarter.sh
+40 10 1 7 * root /root/shell/report/transformer/TotalTransformerUseEfficiencyStatisticsQuarter.sh
+40 10 1 10 * root /root/shell/report/transformer/TotalTransformerUseEfficiencyStatisticsQuarter.sh
+
+
+50 10 1 1 * root /root/shell/report/transformer/TotalTransFormerUseEfficiencyFengQuarter.sh
+50 10 1 4 * root /root/shell/report/transformer/TotalTransFormerUseEfficiencyFengQuarter.sh
+50 10 1 7 * root /root/shell/report/transformer/TotalTransFormerUseEfficiencyFengQuarter.sh
+50 10 1 10 * root /root/shell/report/transformer/TotalTransFormerUseEfficiencyFengQuarter.sh
+
+
+0 11 1 1 * root /root/shell/report/transformer/TotalTransFormerUseEfficiencyFengCompareQuarter.sh
+0 11 1 4 * root /root/shell/report/transformer/TotalTransFormerUseEfficiencyFengCompareQuarter.sh
+0 11 1 7 * root /root/shell/report/transformer/TotalTransFormerUseEfficiencyFengCompareQuarter.sh
+0 11 1 10 * root /root/shell/report/transformer/TotalTransFormerUseEfficiencyFengCompareQuarter.sh
+
+
+
+# ========================================================================
+# 年度
+# 单台变压器运行健康状况-年度
+30 8 1 1 * root /root/shell/report/transformer/TransFormerHealthYear.sh
+50 8 1 1 * root /root/shell/report/transformer/TransFormerHealthCompareYear.sh
+10 9 1 1 * root /root/shell/report/transformer/TotalTransFormerHealthYear.sh
+30 9 1 1 * root /root/shell/report/transformer/TotalTransFormerHealthCompareYear.sh
+
+
+# 供电用
+40 9 1 1 * root /root/shell/report/transformer/TransformerPowerSupplyYear.sh
+50 9 1 1 * root /root/shell/report/transformer/TransformerPowerSupplyCompareYear.sh
+0 10 1 1 * root /root/shell/report/transformer/TotalTransformerPowerSupplyYear.sh
+10 10 1 1 * root /root/shell/report/transformer/TotalTransformerPowerSupplyCompareYear.sh
+20 10 1 1 * root /root/shell/report/transformer/TotalTransformerPowerSupplyTop3Year.sh
+
+
+# 报警状况
+30 10 1 1 * root /root/shell/report/transformer/TransFormerAlarmYear.sh
+40 10 1 1 * root /root/shell/report/transformer/TotalTransFormerAlarmYear.sh
+
+
+# 使用效率
+40 9 1 1 * root /root/shell/report/transformer/TransformerUseEfficiencyYear.sh
+50 9 1 1 * root /root/shell/report/transformer/TransformerUseEfficiencyCompareYear.sh
+0 10 1 1 * root /root/shell/report/transformer/TransformerUseEfficiencyStatisticsYear.sh
+10 10 1 1 * root /root/shell/report/transformer/TransFormerUseEfficiencyFengYear.sh
+20 10 1 1 * root /root/shell/report/transformer/TransFormerUseEfficiencyFengCompareYear.sh
+30 10 1 1 * root /root/shell/report/transformer/TotalTransformerUseEfficiencyYear.sh
+40 10 1 1 * root /root/shell/report/transformer/TotalTransformerUseEfficiencyCompareYear.sh
+50 10 1 1 * root /root/shell/report/transformer/TotalTransformerUseEfficiencyStatisticsYear.sh
+0  11 1 1 * root /root/shell/report/transformer/TotalTransFormerUseEfficiencyFengYear.sh
+10 11 1 1 * root /root/shell/report/transformer/TotalTransFormerUseEfficiencyFengCompareYear.sh
+
+
+# 每月1号0点执行
+0 0 1 * * root /root/shell/report/transformer/TransformerPowerSupplyRunTimeMonth.sh
+# 每月1号0点执行
+0 0 1 * * root /root/shell/report/transformer/TransformerUseEfficiencyMonth.sh
+
+
+# ========================================================================
+# 低压设备
+# 单台-低压-供应电-电流电压
+10 11 1 1 * root /root/shell/report/lowpressure/LowPressureCurentAndVoltageQuarter.sh
+10 11 1 4 * root /root/shell/report/lowpressure/LowPressureCurentAndVoltageQuarter.sh
+10 11 1 7 * root /root/shell/report/lowpressure/LowPressureCurentAndVoltageQuarter.sh
+10 11 1 10 * root /root/shell/report/lowpressure/LowPressureCurentAndVoltageQuarter.sh
+
+
+20 11 1 1 * root /root/shell/report/lowpressure/LowPressureCurentCompareQuarter.sh
+20 11 1 4 * root /root/shell/report/lowpressure/LowPressureCurentCompareQuarter.sh
+20 11 1 7 * root /root/shell/report/lowpressure/LowPressureCurentCompareQuarter.sh
+20 11 1 10 * root /root/shell/report/lowpressure/LowPressureCurentCompareQuarter.sh
+
+
+30 11 1 1 * root /root/shell/report/lowpressure/LowPressureCurrentLoadQuarter.sh
+30 11 1 4 * root /root/shell/report/lowpressure/LowPressureCurrentLoadQuarter.sh
+30 11 1 7 * root /root/shell/report/lowpressure/LowPressureCurrentLoadQuarter.sh
+30 11 1 10 * root /root/shell/report/lowpressure/LowPressureCurrentLoadQuarter.sh
+
+
+# 整体-低压-供应电-电流、电压运行
+40 11 1 1 * root /root/shell/report/lowpressure/TotalLowPressureVoltageQuarter.sh
+40 11 1 4 * root /root/shell/report/lowpressure/TotalLowPressureVoltageQuarter.sh
+40 11 1 7 * root /root/shell/report/lowpressure/TotalLowPressureVoltageQuarter.sh
+40 11 1 10 * root /root/shell/report/lowpressure/TotalLowPressureVoltageQuarter.sh
+
+
+50 11 1 1 * root /root/shell/report/lowpressure/TotalLowPressureVoltageCompareQuarter.sh
+50 11 1 4 * root /root/shell/report/lowpressure/TotalLowPressureVoltageCompareQuarter.sh
+50 11 1 7 * root /root/shell/report/lowpressure/TotalLowPressureVoltageCompareQuarter.sh
+50 11 1 10 * root /root/shell/report/lowpressure/TotalLowPressureVoltageCompareQuarter.sh
+
+
+0 12 1 1 * root /root/shell/report/lowpressure/TotalLowPressureCurentQuarter.sh
+0 12 1 4 * root /root/shell/report/lowpressure/TotalLowPressureCurentQuarter.sh
+0 12 1 7 * root /root/shell/report/lowpressure/TotalLowPressureCurentQuarter.sh
+0 12 1 10 * root /root/shell/report/lowpressure/TotalLowPressureCurentQuarter.sh
+
+
+10 12 1 1 * root /root/shell/report/lowpressure/TotalLowPressureCurrentLoadQuarter.sh
+10 12 1 4 * root /root/shell/report/lowpressure/TotalLowPressureCurrentLoadQuarter.sh
+10 12 1 7 * root /root/shell/report/lowpressure/TotalLowPressureCurrentLoadQuarter.sh
+10 12 1 10 * root /root/shell/report/lowpressure/TotalLowPressureCurrentLoadQuarter.sh
+
+
+### 单台-低压-供应电-功率因数RE_LP_POWERFACTOR_Y
+20 12 1 1 * root /root/shell/report/lowpressure/LowpressurePowerfactorQuarter.sh
+20 12 1 4 * root /root/shell/report/lowpressure/LowpressurePowerfactorQuarter.sh
+20 12 1 7 * root /root/shell/report/lowpressure/LowpressurePowerfactorQuarter.sh
+20 12 1 10 * root /root/shell/report/lowpressure/LowpressurePowerfactorQuarter.sh
+
+# 整体-低压-供应电-功率因数
+30 12 1 1 * root /root/shell/report/lowpressure/TotalLowpressurePowerfactorQuarter.sh
+30 12 1 4 * root /root/shell/report/lowpressure/TotalLowpressurePowerfactorQuarter.sh
+30 12 1 7 * root /root/shell/report/lowpressure/TotalLowpressurePowerfactorQuarter.sh
+30 12 1 10 * root /root/shell/report/lowpressure/TotalLowpressurePowerfactorQuarter.sh
+
+
+# 单台-低压-供用电-有功和无功电能
+40 12 1 1 * root /root/shell/report/lowpressure/LowPressureElectricalMeasurementQuarter.sh
+40 12 1 4 * root /root/shell/report/lowpressure/LowPressureElectricalMeasurementQuarter.sh
+40 12 1 7 * root /root/shell/report/lowpressure/LowPressureElectricalMeasurementQuarter.sh
+40 12 1 10 * root /root/shell/report/lowpressure/LowPressureElectricalMeasurementQuarter.sh
+
+
+50 12 1 1 * root /root/shell/report/lowpressure/LowPressureElectricalMeasurementCompQuarter.sh
+50 12 1 4 * root /root/shell/report/lowpressure/LowPressureElectricalMeasurementCompQuarter.sh
+50 12 1 7 * root /root/shell/report/lowpressure/LowPressureElectricalMeasurementCompQuarter.sh
+50 12 1 10 * root /root/shell/report/lowpressure/LowPressureElectricalMeasurementCompQuarter.sh
+
+
+# 整体-低压-供用电-有功和无功电能
+0 13 1 1 * root /root/shell/report/lowpressure/TotalLowPressureElectricalMeasurementQuarter.sh
+0 13 1 4 * root /root/shell/report/lowpressure/TotalLowPressureElectricalMeasurementQuarter.sh
+0 13 1 7 * root /root/shell/report/lowpressure/TotalLowPressureElectricalMeasurementQuarter.sh
+0 13 1 10 * root /root/shell/report/lowpressure/TotalLowPressureElectricalMeasurementQuarter.sh
+
+
+10 13 1 1 * root /root/shell/report/lowpressure/TotalLowPressureElectricalMeasurementCompQuarter.sh
+10 13 1 4 * root /root/shell/report/lowpressure/TotalLowPressureElectricalMeasurementCompQuarter.sh
+10 13 1 7 * root /root/shell/report/lowpressure/TotalLowPressureElectricalMeasurementCompQuarter.sh
+10 13 1 10 * root /root/shell/report/lowpressure/TotalLowPressureElectricalMeasurementCompQuarter.sh
+
+
+# 单台-低压-使用效率
+20 13 1 1 * root /root/shell/report/lowpressure/LowPressureUseEfficiencyQuarter.sh
+20 13 1 4 * root /root/shell/report/lowpressure/LowPressureUseEfficiencyQuarter.sh
+20 13 1 7 * root /root/shell/report/lowpressure/LowPressureUseEfficiencyQuarter.sh
+20 13 1 10 * root /root/shell/report/lowpressure/LowPressureUseEfficiencyQuarter.sh
+
+
+30 13 1 1 * root /root/shell/report/lowpressure/LowPressureUseEfficiencyCompareQuarter.sh
+30 13 1 4 * root /root/shell/report/lowpressure/LowPressureUseEfficiencyCompareQuarter.sh
+30 13 1 7 * root /root/shell/report/lowpressure/LowPressureUseEfficiencyCompareQuarter.sh
+30 13 1 10 * root /root/shell/report/lowpressure/LowPressureUseEfficiencyCompareQuarter.sh
+
+### 整体-低压-使用效率
+40 13 1 1 * root /root/shell/report/lowpressure/TotalLowPressureUseEfficiencyQuarter.sh
+40 13 1 4 * root /root/shell/report/lowpressure/TotalLowPressureUseEfficiencyQuarter.sh
+40 13 1 7 * root /root/shell/report/lowpressure/TotalLowPressureUseEfficiencyQuarter.sh
+40 13 1 10 * root /root/shell/report/lowpressure/TotalLowPressureUseEfficiencyQuarter.sh
+
+50 13 1 1 * root /root/shell/report/lowpressure/TotalLowPressureUseEfficiencyCompareQuarter.sh
+50 13 1 4 * root /root/shell/report/lowpressure/TotalLowPressureUseEfficiencyCompareQuarter.sh
+50 13 1 7 * root /root/shell/report/lowpressure/TotalLowPressureUseEfficiencyCompareQuarter.sh
+50 13 1 10 * root /root/shell/report/lowpressure/TotalLowPressureUseEfficiencyCompareQuarter.sh
+
+
+# 单台-低压-运行健康情况
+0 14 1 1 * root /root/shell/report/lowpressure/LowPressureHealthQuarter.sh
+0 14 1 4 * root /root/shell/report/lowpressure/LowPressureHealthQuarter.sh
+0 14 1 7 * root /root/shell/report/lowpressure/LowPressureHealthQuarter.sh
+0 14 1 10 * root /root/shell/report/lowpressure/LowPressureHealthQuarter.sh
+
+
+10 14 1 1 * root /root/shell/report/lowpressure/LowPressureHealthCompareQuarter.sh
+10 14 1 4 * root /root/shell/report/lowpressure/LowPressureHealthCompareQuarter.sh
+10 14 1 7 * root /root/shell/report/lowpressure/LowPressureHealthCompareQuarter.sh
+10 14 1 10 * root /root/shell/report/lowpressure/LowPressureHealthCompareQuarter.sh
+
+
+# 整体-低压-运行健康情况
+20 14 1 1 * root /root/shell/report/lowpressure/TotalLowPressureHealthQuarter.sh
+20 14 1 4 * root /root/shell/report/lowpressure/TotalLowPressureHealthQuarter.sh
+20 14 1 7 * root /root/shell/report/lowpressure/TotalLowPressureHealthQuarter.sh
+20 14 1 10 * root /root/shell/report/lowpressure/TotalLowPressureHealthQuarter.sh
+
+
+30 14 1 1 * root /root/shell/report/lowpressure/TotalLowPressureHealthCompareQuarter.sh
+30 14 1 4 * root /root/shell/report/lowpressure/TotalLowPressureHealthCompareQuarter.sh
+30 14 1 7 * root /root/shell/report/lowpressure/TotalLowPressureHealthCompareQuarter.sh
+30 14 1 10 * root /root/shell/report/lowpressure/TotalLowPressureHealthCompareQuarter.sh
+
+
+# 单台-低压-报警分析
+40 14 1 1 * root /root/shell/report/lowpressure/LowPressureAlarmQuarter.sh
+40 14 1 4 * root /root/shell/report/lowpressure/LowPressureAlarmQuarter.sh
+40 14 1 7 * root /root/shell/report/lowpressure/LowPressureAlarmQuarter.sh
+40 14 1 10 * root /root/shell/report/lowpressure/LowPressureAlarmQuarter.sh
+
+
+# 整体-低压-报警分析
+50 14 1 1 * root /root/shell/report/lowpressure/TotalLowPressureAlarmQuarter.sh
+50 14 1 4 * root /root/shell/report/lowpressure/TotalLowPressureAlarmQuarter.sh
+50 14 1 7 * root /root/shell/report/lowpressure/TotalLowPressureAlarmQuarter.sh
+50 14 1 10 * root /root/shell/report/lowpressure/TotalLowPressureAlarmQuarter.sh
+
+
+0 15 1 1 * root /root/shell/report/lowpressure/TotalLowPressureAlarmSummaryQuarter.sh
+0 15 1 4 * root /root/shell/report/lowpressure/TotalLowPressureAlarmSummaryQuarter.sh
+0 15 1 7 * root /root/shell/report/lowpressure/TotalLowPressureAlarmSummaryQuarter.sh
+0 15 1 10 * root /root/shell/report/lowpressure/TotalLowPressureAlarmSummaryQuarter.sh
+
+
+
+# ========================================================================
+# 年度
+20 11 1 1 * root /root/shell/report/lowpressure/LowPressureCurentAndVoltageYear.sh
+15 11 1 1 * root /root/shell/report/lowpressure/LowPressureCurentCompareYear.sh
+30 11 1 1 * root /root/shell/report/lowpressure/LowPressureCurrentLoadQuarter.sh
+40 11 1 1 * root /root/shell/report/lowpressure/LowPressureCurrentLoadYear.sh
+50 11 1 1 * root /root/shell/report/lowpressure/TotalLowPressureVoltageYear.sh
+0 12 1 1 * root /root/shell/report/lowpressure/TotalLowPressureVoltageCompareYear.sh
+10 12 1 1 * root /root/shell/report/lowpressure/TotalLowPressureCurentYear.sh
+20 12 1 1 * root /root/shell/report/lowpressure/TotalLowPressureCurrentLoadYear.sh
+30 12 1 1 * root /root/shell/report/lowpressure/LowpressurePowerfactorYear.sh
+40 12 1 1 * root /root/shell/report/lowpressure/TotalLowpressurePowerfactorYear.sh
+50 12 1 1 * root /root/shell/report/lowpressure/LowPressureElectricalMeasurementYear.sh
+0 13 1 1 * root /root/shell/report/lowpressure/LowPressureElectricalMeasurementCompYear.sh
+
+10 13 1 1 * root /root/shell/report/lowpressure/TotalLowPressureElectricalMeasurementYear.sh
+20 13 1 1 * root /root/shell/report/lowpressure/TotalLowPressureElectricalMeasurementCompYear.sh
+30 13 1 1 * root /root/shell/report/lowpressure/LowPressureUseEfficiencyYear.sh
+40 13 1 1 * root /root/shell/report/lowpressure/LowPressureUseEfficiencyCompareYear.sh
+50 13 1 1 * root /root/shell/report/lowpressure/TotalLowPressureUseEfficiencyYear.sh
+
+0 14 1 1 * root /root/shell/report/lowpressure/TotalLowPressureUseEfficiencyCompareYear.sh
+10 14 1 1 * root /root/shell/report/lowpressure/LowPressureHealthYear.sh
+20 14 1 1 * root /root/shell/report/lowpressure/LowPressureHealthCompareYear.sh
+30 14 1 1 * root /root/shell/report/lowpressure/TotalLowPressureHealthYear.sh
+40 14 1 1 * root /root/shell/report/lowpressure/TotalLowPressureHealthCompareYear.sh
+
+50 14 1 1 * root /root/shell/report/lowpressure/LowPressureAlarmYear.sh
+0 15 1 1 * root /root/shell/report/lowpressure/TotalLowPressureAlarmYear.sh
+10 15 1 1 * root /root/shell/report/lowpressure/TotalLowPressureAlarmSummaryYear.sh
+
+
+
+
+# 每月1号0点执行
+0 0 1 * * root /root/shell/report/transformer/TransformerPowerSupplyRunTimeMonth.sh
+0 0 1 * * root /root/shell/report/transformer/LowpressureUseEfficiencyRunTimeMonth.sh
+
+# 每月1号2点执行
+0 2 1 * * root /root/shell/report/transformer/LowpressurePowerfactorMonth.sh
+# 每月1号3点执行
+0 3 1 * * root /root/shell/report/transformer/LowPressureHealthMonth.sh
+# 每月1号4点执行
+0 4 1 * * root /root/shell/report/transformer/TotalLowPressureHealthMonth.sh
 
 

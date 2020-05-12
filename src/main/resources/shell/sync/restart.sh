@@ -33,5 +33,9 @@ nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.task.ProcessYxTask /root/T
 nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.task.ProcessYcTransformerTask /root/TJJar/tj-hospital.jar > /root/TJJar/ProcessYcTransformerTask.log 2>&1 &
 
 
-nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.task.ProcessYcYcLowPressureTask /root/TJJar/tj-hospital.jar > /root/TJJar/ProcessYcYcLowPressureTask.log 2>&1 &
+nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.task.ProcessYcLowPressureTask /root/TJJar/tj-hospital.jar > /root/TJJar/ProcessYcYcLowPressureTask.log 2>&1 &
 
+nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.task.LowPressureAcbTask /root/TJJar/tj-hospital.jar > /root/TJJar/LowPressureAcbTask.log 2>&1 &
+nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.task.LowPressureAtsTask /root/TJJar/tj-hospital.jar > /root/TJJar/LowPressureAtsTask.log 2>&1 &
+nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.task.LowPressureCapacitorTask /root/TJJar/tj-hospital.jar > /root/TJJar/LowPressureCapacitorTask.log 2>&1 &
+nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.task.LowPressureDrawerTask /root/TJJar/tj-hospital.jar > /root/TJJar/LowPressureDrawerTask.log 2>&1 &
