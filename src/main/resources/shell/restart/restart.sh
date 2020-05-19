@@ -19,6 +19,9 @@ export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
 
 ps -ef | grep flink | grep -v grep | awk '{print "kill -9 "$2}'|sh
 
+ps -ef | grep  org.apache.flink.runtime.taskexecutor.TaskManagerRunner | grep -v grep | awk '{print "kill -9 "$2}'|sh
+
+
 /root/app/flink-1.8.0/bin/start-cluster.sh 
 
 
@@ -33,9 +36,17 @@ nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.task.ProcessYxTask /root/T
 nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.task.ProcessYcTransformerTask /root/TJJar/tj-hospital.jar > /root/TJJar/ProcessYcTransformerTask.log 2>&1 &
 
 
-nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.task.ProcessYcLowPressureTask /root/TJJar/tj-hospital.jar > /root/TJJar/ProcessYcYcLowPressureTask.log 2>&1 &
+nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.task.ProcessYcLowPressureTask /root/TJJar/tj-hospital.jar > /root/TJJar/ProcessYcLowPressureTask.log 2>&1 &
+
+
+sleep 3
 
 nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.task.LowPressureAcbTask /root/TJJar/tj-hospital.jar > /root/TJJar/LowPressureAcbTask.log 2>&1 &
+
 nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.task.LowPressureAtsTask /root/TJJar/tj-hospital.jar > /root/TJJar/LowPressureAtsTask.log 2>&1 &
+
 nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.task.LowPressureCapacitorTask /root/TJJar/tj-hospital.jar > /root/TJJar/LowPressureCapacitorTask.log 2>&1 &
+
 nohup /root/app/flink-1.8.0/bin/flink run -c com.hxqh.task.LowPressureDrawerTask /root/TJJar/tj-hospital.jar > /root/TJJar/LowPressureDrawerTask.log 2>&1 &
+
+

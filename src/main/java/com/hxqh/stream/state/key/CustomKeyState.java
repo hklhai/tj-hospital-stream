@@ -8,9 +8,13 @@ import org.apache.flink.api.common.typeinfo.TypeHint;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.configuration.Configuration;
+import org.apache.flink.streaming.api.checkpoint.ListCheckpointed;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.util.Collector;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by Ocean lin on 2020/2/4.
@@ -27,7 +31,7 @@ public class CustomKeyState {
         env.execute("CustomKeyState");
     }
 
-    private static class CountWithKeyState extends RichFlatMapFunction<Tuple2<Long, Long>, Tuple2<Long, Long>> {
+    private static class CountWithKeyState extends RichFlatMapFunction<Tuple2<Long, Long>, Tuple2<Long, Long>> implements ListCheckpointed {
 
         private transient ValueState<Tuple2<Long, Long>> sum;
 
@@ -59,6 +63,22 @@ public class CustomKeyState {
                     }));
 
             sum = getRuntimeContext().getState(descriptor);
+        }
+
+
+        @Override
+        public List snapshotState(long checkpointId, long timestamp) throws Exception {
+            return Collections.singletonList(sum);
+        }
+
+        @Override
+        public void restoreState(List list) throws Exception {
+//
+//            ValueStateDescriptor<Tuple2<Long, Long>> descriptor =
+//                    new ValueStateDescriptor<>("avgState", TypeInformation.of(new TypeHint<Tuple2<Long, Long>>() {
+//                    }));
+//
+//            sum = getRuntimeContext().getState(descriptor);
         }
     }
 }
